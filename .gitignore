@@ -1,0 +1,7 @@
+migrations/
+*.pyc
+.vscode/
+.venv/
+*.css.map
+*.sqlite3
+.sass-cache/
