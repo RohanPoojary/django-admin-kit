@@ -1,16 +1,20 @@
 from django import forms
 from .widgets import SelectMultipleWidget
 
+__all__ = ['MultiSelectField']
+
 class MultiSelectField(forms.Field):
 
-    def __init__(self, seperator=',', choices=[], *args, **kwargs):
+    def __init__(self, seperator=',', choices=[['', '']], *args, **kwargs):
 
         self.seperator = seperator
         self.choices = choices
 
         self.ajax_source = kwargs.pop('ajax_source', None)
+        self.ajax_target = kwargs.pop('ajax_target', None)
+        ajax_subscribe = kwargs.pop('ajax_subscribe', False)
 
-        self.widget = kwargs.pop('widget', SelectMultipleWidget(choices=choices))
+        self.widget = kwargs.pop('widget', SelectMultipleWidget(choices=choices, ajax_subscribe=ajax_subscribe))
         self.required = kwargs.pop('required', False)
         # self.widget.choices = self.choices
         self._coerce = kwargs.pop('coerce', None)
@@ -37,6 +41,8 @@ class MultiSelectField(forms.Field):
         attrs = super(MultiSelectField, self).widget_attrs(widget)
         if self.ajax_source:
             attrs['data-ajax-source'] = self.ajax_source
+        if self.ajax_target:
+            attrs['data-ajax-target'] = self.ajax_target
         return attrs
 
     def clean(self, value):

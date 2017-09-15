@@ -13,12 +13,13 @@ class AdminKitSite:
         return render(request, 'admin_kit/ping.html')
 
     def register(self, key, admin_class, **options):
+        from .ajax import Ajax
+        key = Ajax.generateKey(key, admin_class)
         self._registry[key] = admin_class()
 
     def ajax(self, request, key):
         from .ajax import Ajax
-        params = dict(get=request.GET, post=request.POST)
-        response = Ajax.route(key, self._registry[key], params)
+        response = Ajax.route(request, self._registry[key], )
         return response
 
     def get_urls(self):
