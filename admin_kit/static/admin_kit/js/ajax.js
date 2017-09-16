@@ -55,11 +55,16 @@
             target = target.slice(0, target.indexOf(':'))
         }
         var target_url = '/admin_kit/ajax/' + target + '/';
+        var value = element.val();
+
+        if(!value && element.attr('data-ajax-value'))
+            value = element.attr('data-ajax-value').split(',');
+
         $.ajax({
             method: 'get',
             url: target_url,
             data: {
-                q: element.val()
+                q: value
             },
             success: function(data) {
                 var parentModule = element.parentsUntil('.module').parent().eq(0);
@@ -105,43 +110,56 @@
     $(document).ready(function() {
 
         $('.admin-kit').each(function() {
-            AdminKitReady($(this));
+            AdminKitReady($(this), true);
         });
 
-        $(".js-inline-admin-formset .module").each(function() {
+        $(".module").each(function() {
             var addBtn = $(this).children('.add-row');
             var addDup = addBtn.clone();
-            addDup.children('a').text('Add a duplicate');
-            addDup.on('click', function(e) {
+
+            var link = addDup.children('a');
+
+            link.text('Add a duplicate');
+
+            link.click(function(e) {
                 e.preventDefault();
+
                 addDup.parent().attr('data-duplicate', true);
                 addBtn.children('a').click();
+                e.stopImmediatePropagation();
                 return false;
             });
+
             $(this).append(addDup);
         });
 
         $(document).on("formset:added", function(event, $row, formsetName) {
-            if($row.parent().attr('data-duplicate')) {
-                var curr_inputs = $row.find(":input");
-                var prev_inputs = $row.prev().find(":input");
-                for(var i = 0, j = 0; i < prev_inputs.length && j < curr_inputs.length;){
-                    var prevName = getSuffixName(prev_inputs[i]);
-                    var curName = getSuffixName(curr_inputs[j]);
-                    if(curName==undefined) {
-                        j++;
-                        continue
-                    }
-                    if(prevName != curName) {
-                        i++;
-                        continue;
-                    }
+
+            var parent = $row.parents('.module');
+
+            if(parent.attr('data-duplicate')) {
+                duplicateRow($row, $row.prev());
+
+                parent.attr('data-duplicate', null);
+
+                var children = $row.find('.add-row');
+                var prev_children = $row.prev().find('.add-row');
+
+                for(var i = 0; i < children.length; i++) {
+                    var prev_module = prev_children.eq(i).parentsUntil('.module').parent();
+                    var curr_module = children.eq(i).parentsUntil('.module').parent();
                     
-                    $(curr_inputs[j]).val($(prev_inputs[i]).val());
-                    i++;
-                    j++;
+                    var total_forms_elem = prev_module.children('input[name$=TOTAL_FORMS]');
+
+                    for(var j = 0; j <  total_forms_elem.val(); j++) {
+                        children.eq(i).find('a').click();
+                    }
+
+                    var cur_id = curr_module.children('input[name$=TOTAL_FORMS]').attr('id').replace('-TOTAL_FORMS', '');
+                    var prev_id = prev_module.children('input[name$=TOTAL_FORMS]').attr('id').replace('-TOTAL_FORMS', '');
+
+                    duplicateRow(curr_module, prev_module, cur_id, prev_id);
                 }
-                $row.parent().attr('data-duplicate', null);
             }
 
             $row.find('.admin-kit').each(function() {
@@ -149,13 +167,58 @@
             });
         });
     });
+
+    function duplicateRow($row, $prev, cur_id, prev_id) {
+        var curr_inputs = $row.find(":input");
+        var prev_inputs = $prev.find(":input");
+        
+        var prevValues = {};
+
+        if(cur_id == undefined) {
+            cur_id = $row.attr("id");
+        }
+
+        if(prev_id == undefined) {
+            prev_id = $prev.attr("id");
+        }
+    
+        for(var i = 0; i < prev_inputs.length ; i++){
+            var prevName = getSuffixName(prev_inputs.eq(i), prev_id);
+            if(prevName)
+                prevValues[prevName] = prev_inputs.eq(i).val();
+        }
+    
+        for(var i = 0; i < curr_inputs.length ; i++){
+            var currName = getSuffixName(curr_inputs.eq(i), cur_id);
+            if(currName)
+                curr_inputs.eq(i).val(prevValues[currName]);
+        }
+    }
+
 })(django.jQuery);
 
-function getSuffixName(ele) {
-    var name = ele.name;
-    if(name == undefined) {
-        return name;
+function getSuffixName(ele, suf_id) {
+    var name = ele.attr('name');
+    
+    for(var i = 0; i < ele.parents('.module').length - 1; i++) {
+        name = name.replace(/-\d+/, '')
     }
-    var name_splits = name.split('-');
-    return name_splits[name_splits.length - 1];
+
+    if(name == undefined || name.indexOf('__prefix__') >= 0) {
+        return undefined;
+    }
+
+    if(ele.attr('type') == 'hidden')
+        return undefined;
+
+    var suffix = name.split('-');
+    var suffix_name = suffix[suffix.length - 1];
+
+    output = name.replace(suf_id + '-', '');
+
+    if(suffix_name.toLowerCase() != suffix_name)
+        return undefined
+
+    return output
+
 }
