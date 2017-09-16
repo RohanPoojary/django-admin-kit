@@ -1,9 +1,28 @@
 (function ($) {
 
+    $.fn.kitAttr = function(key) {
+        var attr = $(this).attr('data-kit-config');
+        if(attr != undefined) {
+            var attrObj = JSON.parse(attr);
+            return attrObj[key];
+        }
+        return attr;
+    };
+
+    $.fn.kitFind = function(config) {
+        return this.find('.admin-kit').filter(function() {
+            for(var key in config) {
+                if($(this).kitAttr(key) != config[key])
+                    return false;
+            }
+            return true;
+        });
+    };
+
     function InitializeSelect(element, data) {
         var values = {};
-        if(element.attr('data-ajax-value') != undefined) {
-            var data_values = element.attr('data-ajax-value').split(',')
+        if(element.kitAttr('init-value') != undefined) {
+            var data_values = element.kitAttr('init-value').split(',')
             for(var i in data_values) {
                 if(data_values[i]) {
                     values[data_values[i]] = true;
@@ -18,7 +37,6 @@
     function SetSelectField(element, data, initials) {
         var child = element.children().eq(0).clone();
         element.empty();
-        // console.log(element, data);
         if(!data || data.length == 0) {
             element.append(child);
         }
@@ -57,8 +75,8 @@
         var target_url = '/admin_kit/ajax/' + target + '/';
         var value = element.val();
 
-        if(!value && element.attr('data-ajax-value'))
-            value = element.attr('data-ajax-value').split(',');
+        if(!value && element.kitAttr('init-value'))
+            value = element.kitAttr('init-value').split(',');
 
         $.ajax({
             method: 'get',
@@ -67,14 +85,18 @@
                 q: value
             },
             success: function(data) {
-                var parentModule = element.parentsUntil('.module').parent().eq(0);
+                var parentModule = element.parents('.module').eq(0);
+
                 if(targetElement != undefined) {
                     var parentId = parentModule.parent().attr('id');
                     var targetId = parentId + '-' + targetElement;
                     var elements = parentModule.find('#id_' + targetId);
                     elements.val(data);
                 } else {
-                    var elements = parentModule.find('.admin-kit.admin-kit-subscribe[data-ajax-source=' + target + ']');
+                    var elements = parentModule.kitFind({
+                        'ajax-source': target,
+                        'ajax-subscribe': true
+                    });
                     for(var i = 0; i < elements.length; i++) {
                         SetSelectField(elements.eq(i), data, true);
                     }
@@ -92,11 +114,11 @@
     }
 
     function ProcessAdminKit(element, query) {
-        if(element.attr('data-ajax-source') != undefined) {
-            ajaxSource(element,  element.attr('data-ajax-source'), '');
+        if(element.kitAttr('ajax-source') != undefined) {
+            ajaxSource(element,  element.kitAttr('ajax-source'), '');
         }
-        if(element.attr('data-ajax-target') != undefined) {
-            ajaxTarget(element,  element.attr('data-ajax-target'), query);
+        if(element.kitAttr('ajax-target') != undefined) {
+            ajaxTarget(element,  element.kitAttr('ajax-target'), query);
         }
     }
 
@@ -110,7 +132,7 @@
     $(document).ready(function() {
 
         $('.admin-kit').each(function() {
-            AdminKitReady($(this), true);
+            AdminKitReady($(this));
         });
 
         $(".module").each(function() {
@@ -146,8 +168,8 @@
                 var prev_children = $row.prev().find('.add-row');
 
                 for(var i = 0; i < children.length; i++) {
-                    var prev_module = prev_children.eq(i).parentsUntil('.module').parent();
-                    var curr_module = children.eq(i).parentsUntil('.module').parent();
+                    var prev_module = prev_children.eq(i).parents('.module').eq(0);
+                    var curr_module = children.eq(i).parents('.module').eq(0);
                     
                     var total_forms_elem = prev_module.children('input[name$=TOTAL_FORMS]');
 
@@ -194,7 +216,6 @@
                 curr_inputs.eq(i).val(prevValues[currName]);
         }
     }
-
 })(django.jQuery);
 
 function getSuffixName(ele, suf_id) {

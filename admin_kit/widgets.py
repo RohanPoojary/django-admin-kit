@@ -1,3 +1,4 @@
+import json
 from django.forms.widgets import SelectMultiple
 
 BASE_JS = ('admin_kit/js/ajax.js', )
@@ -22,7 +23,10 @@ class SelectMultipleWidget(SelectMultiple):
     def get_context(self, name, value, attrs):
         context = super().get_context(name, value, attrs)
         context['widget']['attrs']['class'] = 'admin-kit admin-kit-select'
-        if self.ajax_subscribe:
-            context['widget']['attrs']['class'] += ' admin-kit-subscribe'
-        context['widget']['attrs']['data-ajax-value'] = ','.join(context['widget']['value'])
+
+        kit_config = json.loads(context['widget']['attrs']['data-kit-config'])
+        kit_config['init-value'] = ','.join(context['widget']['value'])
+        # print(kit_config)
+        context['widget']['attrs']['data-kit-config'] = json.dumps(kit_config)
+
         return context

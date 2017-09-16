@@ -12,6 +12,9 @@ class BaseField(dj_models.Field):
         self.ajax_source = kwargs.pop('ajax_source', None)
         self.ajax_target = kwargs.pop('ajax_target', None)
         self.ajax_subscribe = kwargs.pop('ajax_subscribe', False)
+
+        self.kit_config = kwargs.pop('kit_config', {})
+
         super(BaseField, self).__init__(*args, **kwargs)
 
     def deconstruct(self):
@@ -19,6 +22,8 @@ class BaseField(dj_models.Field):
         kwargs['ajax_source'] = self.ajax_source
         kwargs['ajax_target'] = self.ajax_target
         kwargs['ajax_subscribe'] = self.ajax_subscribe
+
+        kwargs['kit_config'] = self.kit_config
         return name, path, args, kwargs
 
     def value_to_string(self, obj):
@@ -42,7 +47,9 @@ class BaseField(dj_models.Field):
             'coerce': self.to_python,
             'ajax_source': self.ajax_source,
             'ajax_target': self.ajax_target,
-            'ajax_subscribe': self.ajax_subscribe
+            'ajax_subscribe': self.ajax_subscribe,
+
+            'kit_config': self.kit_config
         }
         defaults.update(kwargs)
         return form_class(**defaults)

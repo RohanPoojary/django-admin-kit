@@ -1,3 +1,5 @@
+import json
+
 from django import forms
 from .widgets import SelectMultipleWidget
 
@@ -9,12 +11,15 @@ class MultiSelectField(forms.Field):
 
         self.seperator = seperator
         self.choices = choices
+        
 
         self.ajax_source = kwargs.pop('ajax_source', None)
         self.ajax_target = kwargs.pop('ajax_target', None)
-        ajax_subscribe = kwargs.pop('ajax_subscribe', False)
+        self.ajax_subscribe = kwargs.pop('ajax_subscribe', False)
 
-        self.widget = kwargs.pop('widget', SelectMultipleWidget(choices=choices, ajax_subscribe=ajax_subscribe))
+        self.kit_config = kwargs.pop('kit_config', dict())
+
+        self.widget = kwargs.pop('widget', SelectMultipleWidget(choices=choices))
         self.required = kwargs.pop('required', False)
         # self.widget.choices = self.choices
         self._coerce = kwargs.pop('coerce', None)
@@ -39,10 +44,18 @@ class MultiSelectField(forms.Field):
 
     def widget_attrs(self, widget):
         attrs = super(MultiSelectField, self).widget_attrs(widget)
+
+        kit_config = self.kit_config.copy()
+        
         if self.ajax_source:
-            attrs['data-ajax-source'] = self.ajax_source
+            kit_config['ajax-source'] = self.ajax_source
         if self.ajax_target:
-            attrs['data-ajax-target'] = self.ajax_target
+            kit_config['ajax-target'] = self.ajax_target
+        if self.ajax_subscribe:
+            kit_config['ajax-subscribe'] = self.ajax_subscribe
+        
+        attrs['data-kit-config'] = json.dumps(kit_config)
+
         return attrs
 
     def clean(self, value):
