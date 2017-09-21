@@ -6,11 +6,17 @@ from .widgets import SelectMultipleWidget
 __all__ = ['MultiSelectField']
 
 class MultiSelectField(forms.Field):
+    """
+    This field is used to create MultiSelect Form fields.
 
-    def __init__(self, seperator=',', choices=[['', '']], *args, **kwargs):
+    """
+
+    def __init__(self, seperator=',', choices=None, *args, **kwargs):
 
         self.seperator = seperator
-        self.choices = choices
+        self.choices = [['', '']]
+        if choices:
+            self.choices = choices
         
 
         self.ajax_source = kwargs.pop('ajax_source', None)
@@ -21,7 +27,6 @@ class MultiSelectField(forms.Field):
 
         self.widget = kwargs.pop('widget', SelectMultipleWidget(choices=choices))
         self.required = kwargs.pop('required', False)
-        # self.widget.choices = self.choices
         self._coerce = kwargs.pop('coerce', None)
 
         super(MultiSelectField, self).__init__(self, *args, **kwargs)
@@ -29,7 +34,6 @@ class MultiSelectField(forms.Field):
     def prepare_value(self, value):
         if self._coerce:
             value = self._coerce(value)
-        # print('field-prepare:', value)
         if isinstance(value, list):
             return value
         if isinstance(value, str):
@@ -37,7 +41,6 @@ class MultiSelectField(forms.Field):
         return value
 
     def to_python(self, value):
-        # print('field-to-python:', value)
         if isinstance(value, str):
             return list(map(str.strip, value.split(self.seperator)))
         return value
@@ -62,5 +65,4 @@ class MultiSelectField(forms.Field):
         value = self.to_python(value)
         self.validate(value)
         self.run_validators(value)
-        # print('field-clean:', value)
         return value

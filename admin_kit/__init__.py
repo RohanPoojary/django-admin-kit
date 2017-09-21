@@ -10,4 +10,5 @@ __all__ = [
 def autodiscover():
     autodiscover_modules('ajax', register_to=site)
 
+
 default_app_config = 'admin_kit.apps.AdminKitConfig'

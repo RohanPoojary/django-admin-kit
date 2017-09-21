@@ -7,17 +7,39 @@ from . import fields
 __all__ = ['BaseField', 'MultiSelectField']
 
 class BaseField(dj_models.Field):
+    """
+    The Base model field of Admin-Kit models. This inherits Django's models.Field class.
 
-    def __init__(self, *args, **kwargs):
-        self.ajax_source = kwargs.pop('ajax_source', None)
-        self.ajax_target = kwargs.pop('ajax_target', None)
-        self.ajax_subscribe = kwargs.pop('ajax_subscribe', False)
+    """
 
-        self.kit_config = kwargs.pop('kit_config', {})
+    def __init__(self, kit_config=None, ajax_source=None, ajax_target=None,
+                 ajax_subscribe=False, *args, **kwargs):
+        """
+        kit_config :: dict
+            The config map containing the parameters and their values
+        ajax_source :: str
+            The source value from which the values are retrieved
+        ajax_target :: str
+            The target value to which the values will be filled to
+        ajax_subscribe ::  bool
+            If True, then with every change in ``ajax_target``,
+            it fills corresponding ``ajax_source``
+        """
+
+        self.ajax_source = ajax_source
+        self.ajax_target = ajax_target
+        self.ajax_subscribe = ajax_subscribe
+        self.kit_config = dict()
+        if kit_config:
+            self.kit_config = kit_config
 
         super(BaseField, self).__init__(*args, **kwargs)
 
     def deconstruct(self):
+        """
+        Deconstructs the field to a tuple of 4 elements. This is used to recreate the same
+        object.
+        """
         name, path, args, kwargs = super(BaseField, self).deconstruct()
         kwargs['ajax_source'] = self.ajax_source
         kwargs['ajax_target'] = self.ajax_target
@@ -27,22 +49,28 @@ class BaseField(dj_models.Field):
         return name, path, args, kwargs
 
     def value_to_string(self, obj):
+        """
+        Converts the value of the object to a string
+        """
         value = self.value_from_object(obj)
         return self.get_prep_value(value)
 
-    def get_prep_value(self, value):
-        return value
-
-    def to_python(self, value):
-        return value
-
     def from_db_value(self, value, expression, connection, context):
+        """
+        Returns value from the database. inherited models should override this
+        """
         return value
 
     def validate(self, value, model_instance):
+        """
+        To validate the value of a model instance. Inherited models should override this
+        """
         pass
 
     def formfield(self, form_class, choices_form_class=None, **kwargs):
+        """
+        Returns the form object to be used for rendering.
+        """
         defaults = {
             'coerce': self.to_python,
             'ajax_source': self.ajax_source,
@@ -56,14 +84,25 @@ class BaseField(dj_models.Field):
 
 
 class MultiSelectField(BaseField):
+    """
+    The Multiselect model field of Admin-Kit, which allows users to create
+    multi select ajax fields.
+
+    """
 
     def __init__(self, seperator=',', *args, **kwargs):
-        kwargs['max_length'] = kwargs.get('max_length', 100)
+        """
+        seperator :: str
+            The selected fields will be joined by ``seperator`` and stored in the database.
+        """
+        kwargs['max_length'] = kwargs.get('max_length', None)
         self.seperator = seperator
         super(MultiSelectField, self).__init__(*args, **kwargs)
 
     def db_type(self, connection):
-        return 'varchar(%s)' % self.max_length
+        if self.max_length:
+            return 'varchar(%s)' % self.max_length
+        return 'longtext'
 
     def deconstruct(self):
         name, path, args, kwargs = super(MultiSelectField, self).deconstruct()

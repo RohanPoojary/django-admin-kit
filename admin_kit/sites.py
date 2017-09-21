@@ -1,9 +1,16 @@
 from weakref import WeakSet
 from django.http import HttpResponse
 from django.shortcuts import render
+
 all_sites = WeakSet()
 
+__all__ = ['AdminKitSite', 'site']
+
 class AdminKitSite:
+    """
+    The main AdminKitSite that routes and process url requests.
+    
+    """
     def __init__(self, name='admin_kit'):
         self._registry = {}
         self.name = name
@@ -12,9 +19,9 @@ class AdminKitSite:
     def ping(self, request):
         return render(request, 'admin_kit/ping.html')
 
-    def register(self, key, admin_class, **options):
+    def register(self, key, admin_class):
         from .ajax import Ajax
-        key = Ajax.generateKey(key, admin_class)
+        key = Ajax.generate_key(key, admin_class)
         self._registry[key] = admin_class()
 
     def ajax(self, request, key):

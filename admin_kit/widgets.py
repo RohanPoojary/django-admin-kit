@@ -6,6 +6,10 @@ BASE_JS = ('admin_kit/js/ajax.js', )
 __all__ = ['SelectMultipleWidget']
 
 class SelectMultipleWidget(SelectMultiple):
+    """
+    MultiSelect Widget which inherits Django's SelectMultiple widget
+    """
+
     template_name = 'admin_kit/widgets/select.html'
     option_template_name = 'admin_kit/widgets/select_option.html'
 
@@ -26,7 +30,6 @@ class SelectMultipleWidget(SelectMultiple):
 
         kit_config = json.loads(context['widget']['attrs']['data-kit-config'])
         kit_config['init-value'] = ','.join(context['widget']['value'])
-        # print(kit_config)
         context['widget']['attrs']['data-kit-config'] = json.dumps(kit_config)
 
         return context
