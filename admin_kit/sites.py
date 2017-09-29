@@ -1,6 +1,7 @@
 from weakref import WeakSet
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.contrib.staticfiles.templatetags.staticfiles import static
 
 all_sites = WeakSet()
 
@@ -17,7 +18,15 @@ class AdminKitSite:
         all_sites.add(self)
 
     def ping(self, request):
+        from django.shortcuts import reverse
+
         return render(request, 'admin_kit/ping.html')
+
+    def base_js(self, request):
+        from django.shortcuts import render
+        base_index = request.path.rfind('base.js')
+        app_url = request.path[:base_index-1]
+        return render(request, 'admin_kit/base.js', context={"app": app_url}, content_type="text/javascript")
 
     def register(self, key, admin_class):
         from .ajax import Ajax
@@ -36,7 +45,8 @@ class AdminKitSite:
         # Admin-site-wide views.
         urlpatterns = [
             url(r'^ping', self.ping, name='ping'),
-            url(r'^ajax/(?P<key>.*)/', self.ajax, name='ajax')
+            url(r'^ajax/(?P<key>.*)/', self.ajax, name='ajax'),
+            url(r'base.js/', self.base_js, name='base_js')
         ]
 
         # valid_app_labels = []
@@ -52,7 +62,6 @@ class AdminKitSite:
 
     @property
     def urls(self):
-        from django.contrib import admin
         return self.get_urls(), 'admin_kit', self.name
 
 site = AdminKitSite()

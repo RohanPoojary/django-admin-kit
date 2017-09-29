@@ -35,6 +35,40 @@ class BaseField(dj_models.Field):
 
         super(BaseField, self).__init__(*args, **kwargs)
 
+
+from . import fields
+
+__all__ = ['BaseField', 'MultiSelectField']
+
+class BaseField(dj_models.Field):
+    """
+    The Base model field of Admin-Kit models. This inherits Django's models.Field class.
+
+    """
+
+    def __init__(self, kit_config=None, ajax_source=None, ajax_target=None,
+                 ajax_subscribe=False, *args, **kwargs):
+        """
+        kit_config :: dict
+            The config map containing the parameters and their values
+        ajax_source :: str
+            The source value from which the values are retrieved
+        ajax_target :: str
+            The target value to which the values will be filled to
+        ajax_subscribe ::  bool
+            If True, then with every change in ``ajax_target``,
+            it fills corresponding ``ajax_source``
+        """
+
+        self.ajax_source = ajax_source
+        self.ajax_target = ajax_target
+        self.ajax_subscribe = ajax_subscribe
+        self.kit_config = dict()
+        if kit_config:
+            self.kit_config = kit_config
+
+        super(BaseField, self).__init__(*args, **kwargs)
+
     def deconstruct(self):
         """
         Deconstructs the field to a tuple of 4 elements. This is used to recreate the same
@@ -72,13 +106,34 @@ class BaseField(dj_models.Field):
         Returns the form object to be used for rendering.
         """
         defaults = {
-            'coerce': self.to_python,
+            'required': not self.blank,
+            'label': self.verbose_name,
+            'help_text': self.help_text,
+
             'ajax_source': self.ajax_source,
             'ajax_target': self.ajax_target,
             'ajax_subscribe': self.ajax_subscribe,
 
             'kit_config': self.kit_config
         }
+
+        if self.has_default():
+            if callable(self.default):
+                defaults['initial'] = self.default
+                defaults['show_hidden_initial'] = True
+            else:
+                defaults['initial'] = self.get_default()
+        if self.choices:
+            include_blank = (self.blank or
+                             not (self.has_default() or 'initial' in kwargs))
+            defaults['choices'] = self.get_choices(include_blank=include_blank)
+            defaults['coerce'] = self.to_python
+            if self.null:
+                defaults['empty_value'] = None
+            if choices_form_class is not None:
+                form_class = choices_form_class
+            else:
+                form_class = form_class
         defaults.update(kwargs)
         return form_class(**defaults)
 

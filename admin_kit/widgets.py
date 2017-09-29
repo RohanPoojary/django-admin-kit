@@ -1,8 +1,6 @@
 import json
 from django.forms.widgets import SelectMultiple
 
-BASE_JS = ('admin_kit/js/ajax.js', )
-
 __all__ = ['SelectMultipleWidget']
 
 class SelectMultipleWidget(SelectMultiple):
@@ -17,8 +15,6 @@ class SelectMultipleWidget(SelectMultiple):
         css = {
             'all': ('admin_kit/css/select.css', )
         }
-
-        js = BASE_JS
 
     def __init__(self, *args, **kwargs):
         self.ajax_subscribe = kwargs.pop('ajax_subscribe', False)
