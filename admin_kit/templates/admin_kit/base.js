@@ -138,6 +138,7 @@
                 AdminKitReady($(this));
             });
     
+            {% if duplicate %}
             $(".module").each(function() {
                 var addBtn = $(this).children('.add-row');
                 var addDup = addBtn.clone();
@@ -157,11 +158,13 @@
     
                 $(this).append(addDup);
             });
-    
+            {% endif %}
+
             $(document).on("formset:added", function(event, $row, formsetName) {
     
                 var parent = $row.parents('.module');
-    
+                
+                {% if duplicate %}
                 if(parent.attr('data-duplicate')) {
                     duplicateRow($row, $row.prev());
     
@@ -186,6 +189,7 @@
                         duplicateRow(curr_module, prev_module, cur_id, prev_id);
                     }
                 }
+                {% endif %}
     
                 $row.find('.admin-kit').each(function() {
                     AdminKitReady($(this));
