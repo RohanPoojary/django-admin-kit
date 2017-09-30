@@ -1,0 +1,3 @@
+Installation
+============
+Run command `pip install django-admin-kit`

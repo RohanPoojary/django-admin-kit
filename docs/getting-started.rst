@@ -1,0 +1,155 @@
+Getting Started
+###############
+
+Installation
+============
+    The module can be downloaded using python pip.
+
+    **Command:** ``pip install django-admin-kit``
+
+Configuration
+=============
+    The app name ``admin_kit`` should be put at the top of installed apps in django ``settings`` file.
+
+    .. code-block:: python
+
+        INSTALLED_APPS = [
+            'admin_kit',
+            
+            'django.contrib.admin',
+            'django.contrib.auth',
+            ...
+        ]
+
+    This is because, Admin Kit overrides Django *change_form* template. Then register the admin_kit app in root ``urls`` file
+    with name ``admin_kit``
+
+    .. code-block:: python
+
+        from django.conf.urls import url
+        
+        urlpatterns = [
+            ...
+            url(r'^admin_kit/', admin_kit.site.urls, name="admin_kit"),
+        ]
+        
+
+    Start the server and hit ``/admin_kit/ping`` url response. You will get a ``PONG`` response
+    if configured correctly.
+
+    This `ping` url is enabled only in ``DEBUG`` Mode
+    
+Features
+=========
+    We will have a walk through of different features that Admin Kit provides.
+
+Duplicate Button
+----------------
+    This is a default feature that is added right after successfull configuration of the app.
+
+    .. image:: images/duplicate\ button.png
+
+    This button is similar to ``Add Another`` button, but it initializes the fields with previously
+    filled data. It is also compatible with :ref:`django-nested-admin<nested_admin:quickstart>`
+    
+    To disable this feature set ``KIT_DISABLE_DUPLICATE = True`` in settings file.
+
+
+Multi Select Field
+------------------
+    Admin Kit provides Multi Select field where you can specify choices. It uses :class:`admin_kit.models.MultiSelectField`.
+    
+    In **models.py** file
+
+    .. code-block:: python
+
+        from admin_kit.models import MultiSelectField
+
+        class Book(models.Model):
+            ...
+            GENRES = (
+                ('thriller', 'thriller'),
+                ('sci-fi', 'sci-fi'),
+                ('fictional', 'fictional'),
+                ('fantasy', 'fantasy'),
+                ('philosophy', 'philosophy')
+            )
+            ...
+
+            genres = MultiSelectField(verbose_name='Valid Genres', choices=GENRES)
+
+    In **Admin Panel**
+
+    .. image:: images/multi\ select\ field.png
+
+
+Ajax Binding
+------------
+    The core feature of Admin-Kit is the support for easier ajax behaviour. It binds the form-field with
+    user defined view through ajax.
+
+    Setting up this behaviour is 2 step process.
+
+    * **Step 1**: API Creation
+        Create an ``ajax.py`` file in the app. And create a class that inherits :class:`admin_kit.ajax.Ajax`
+        and has ``run(self, request)`` method. This method is executed, which acts as an API.
+
+        And register this class using :func:`admin_kit.site.register` method. The first argument is the key
+        through which the model links to class and second is the class itself.
+
+        For our example lets fill the choices from an API. Create an ``ajax.py`` with below code.
+
+        .. code-block:: python
+
+            import admin_kit
+
+            class GenresAjax(admin_kit.ajax.Ajax):
+
+                def run(self, request):
+                    GENRES = (
+                        ('thriller', 'thriller'),
+                        ('sci-fi', 'sci-fi'),
+                        ('fictional', 'fictional'),
+                        ('fantasy', 'fantasy'),
+                        ('philosophy', 'philosophy')
+                    )
+                    return GENRES
+
+            admin_kit.site.register('genres', GenresAjax)
+
+        Internally, the return type of ``run`` method is json formatted and acts as an API.
+
+        You can get the response by hitting ``admin_kit/ajax/genres``. Here ``genres`` in the url
+        is same as the ``key`` name used for registering in **ajax.py** file.
+
+        .. image:: images/json\ data.png
+
+        The data was rendered by Chrome Extension `JSON View`_
+
+    *   **Step 2**: Model Binding
+
+        In our ``models.py`` file modify ``genres`` field with below code
+
+        .. code-block:: python
+
+            genres = MultiSelectField(verbose_name='Valid Genres', ajax_source='genres')
+
+    And thats it!! you will get the same behaviour, but now the choices are filled from your function.
+    For every change in value, it calls ``run`` method from your ajax class. Thus you can
+    process the return based on the request.
+
+    You can also access the user selected values and target the values to a specific field.
+    To learn them please go through our :doc:`documentation<documentation>`
+
+
+Gotchas
+=======
+    * While using ajax behaviour make sure the model field is from :any:`admin_kit.fields`. If
+      you try to use ajax attributes like ``ajax_source`` or ``kit_config`` in fields from ``django.models``, you
+      will get an error
+
+    * As the project is new, currently it only has MultiSelectField. In further releases, newer
+      fields will be integrated.
+
+
+.. _JSON View: https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc

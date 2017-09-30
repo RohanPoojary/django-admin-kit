@@ -1,0 +1,19 @@
+Documentation
+============
+
+.. automodule:: admin_kit
+    :members:
+.. automodule:: admin_kit.apps
+    :members:
+.. automodule:: admin_kit.ajax
+    :members:
+.. automodule:: admin_kit.models
+    :members:
+.. automodule:: admin_kit.fields
+    :members:
+.. automodule:: admin_kit.widgets
+    :members:
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
