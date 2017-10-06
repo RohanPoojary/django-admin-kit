@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>admin_kit.ajax &mdash; Django Admin Kit 1.0.0 documentation</title>
+  <title>admin_kit.ajax &mdash; Django Admin Kit 0.0.1 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="Django Admin Kit 1.0.0 documentation" href="../../index.html"/>
-        <link rel="up" title="admin_kit" href="../admin_kit.html"/> 
+    <link rel="top" title="Django Admin Kit 0.0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                1.0.0
+                0.0.1
               </div>
             
           
@@ -89,8 +89,18 @@
               
             
             
-              <!-- Local TOC -->
-              <div class="local-toc"></div>
+              <p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../documentation.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contents.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../genindex.html">API Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../py-modindex.html">Module Index</a></li>
+</ul>
+
             
           
         </div>
@@ -135,8 +145,6 @@
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
-          <li><a href="../admin_kit.html">admin_kit</a> &raquo;</li>
-        
       <li>admin_kit.ajax</li>
     
     
@@ -161,7 +169,7 @@
 <span class="kn">from</span> <span class="nn">django.http</span> <span class="k">import</span> <span class="n">HttpResponse</span>
 <span class="kn">from</span> <span class="nn">django.template.defaultfilters</span> <span class="k">import</span> <span class="n">slugify</span>
 
-<div class="viewcode-block" id="Ajax"><a class="viewcode-back" href="../../index.html#admin_kit.ajax.Ajax">[docs]</a><span class="k">class</span> <span class="nc">Ajax</span><span class="p">:</span>
+<div class="viewcode-block" id="Ajax"><a class="viewcode-back" href="../../contents.html#admin_kit.ajax.Ajax">[docs]</a><span class="k">class</span> <span class="nc">Ajax</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This is the base class for Ajax functionality.</span>
 
@@ -175,18 +183,24 @@
     <span class="n">response_type</span> <span class="o">=</span> <span class="s1">&#39;json&#39;</span>
     <span class="n">unique</span> <span class="o">=</span> <span class="kc">False</span>
 
-<div class="viewcode-block" id="Ajax.route"><a class="viewcode-back" href="../../index.html#admin_kit.ajax.Ajax.route">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">route</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">module_cls</span><span class="p">):</span>
+<div class="viewcode-block" id="Ajax.run"><a class="viewcode-back" href="../../contents.html#admin_kit.ajax.Ajax.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method should be overrided by the child class.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;Hello World&quot;</span></div>
+
+<div class="viewcode-block" id="Ajax.route"><a class="viewcode-back" href="../../contents.html#admin_kit.ajax.Ajax.route">[docs]</a>    <span class="k">def</span> <span class="nf">route</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        For a given request it executes the ``run`` method of the ``module_cls`` and returns</span>
 <span class="sd">        the response</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">module_cls</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">module_cls</span><span class="o">.</span><span class="n">format_response</span><span class="p">(</span><span class="n">output</span><span class="p">)</span></div>
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_response</span><span class="p">(</span><span class="n">output</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Ajax.generate_key"><a class="viewcode-back" href="../../index.html#admin_kit.ajax.Ajax.generate_key">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">generate_key</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">module_cls</span><span class="p">):</span>
+<div class="viewcode-block" id="Ajax.generate_key"><a class="viewcode-back" href="../../contents.html#admin_kit.ajax.Ajax.generate_key">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">generate_key</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A class method that generates key, that maps to the function</span>
 
@@ -195,21 +209,20 @@
 
 <span class="sd">        **Example**::</span>
 <span class="sd">    </span>
-<span class="sd">            &gt;&gt;&gt; from admin_kit.ajax import Ajax</span>
 <span class="sd">            &gt;&gt;&gt; import DummyAjaxClass</span>
-<span class="sd">            &gt;&gt;&gt; Ajax.generateKey(&#39;the_key&#39;, DummyAjaxClass)</span>
+<span class="sd">            &gt;&gt;&gt; DummyAjaxClass.generateKey(&#39;the_key&#39;)</span>
 <span class="sd">            the_key</span>
 <span class="sd">            &gt;&gt;&gt; DummyAjaxClass.unique = True</span>
-<span class="sd">            &gt;&gt;&gt; Ajax.generateKey(&#39;the_key&#39;, DummyAjaxClass)</span>
+<span class="sd">            &gt;&gt;&gt; DummyAjaxClass.generateKey(&#39;the_key&#39;)</span>
 <span class="sd">            dummy-ajax-class-the_key</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">module_cls</span><span class="o">.</span><span class="n">unique</span><span class="p">:</span>
-            <span class="n">word_splits</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([A-Za-z][a-z]+|[A-Z]+)&#39;</span><span class="p">,</span> <span class="n">module_cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">unique</span><span class="p">:</span>
+            <span class="n">word_splits</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([A-Za-z][a-z]+|[A-Z]+)&#39;</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
             <span class="n">key</span> <span class="o">=</span> <span class="n">slugify</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">word_splits</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">key</span>
         <span class="k">return</span> <span class="n">key</span></div>
 
-<div class="viewcode-block" id="Ajax.format_response"><a class="viewcode-back" href="../../index.html#admin_kit.ajax.Ajax.format_response">[docs]</a>    <span class="k">def</span> <span class="nf">format_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+<div class="viewcode-block" id="Ajax.format_response"><a class="viewcode-back" href="../../contents.html#admin_kit.ajax.Ajax.format_response">[docs]</a>    <span class="k">def</span> <span class="nf">format_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Formats the response type based on ``response_type`` attribute.</span>
 
@@ -257,7 +270,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0',
+            VERSION:'0.0.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

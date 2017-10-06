@@ -13,6 +13,8 @@ Configuration
 
     .. code-block:: python
 
+        # settings.py
+
         INSTALLED_APPS = [
             'admin_kit',
             
@@ -26,7 +28,10 @@ Configuration
 
     .. code-block:: python
 
+        # urls.py
+
         from django.conf.urls import url
+        import admin_kit
         
         urlpatterns = [
             ...
@@ -54,14 +59,21 @@ Duplicate Button
     
     To disable this feature set ``KIT_DISABLE_DUPLICATE = True`` in settings file.
 
+    .. note::
+
+        The duplicate button is only on **Inline Admin Models** like :any:`Staked Inline <django.contrib.admin.StackedInline>`,
+        :any:`Tabular Inline <django.contrib.admin.TabularInline>` or :any:`nested_admin fields<nested_admin.NestedModelAdmin>`.
+
 
 Multi Select Field
 ------------------
-    Admin Kit provides Multi Select field where you can specify choices. It uses :class:`admin_kit.models.MultiSelectField`.
+    Admin Kit provides Multi Select field where you can specify choices. It uses :any:`admin_kit.models.MultiSelectField`.
     
     In **models.py** file
 
     .. code-block:: python
+
+        # models.py
 
         from admin_kit.models import MultiSelectField
 
@@ -91,10 +103,10 @@ Ajax Binding
     Setting up this behaviour is 2 step process.
 
     * **Step 1**: API Creation
-        Create an ``ajax.py`` file in the app. And create a class that inherits :class:`admin_kit.ajax.Ajax`
+        Create an ``ajax.py`` file in the app. And create a class that inherits :any:`admin_kit.ajax.Ajax`
         and has ``run(self, request)`` method. This method is executed, which acts as an API.
 
-        And register this class using :func:`admin_kit.site.register` method. The first argument is the key
+        And register this class using :any:`admin_kit.site.register` method. The first argument is the key
         through which the model links to class and second is the class itself.
 
         For our example lets fill the choices from an API. Create an ``ajax.py`` with below code.

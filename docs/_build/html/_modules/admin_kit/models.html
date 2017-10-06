@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>admin_kit.models &mdash; Django Admin Kit 1.0.0 documentation</title>
+  <title>admin_kit.models &mdash; Django Admin Kit 0.0.1 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="Django Admin Kit 1.0.0 documentation" href="../../index.html"/>
-        <link rel="up" title="admin_kit" href="../admin_kit.html"/> 
+    <link rel="top" title="Django Admin Kit 0.0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                1.0.0
+                0.0.1
               </div>
             
           
@@ -89,8 +89,18 @@
               
             
             
-              <!-- Local TOC -->
-              <div class="local-toc"></div>
+              <p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../documentation.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contents.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../genindex.html">API Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../py-modindex.html">Module Index</a></li>
+</ul>
+
             
           
         </div>
@@ -134,8 +144,6 @@
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
-        
-          <li><a href="../admin_kit.html">admin_kit</a> &raquo;</li>
         
       <li>admin_kit.models</li>
     
@@ -197,7 +205,8 @@
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BaseField&#39;</span><span class="p">,</span> <span class="s1">&#39;MultiSelectField&#39;</span><span class="p">]</span>
 
-<div class="viewcode-block" id="BaseField"><a class="viewcode-back" href="../../index.html#admin_kit.models.BaseField">[docs]</a><span class="k">class</span> <span class="nc">BaseField</span><span class="p">(</span><span class="n">dj_models</span><span class="o">.</span><span class="n">Field</span><span class="p">):</span>
+
+<div class="viewcode-block" id="BaseField"><a class="viewcode-back" href="../../contents.html#admin_kit.models.BaseField">[docs]</a><span class="k">class</span> <span class="nc">BaseField</span><span class="p">(</span><span class="n">dj_models</span><span class="o">.</span><span class="n">Field</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Base model field of Admin-Kit models. This inherits Django&#39;s models.Field class.</span>
 
@@ -226,7 +235,7 @@
 
         <span class="nb">super</span><span class="p">(</span><span class="n">BaseField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BaseField.deconstruct"><a class="viewcode-back" href="../../index.html#admin_kit.models.BaseField.deconstruct">[docs]</a>    <span class="k">def</span> <span class="nf">deconstruct</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseField.deconstruct"><a class="viewcode-back" href="../../contents.html#admin_kit.models.BaseField.deconstruct">[docs]</a>    <span class="k">def</span> <span class="nf">deconstruct</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Deconstructs the field to a tuple of 4 elements. This is used to recreate the same</span>
 <span class="sd">        object.</span>
@@ -239,26 +248,26 @@
         <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;kit_config&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kit_config</span>
         <span class="k">return</span> <span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span></div>
 
-<div class="viewcode-block" id="BaseField.value_to_string"><a class="viewcode-back" href="../../index.html#admin_kit.models.BaseField.value_to_string">[docs]</a>    <span class="k">def</span> <span class="nf">value_to_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseField.value_to_string"><a class="viewcode-back" href="../../contents.html#admin_kit.models.BaseField.value_to_string">[docs]</a>    <span class="k">def</span> <span class="nf">value_to_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Converts the value of the object to a string</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_from_object</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_prep_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BaseField.from_db_value"><a class="viewcode-back" href="../../index.html#admin_kit.models.BaseField.from_db_value">[docs]</a>    <span class="k">def</span> <span class="nf">from_db_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">expression</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseField.from_db_value"><a class="viewcode-back" href="../../contents.html#admin_kit.models.BaseField.from_db_value">[docs]</a>    <span class="k">def</span> <span class="nf">from_db_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">expression</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns value from the database. inherited models should override this</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">value</span></div>
 
-<div class="viewcode-block" id="BaseField.validate"><a class="viewcode-back" href="../../index.html#admin_kit.models.BaseField.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">model_instance</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseField.validate"><a class="viewcode-back" href="../../contents.html#admin_kit.models.BaseField.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">model_instance</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        To validate the value of a model instance. Inherited models should override this</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="BaseField.formfield"><a class="viewcode-back" href="../../index.html#admin_kit.models.BaseField.formfield">[docs]</a>    <span class="k">def</span> <span class="nf">formfield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form_class</span><span class="p">,</span> <span class="n">choices_form_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseField.formfield"><a class="viewcode-back" href="../../contents.html#admin_kit.models.BaseField.formfield">[docs]</a>    <span class="k">def</span> <span class="nf">formfield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form_class</span><span class="p">,</span> <span class="n">choices_form_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the form object to be used for rendering.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -295,7 +304,7 @@
         <span class="k">return</span> <span class="n">form_class</span><span class="p">(</span><span class="o">**</span><span class="n">defaults</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="MultiSelectField"><a class="viewcode-back" href="../../index.html#admin_kit.models.MultiSelectField">[docs]</a><span class="k">class</span> <span class="nc">MultiSelectField</span><span class="p">(</span><span class="n">BaseField</span><span class="p">):</span>
+<div class="viewcode-block" id="MultiSelectField"><a class="viewcode-back" href="../../contents.html#admin_kit.models.MultiSelectField">[docs]</a><span class="k">class</span> <span class="nc">MultiSelectField</span><span class="p">(</span><span class="n">BaseField</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Multiselect model field of Admin-Kit, which allows users to create</span>
 <span class="sd">    multi select ajax fields.</span>
@@ -381,7 +390,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0',
+            VERSION:'0.0.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

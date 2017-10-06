@@ -24,6 +24,7 @@ Table of Contents
 
     getting-started
     documentation
+    contents
     API Index <genindex>
     Module Index <py-modindex>
 
