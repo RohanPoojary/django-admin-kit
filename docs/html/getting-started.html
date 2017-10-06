@@ -1,0 +1,405 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Getting Started &mdash; Django Admin Kit 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Django Admin Kit 0.0.1 documentation" href="index.html"/>
+        <link rel="next" title="Documentation" href="documentation.html"/>
+        <link rel="prev" title="django-admin-kit" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Django Admin Kit
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#features">Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#duplicate-button">Duplicate Button</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multi-select-field">Multi Select Field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ajax-binding">Ajax Binding</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#gotchas">Gotchas</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="documentation.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">API Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="py-modindex.html">Module Index</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Django Admin Kit</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Getting Started</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/getting-started.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>The module can be downloaded using python pip.</p>
+<p><strong>Command:</strong> <code class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">django-admin-kit</span></code></p>
+</div></blockquote>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>The app name <code class="docutils literal"><span class="pre">admin_kit</span></code> should be put at the top of installed apps in django <code class="docutils literal"><span class="pre">settings</span></code> file.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># settings.py</span>
+
+<span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;admin_kit&#39;</span><span class="p">,</span>
+
+    <span class="s1">&#39;django.contrib.admin&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.auth&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>This is because, Admin Kit overrides Django <em>change_form</em> template. Then register the admin_kit app in root <code class="docutils literal"><span class="pre">urls</span></code> file
+with name <code class="docutils literal"><span class="pre">admin_kit</span></code></p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># urls.py</span>
+
+<span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">url</span>
+<span class="kn">import</span> <span class="nn">admin_kit</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="o">...</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^admin_kit/&#39;</span><span class="p">,</span> <span class="n">admin_kit</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">urls</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;admin_kit&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Start the server and hit <code class="docutils literal"><span class="pre">/admin_kit/ping</span></code> url response. You will get a <code class="docutils literal"><span class="pre">PONG</span></code> response
+if configured correctly.</p>
+<p>This <cite>ping</cite> url is enabled only in <code class="docutils literal"><span class="pre">DEBUG</span></code> Mode</p>
+</div></blockquote>
+</div>
+<div class="section" id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div>We will have a walk through of different features that Admin Kit provides.</div></blockquote>
+<div class="section" id="duplicate-button">
+<h3>Duplicate Button<a class="headerlink" href="#duplicate-button" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>This is a default feature that is added right after successfull configuration of the app.</p>
+<img alt="_images/duplicate button.png" src="_images/duplicate button.png" />
+<p>This button is similar to <code class="docutils literal"><span class="pre">Add</span> <span class="pre">Another</span></code> button, but it initializes the fields with previously
+filled data. It is also compatible with <a class="reference external" href="http://django-nested-admin.readthedocs.io/en/latest/quickstart.html#quickstart" title="(in django-nested-admin v3.0)"><span class="xref std std-ref">django-nested-admin</span></a></p>
+<p>To disable this feature set <code class="docutils literal"><span class="pre">KIT_DISABLE_DUPLICATE</span> <span class="pre">=</span> <span class="pre">True</span></code> in settings file.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The duplicate button is only on <strong>Inline Admin Models</strong> like <a class="reference external" href="http://docs.djangoproject.com/en/1.11/ref/contrib/admin/#django.contrib.admin.StackedInline" title="(in Django v1.11)"><code class="xref any docutils literal"><span class="pre">Staked</span> <span class="pre">Inline</span></code></a>,
+<a class="reference external" href="http://docs.djangoproject.com/en/1.11/ref/contrib/admin/#django.contrib.admin.TabularInline" title="(in Django v1.11)"><code class="xref any docutils literal"><span class="pre">Tabular</span> <span class="pre">Inline</span></code></a> or <a class="reference external" href="http://django-nested-admin.readthedocs.io/en/latest/nested_admin.html#nested_admin.NestedModelAdmin" title="(in django-nested-admin v3.0)"><code class="xref any docutils literal"><span class="pre">nested_admin</span> <span class="pre">fields</span></code></a>.</p>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="multi-select-field">
+<h3>Multi Select Field<a class="headerlink" href="#multi-select-field" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Admin Kit provides Multi Select field where you can specify choices. It uses <a class="reference internal" href="contents.html#admin_kit.models.MultiSelectField" title="admin_kit.models.MultiSelectField"><code class="xref any py py-class docutils literal"><span class="pre">admin_kit.models.MultiSelectField</span></code></a>.</p>
+<p>In <strong>models.py</strong> file</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># models.py</span>
+
+<span class="kn">from</span> <span class="nn">admin_kit.models</span> <span class="kn">import</span> <span class="n">MultiSelectField</span>
+
+<span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="n">GENRES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s1">&#39;thriller&#39;</span><span class="p">,</span> <span class="s1">&#39;thriller&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;sci-fi&#39;</span><span class="p">,</span> <span class="s1">&#39;sci-fi&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;fictional&#39;</span><span class="p">,</span> <span class="s1">&#39;fictional&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;fantasy&#39;</span><span class="p">,</span> <span class="s1">&#39;fantasy&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;philosophy&#39;</span><span class="p">,</span> <span class="s1">&#39;philosophy&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="o">...</span>
+
+    <span class="n">genres</span> <span class="o">=</span> <span class="n">MultiSelectField</span><span class="p">(</span><span class="n">verbose_name</span><span class="o">=</span><span class="s1">&#39;Valid Genres&#39;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">GENRES</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In <strong>Admin Panel</strong></p>
+<img alt="_images/multi select field.png" src="_images/multi select field.png" />
+</div></blockquote>
+</div>
+<div class="section" id="ajax-binding">
+<h3>Ajax Binding<a class="headerlink" href="#ajax-binding" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The core feature of Admin-Kit is the support for easier ajax behaviour. It binds the form-field with
+user defined view through ajax.</p>
+<p>Setting up this behaviour is 2 step process.</p>
+<ul>
+<li><dl class="first docutils">
+<dt><strong>Step 1</strong>: API Creation</dt>
+<dd><p class="first">Create an <code class="docutils literal"><span class="pre">ajax.py</span></code> file in the app. And create a class that inherits <a class="reference internal" href="contents.html#admin_kit.ajax.Ajax" title="admin_kit.ajax.Ajax"><code class="xref any py py-class docutils literal"><span class="pre">admin_kit.ajax.Ajax</span></code></a>
+and has <code class="docutils literal"><span class="pre">run(self,</span> <span class="pre">request)</span></code> method. This method is executed, which acts as an API.</p>
+<p>And register this class using <a class="reference internal" href="contents.html#admin_kit.sites.admin_kit.site.register" title="admin_kit.sites.admin_kit.site.register"><code class="xref any py py-meth docutils literal"><span class="pre">admin_kit.site.register</span></code></a> method. The first argument is the key
+through which the model links to class and second is the class itself.</p>
+<p>For our example lets fill the choices from an API. Create an <code class="docutils literal"><span class="pre">ajax.py</span></code> with below code.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">admin_kit</span>
+
+<span class="k">class</span> <span class="nc">GenresAjax</span><span class="p">(</span><span class="n">admin_kit</span><span class="o">.</span><span class="n">ajax</span><span class="o">.</span><span class="n">Ajax</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">GENRES</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="s1">&#39;thriller&#39;</span><span class="p">,</span> <span class="s1">&#39;thriller&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;sci-fi&#39;</span><span class="p">,</span> <span class="s1">&#39;sci-fi&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;fictional&#39;</span><span class="p">,</span> <span class="s1">&#39;fictional&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;fantasy&#39;</span><span class="p">,</span> <span class="s1">&#39;fantasy&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;philosophy&#39;</span><span class="p">,</span> <span class="s1">&#39;philosophy&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">GENRES</span>
+
+<span class="n">admin_kit</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;genres&#39;</span><span class="p">,</span> <span class="n">GenresAjax</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Internally, the return type of <code class="docutils literal"><span class="pre">run</span></code> method is json formatted and acts as an API.</p>
+<p>You can get the response by hitting <code class="docutils literal"><span class="pre">admin_kit/ajax/genres</span></code>. Here <code class="docutils literal"><span class="pre">genres</span></code> in the url
+is same as the <code class="docutils literal"><span class="pre">key</span></code> name used for registering in <strong>ajax.py</strong> file.</p>
+<img alt="_images/json data.png" src="_images/json data.png" />
+<p class="last">The data was rendered by Chrome Extension <a class="reference external" href="https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc">JSON View</a></p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><strong>Step 2</strong>: Model Binding</p>
+<p>In our <code class="docutils literal"><span class="pre">models.py</span></code> file modify <code class="docutils literal"><span class="pre">genres</span></code> field with below code</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">genres</span> <span class="o">=</span> <span class="n">MultiSelectField</span><span class="p">(</span><span class="n">verbose_name</span><span class="o">=</span><span class="s1">&#39;Valid Genres&#39;</span><span class="p">,</span> <span class="n">ajax_source</span><span class="o">=</span><span class="s1">&#39;genres&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>And thats it!! you will get the same behaviour, but now the choices are filled from your function.
+For every change in value, it calls <code class="docutils literal"><span class="pre">run</span></code> method from your ajax class. Thus you can
+process the return based on the request.</p>
+<p>You can also access the user selected values and target the values to a specific field.
+To learn them please go through our <a class="reference internal" href="documentation.html"><span class="doc">documentation</span></a></p>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="gotchas">
+<h2>Gotchas<a class="headerlink" href="#gotchas" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li>While using ajax behaviour make sure the model field is from <a class="reference internal" href="contents.html#module-admin_kit.fields" title="admin_kit.fields"><code class="xref any py py-mod docutils literal"><span class="pre">admin_kit.fields</span></code></a>. If
+you try to use ajax attributes like <code class="docutils literal"><span class="pre">ajax_source</span></code> or <code class="docutils literal"><span class="pre">kit_config</span></code> in fields from <code class="docutils literal"><span class="pre">django.models</span></code>, you
+will get an error</li>
+<li>As the project is new, currently it only has MultiSelectField. In further releases, newer
+fields will be integrated.</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="documentation.html" class="btn btn-neutral float-right" title="Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="django-admin-kit" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Rohan Poojary.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

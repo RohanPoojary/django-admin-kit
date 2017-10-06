@@ -5,3 +5,6 @@ migrations/
 *.css.map
 *.sqlite3
 .sass-cache/
+*.egg-info/
+build/
+dist/

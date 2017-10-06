@@ -1,0 +1,420 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Model Fields &mdash; Django Admin Kit 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Django Admin Kit 0.0.1 documentation" href="index.html"/>
+        <link rel="up" title="Documentation" href="documentation.html"/>
+        <link rel="next" title="Form Fields" href="fields.html"/>
+        <link rel="prev" title="Documentation" href="documentation.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Django Admin Kit
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="documentation.html">Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Model Fields</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#multiselectfield">MultiSelectField</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="fields.html">Form Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="widgets.html">Form Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ajax.html">Ajax Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sites.html">Sites Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contents.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">API Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="py-modindex.html">Module Index</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Django Admin Kit</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="documentation.html">Documentation</a> &raquo;</li>
+        
+      <li>Model Fields</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/models.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="model-fields">
+<h1>Model Fields<a class="headerlink" href="#model-fields" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div>The documentation for <a class="reference internal" href="contents.html#module-admin_kit.models" title="admin_kit.models"><code class="xref any py py-mod docutils literal"><span class="pre">admin_kit.models</span></code></a> module.
+Currently, the module provides only one field, new fields will be added in future releases.</div></blockquote>
+<div class="section" id="multiselectfield">
+<h2>MultiSelectField<a class="headerlink" href="#multiselectfield" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p><a class="reference internal" href="contents.html#admin_kit.models.MultiSelectField" title="admin_kit.models.MultiSelectField"><code class="xref py py-class docutils literal"><span class="pre">MultiSelectField</span></code></a> provides Multi Selecting features. It
+internally by default stores in a <code class="docutils literal"><span class="pre">TextField</span></code> and the values are seperated by <code class="docutils literal"><span class="pre">,</span></code>.</p>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div>It accepts all the <a class="reference external" href="http://docs.djangoproject.com/en/1.11/ref/models/fields/#module-django.db.models.fields" title="(in Django v1.11)"><code class="xref any docutils literal"><span class="pre">django</span> <span class="pre">model</span> <span class="pre">parameters</span></code></a>. Below are the additional parameters or special
+behaviour for a parameter.</div></blockquote>
+<ul>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">seperator</span></code></dt>
+<dd><p class="first last">The default is <code class="docutils literal"><span class="pre">,</span></code>. This value will be used as a delimiter while storing the selected values.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">max_length</span></code></dt>
+<dd><p class="first last">Default is <code class="docutils literal"><span class="pre">null</span></code>. If this is set, then <code class="docutils literal"><span class="pre">varchar(max_length)</span></code> will be used for storage
+by default <code class="docutils literal"><span class="pre">TextField</span></code> is used for storage.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">choices</span></code></dt>
+<dd><p class="first last">The choices used for storage. This field is optional as the choices can be from an ajax
+class</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">ajax_source</span></code></dt>
+<dd><p class="first last">The <code class="docutils literal"><span class="pre">key</span></code> name used while registering inherited <a class="reference internal" href="contents.html#admin_kit.ajax.Ajax" title="admin_kit.ajax.Ajax"><code class="xref py py-class docutils literal"><span class="pre">admin_kit.ajax.Ajax</span></code></a> class.
+The return of its <code class="docutils literal"><span class="pre">run</span></code> method will be used as choices.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">ajax_target</span></code></dt>
+<dd><p class="first">This will be of the form <code class="docutils literal"><span class="pre">key_name:target_field</span></code>. On every change in its input, it hits
+the inherited <a class="reference internal" href="contents.html#admin_kit.ajax.Ajax" title="admin_kit.ajax.Ajax"><code class="xref py py-class docutils literal"><span class="pre">admin_kit.ajax.Ajax</span></code></a> class mapped to the specified <code class="docutils literal"><span class="pre">key_name</span></code>.
+If <code class="docutils literal"><span class="pre">target_field</span></code> is specified then it sets the value of specified model field to
+api’s return value.</p>
+<p>The selected values will be passed as <code class="docutils literal"><span class="pre">q[]</span></code> query list parameter.</p>
+<p><strong>Example</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># ajax.py</span>
+
+<span class="kn">import</span> <span class="nn">admin_kit</span>
+
+<span class="k">class</span> <span class="nc">SelectedGenresAjax</span><span class="p">(</span><span class="n">admin_kit</span><span class="o">.</span><span class="n">ajax</span><span class="o">.</span><span class="n">Ajax</span><span class="p">):</span>
+    <span class="n">response_type</span> <span class="o">=</span> <span class="s1">&#39;text&#39;</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s1">&#39;q[]&#39;</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+
+<span class="n">admin_kit</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;selected-genres&#39;</span><span class="p">,</span> <span class="n">SelectedGenresAjax</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This ajax class, joins query list <code class="docutils literal"><span class="pre">q[]</span></code> values with <code class="docutils literal"><span class="pre">,</span></code> and returns
+it in text format.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># models.py</span>
+
+<span class="kn">from</span> <span class="nn">admin_kit.models</span> <span class="kn">import</span> <span class="n">MultiSelectField</span>
+
+<span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">GENRES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s1">&#39;thriller&#39;</span><span class="p">,</span> <span class="s1">&#39;thriller&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;sci-fi&#39;</span><span class="p">,</span> <span class="s1">&#39;sci-fi&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;fictional&#39;</span><span class="p">,</span> <span class="s1">&#39;fictional&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;fantasy&#39;</span><span class="p">,</span> <span class="s1">&#39;fantasy&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;philosophy&#39;</span><span class="p">,</span> <span class="s1">&#39;philosophy&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">genres</span> <span class="o">=</span> <span class="n">MultiSelectField</span><span class="p">(</span><span class="n">verbose_name</span><span class="o">=</span><span class="s1">&#39;Valid Genres&#39;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">GENRES</span><span class="p">,</span>
+                              <span class="n">ajax_target</span><span class="o">=</span><span class="s1">&#39;selected-genres:selectedValues&#39;</span><span class="p">)</span>
+    <span class="n">selectedValues</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">verbose_name</span><span class="o">=</span><span class="s1">&#39;Selected Values&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Hence for every change in <code class="docutils literal"><span class="pre">genres</span></code> field, the selected values will be sent to ajax class
+mapped to key: <code class="docutils literal"><span class="pre">selected-genres</span></code> which is <code class="docutils literal"><span class="pre">SelectedAjax</span></code> and its return will be filled
+to <code class="docutils literal"><span class="pre">selectedValues</span></code> field.</p>
+<p class="last">As you can notice the <code class="docutils literal"><span class="pre">target_field</span></code> of <code class="docutils literal"><span class="pre">ajax_target</span></code> parameter need not be from
+<a class="reference internal" href="contents.html#module-admin_kit.models" title="admin_kit.models"><code class="xref any py py-mod docutils literal"><span class="pre">admin_kit.models</span></code></a> module.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">ajax_subscribe</span></code></dt>
+<dd><p class="first">This parameter is paired with <code class="docutils literal"><span class="pre">ajax_source</span></code> parameter and is set to <code class="docutils literal"><span class="pre">False</span></code>. If
+it is <code class="docutils literal"><span class="pre">True</span></code>, then this field is linked to every other field with its <code class="docutils literal"><span class="pre">ajax_source</span></code>
+value same as its linked <code class="docutils literal"><span class="pre">ajax_target</span></code> value.</p>
+<p>But it wont be linked to fields which have <code class="docutils literal"><span class="pre">target_field</span></code> specified in its <code class="docutils literal"><span class="pre">ajax_target</span></code>
+parameter.</p>
+<p><strong>Example</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># ajax.py</span>
+
+<span class="k">class</span> <span class="nc">GenresAjax</span><span class="p">(</span><span class="n">ajax</span><span class="o">.</span><span class="n">Ajax</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s1">&#39;q[]&#39;</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">query</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">response</span>
+</pre></div>
+</div>
+<p>This ajax class zips the selected query and returns it back.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># models.py</span>
+
+<span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="n">genres</span> <span class="o">=</span> <span class="n">MultiSelectField</span><span class="p">(</span><span class="n">verbose_name</span><span class="o">=</span><span class="s1">&#39;Valid Genres&#39;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">GENRES</span><span class="p">,</span>
+                            <span class="n">ajax_target</span><span class="o">=</span><span class="s1">&#39;genres&#39;</span><span class="p">)</span>
+    <span class="n">chosen_fields</span> <span class="o">=</span> <span class="n">MultiSelectField</span><span class="p">(</span><span class="n">seperator</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">ajax_source</span><span class="o">=</span><span class="s1">&#39;genres&#39;</span><span class="p">,</span>
+                                     <span class="n">ajax_subscribe</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="last">Here <code class="docutils literal"><span class="pre">chosen</span> <span class="pre">fields</span></code> will have choices dynamically filled whenever <code class="docutils literal"><span class="pre">genres</span></code> field
+is modified. And the choices for <code class="docutils literal"><span class="pre">chosen_fields</span></code> will be from return of the <code class="docutils literal"><span class="pre">GenresAjax</span></code>
+class.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">kit_config</span></code></dt>
+<dd><p class="first">This defaults to <code class="docutils literal"><span class="pre">None</span></code>. Instead of passing <code class="docutils literal"><span class="pre">ajax_source</span></code>, <code class="docutils literal"><span class="pre">ajax_target</span></code> and
+<code class="docutils literal"><span class="pre">ajax_subscribe</span></code> seperately, one can specify them in a dictionary and can be passed
+to this parameter.</p>
+<p><strong>Example</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># models.py</span>
+
+<span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="n">genres</span> <span class="o">=</span> <span class="n">MultiSelectField</span><span class="p">(</span><span class="n">verbose_name</span><span class="o">=</span><span class="s1">&#39;Valid Genres&#39;</span><span class="p">,</span>
+                              <span class="n">ajax_source</span><span class="o">=</span><span class="s1">&#39;genres&#39;</span><span class="p">,</span> <span class="n">ajax_subscribe</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                              <span class="n">ajax_target</span><span class="o">=</span><span class="s1">&#39;selected-genres:selectedValues&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Is equivalent to</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># models.py</span>
+
+<span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="n">kit_config</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;ajax-source&#39;</span><span class="p">:</span> <span class="s1">&#39;genres&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;ajax-subscribe&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+        <span class="s1">&#39;ajax-target&#39;</span><span class="p">:</span> <span class="s1">&#39;selected-genres:selectedValues&#39;</span>
+    <span class="p">}</span>
+    <span class="n">genres</span> <span class="o">=</span> <span class="n">MultiSelectField</span><span class="p">(</span><span class="n">verbose_name</span><span class="o">=</span><span class="s1">&#39;Valid Genres&#39;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">GENRES</span><span class="p">,</span>
+                              <span class="n">kit_config</span><span class="o">=</span><span class="n">kit_config</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="last admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Make sure the <em>key names</em> are <strong>hiphen seperated</strong> and not <em>underscore</em> seperated.</p>
+</div>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="fields.html" class="btn btn-neutral float-right" title="Form Fields" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="documentation.html" class="btn btn-neutral" title="Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Rohan Poojary.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
