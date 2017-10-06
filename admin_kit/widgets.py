@@ -6,6 +6,7 @@ __all__ = ['SelectMultipleWidget']
 class SelectMultipleWidget(SelectMultiple):
     """
     MultiSelect Widget which inherits Django's SelectMultiple widget
+    
     """
 
     template_name = 'admin_kit/widgets/select.html'
@@ -17,7 +18,6 @@ class SelectMultipleWidget(SelectMultiple):
         }
 
     def __init__(self, *args, **kwargs):
-        self.ajax_subscribe = kwargs.pop('ajax_subscribe', False)
         super(SelectMultipleWidget, self).__init__(*args, **kwargs)
 
     def get_context(self, name, value, attrs):

@@ -6,39 +6,6 @@ from . import fields
 
 __all__ = ['BaseField', 'MultiSelectField']
 
-class BaseField(dj_models.Field):
-    """
-    The Base model field of Admin-Kit models. This inherits Django's models.Field class.
-
-    """
-
-    def __init__(self, kit_config=None, ajax_source=None, ajax_target=None,
-                 ajax_subscribe=False, *args, **kwargs):
-        """
-        kit_config :: dict
-            The config map containing the parameters and their values
-        ajax_source :: str
-            The source value from which the values are retrieved
-        ajax_target :: str
-            The target value to which the values will be filled to
-        ajax_subscribe ::  bool
-            If True, then with every change in ``ajax_target``,
-            it fills corresponding ``ajax_source``
-        """
-
-        self.ajax_source = ajax_source
-        self.ajax_target = ajax_target
-        self.ajax_subscribe = ajax_subscribe
-        self.kit_config = dict()
-        if kit_config:
-            self.kit_config = kit_config
-
-        super(BaseField, self).__init__(*args, **kwargs)
-
-
-from . import fields
-
-__all__ = ['BaseField', 'MultiSelectField']
 
 class BaseField(dj_models.Field):
     """
@@ -150,7 +117,7 @@ class MultiSelectField(BaseField):
         seperator :: str
             The selected fields will be joined by ``seperator`` and stored in the database.
         """
-        kwargs['max_length'] = kwargs.get('max_length', None)
+        self.max_length = kwargs.pop('max_length', None)
         self.seperator = seperator
         super(MultiSelectField, self).__init__(*args, **kwargs)
 
@@ -161,7 +128,8 @@ class MultiSelectField(BaseField):
 
     def deconstruct(self):
         name, path, args, kwargs = super(MultiSelectField, self).deconstruct()
-        del kwargs['max_length']
+        if self.max_length:
+            kwargs['max_length'] = self.max_length
         if self.seperator != ',':
             kwargs['seperator'] = self.seperator
         return name, path, args, kwargs

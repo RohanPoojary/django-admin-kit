@@ -34,16 +34,19 @@ class AdminKitSite:
 
     def register(self, key, ajax_class):
         """
-        The function registers, ``ajax_class`` in order to create an Ajax API. 
-        """
+        Registers the ``ajax_class`` for ajax behaviour
 
-        from .ajax import Ajax
-        key = Ajax.generate_key(key, ajax_class)
+        key :: str
+            This is the *key* that will be used in models for binding
+        ajax_class :: class
+            The ajax class that inherits :class:`admin_kit.ajax.Ajax` 
+
+        """
+        key = ajax_class.generate_key(key)
         self._registry[key] = ajax_class()
 
     def ajax(self, request, key):
-        from .ajax import Ajax
-        response = Ajax.route(request, self._registry[key], )
+        response = self._registry[key].route(request)
         return response
 
     def get_urls(self):

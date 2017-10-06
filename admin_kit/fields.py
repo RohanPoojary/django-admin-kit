@@ -3,23 +3,39 @@ import json
 from django import forms
 from .widgets import SelectMultipleWidget
 
-__all__ = ['MultiSelectField']
+__all__ = ['BaseField', 'MultiSelectField']
 
 class BaseField(forms.Field):
     """
     The Base Field for form fields
+
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, kit_config=None, ajax_source=None, ajax_target=None, ajax_subscribe=None, *args, **kwargs):
+        """
+        kit_config :: dict
+            The config map containing the parameters and their values
+        ajax_source :: str
+            The source value from which the values are retrieved
+        ajax_target :: str
+            The target value to which the values will be filled to
+        ajax_subscribe ::  bool
+            If True, then with every change in ``ajax_target``,
+            it fills corresponding ``ajax_source``
+        """
+        self.ajax_source = ajax_source
+        self.ajax_target = ajax_target
+        self.ajax_subscribe = ajax_subscribe
 
-        self.ajax_source = kwargs.pop('ajax_source', None)
-        self.ajax_target = kwargs.pop('ajax_target', None)
-        self.ajax_subscribe = kwargs.pop('ajax_subscribe', False)
-
-        self.kit_config = kwargs.pop('kit_config', dict())
+        self.kit_config = dict()
+        if kit_config:
+            self.kit_config = kit_config
         super(BaseField, self).__init__(*args, **kwargs)
 
     def widget_attrs(self, widget):
+        """
+        This will add ``data-kit-config`` attibute to the widget
+        """
         attrs = super(BaseField, self).widget_attrs(widget)
         kit_config = self.kit_config.copy()
 
@@ -45,7 +61,8 @@ class MultiSelectField(BaseField):
     def __init__(self, seperator=',', choices=(), *args, **kwargs):
 
         self.seperator = seperator
-        self._coerce = kwargs.pop('coerce', None)
+        if 'coerce' in kwargs:
+            self._coerce = kwargs.pop('coerce')
         super(MultiSelectField, self).__init__(*args, **kwargs)
         self.choices = choices or [['', '']]
         self.widget.choices = self.choices
@@ -53,7 +70,7 @@ class MultiSelectField(BaseField):
 
     def prepare_value(self, value):
         value = super(MultiSelectField, self).prepare_value(value)
-        if self._coerce:
+        if hasattr(self, '_coerce'):
             value = self._coerce(value)
         if isinstance(value, list):
             return value

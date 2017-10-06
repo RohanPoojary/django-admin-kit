@@ -18,18 +18,24 @@ class Ajax:
     response_type = 'json'
     unique = False
 
-    @classmethod
-    def route(cls, request, module_cls):
+    def run(self, request):
+        """
+        This method should be overrided by the child class.
+
+        """
+        return "Hello World"
+
+    def route(self, request):
         """
         For a given request it executes the ``run`` method of the ``module_cls`` and returns
         the response
 
         """
-        output = module_cls.run(request)
-        return module_cls.format_response(output)
+        output = self.run(request)
+        return self.format_response(output)
 
     @classmethod
-    def generate_key(cls, key, module_cls):
+    def generate_key(cls, key):
         """
         A class method that generates key, that maps to the function
 
@@ -38,17 +44,16 @@ class Ajax:
 
         **Example**::
     
-            >>> from admin_kit.ajax import Ajax
             >>> import DummyAjaxClass
-            >>> Ajax.generateKey('the_key', DummyAjaxClass)
+            >>> DummyAjaxClass.generateKey('the_key')
             the_key
             >>> DummyAjaxClass.unique = True
-            >>> Ajax.generateKey('the_key', DummyAjaxClass)
+            >>> DummyAjaxClass.generateKey('the_key')
             dummy-ajax-class-the_key
 
         """
-        if module_cls.unique:
-            word_splits = re.findall(r'([A-Za-z][a-z]+|[A-Z]+)', module_cls.__name__)
+        if cls.unique:
+            word_splits = re.findall(r'([A-Za-z][a-z]+|[A-Z]+)', cls.__name__)
             key = slugify(' '.join(word_splits)) + '-' + key
         return key
 

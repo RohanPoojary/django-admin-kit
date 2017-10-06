@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-admin-kit',
-    version='1.0.0',
+    version='0.0.1',
     description='Django Admin Kit provides additional features to Django Admin',
     author='Rohan Poojary',
     author_email='rohanrp23@gmail.com',
@@ -18,6 +18,6 @@ setup(
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3.6',
-        'Framework :: Django',
+        'Framework :: Django :: 1.11',
     ],
 )
