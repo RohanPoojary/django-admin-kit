@@ -1,6 +1,9 @@
+"""
+    Admin Kit Models module
+
+"""
+
 from django.db import models as dj_models
-from django.core import exceptions
-from django import forms
 
 from . import fields
 
@@ -56,7 +59,7 @@ class BaseField(dj_models.Field):
         value = self.value_from_object(obj)
         return self.get_prep_value(value)
 
-    def from_db_value(self, value, expression, connection, context):
+    def from_db_value(self, value, *args, **kwargs):
         """
         Returns value from the database. inherited models should override this
         """
@@ -68,7 +71,7 @@ class BaseField(dj_models.Field):
         """
         pass
 
-    def formfield(self, form_class, choices_form_class=None, **kwargs):
+    def formfield(self, form_class=None, choices_form_class=None, **kwargs):
         """
         Returns the form object to be used for rendering.
         """
@@ -146,11 +149,12 @@ class MultiSelectField(BaseField):
             return value.split(self.seperator)
         return value
 
-    def formfield(self, **kwargs):
+    def formfield(self, form_class=None, choices_form_class=None, **kwargs):
         if not self.choices:
             self.choices.append(('', '---------'))
         defaults = {
-            'form_class': fields.MultiSelectField,
+            'form_class': form_class or fields.MultiSelectField,
+            'choices_form_class': choices_form_class or fields.MultiSelectField,
             'seperator': self.seperator,
             'choices': self.choices,
         }

@@ -1,3 +1,8 @@
+"""
+    Admin Kit Fields module
+
+"""
+
 import json
 
 from django import forms
@@ -11,7 +16,8 @@ class BaseField(forms.Field):
 
     """
 
-    def __init__(self, kit_config=None, ajax_source=None, ajax_target=None, ajax_subscribe=None, *args, **kwargs):
+    def __init__(self, kit_config=None, ajax_source=None, ajax_target=None,
+                 ajax_subscribe=None, *args, **kwargs):
         """
         kit_config :: dict
             The config map containing the parameters and their values

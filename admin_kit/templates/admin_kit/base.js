@@ -145,7 +145,7 @@
     
                 var link = addDup.children('a');
     
-                link.text('Add a duplicate');
+                link.text('Add a Duplicate');
     
                 link.click(function(e) {
                     e.preventDefault();

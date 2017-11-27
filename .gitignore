@@ -8,4 +8,4 @@ migrations/
 *.egg-info/
 build/
 dist/
-.pypirc
+.tox
