@@ -2,15 +2,10 @@ language: python
 
 matrix:
   include:
-    - { python: 3, env: TOXENV=py3-dj110 }
-    - { python: 3.6, env: TOXENV=py36-dj110 }
     - python: 3.6
 
 cache:
   pip: true
-
-addons:
-  chrome: stable
 
 env:
   global:
@@ -19,9 +14,8 @@ env:
 before_script:
   - mkdir -p ~/bin
   - wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
-  - bzip2 -d ~/phantomjs-2.1.1-linux-x86_64.tar.bz2
-  - tar -xf ~/phantomjs-2.1.1-linux-x86_64.tar
-  - rm ~/phantomjs-2.1.1-linux-x86_64.tar
+  - tar jvxf phantomjs-2.1.1-linux-x86_64.tar.bz2
+  - rm ~/phantomjs-2.1.1-linux-x86_64.tar.bz2
   - mv ~/phantomjs-2.1.1-linux-x86_64/bin/phantomjs ~/bin
   - chmod +x ~/bin/phantomjs
 
