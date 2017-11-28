@@ -4,9 +4,9 @@
 """
 
 import json
-from django.forms.widgets import SelectMultiple
+from django.forms.widgets import SelectMultiple, Select
 
-__all__ = ['SelectMultipleWidget']
+__all__ = ['SelectMultipleWidget', 'SelectWidget']
 
 class SelectMultipleWidget(SelectMultiple):
     """
@@ -30,6 +30,22 @@ class SelectMultipleWidget(SelectMultiple):
         context = super().get_context(name, value, attrs)
         context['widget']['attrs']['class'] = 'admin-kit admin-kit-select'
 
+        kit_config = json.loads(context['widget']['attrs']['data-kit-config'])
+        kit_config['init-value'] = ','.join(context['widget']['value'])
+        context['widget']['attrs']['data-kit-config'] = json.dumps(kit_config)
+
+        return context
+
+
+class SelectWidget(Select):
+    """
+    MultiSelect Widget which inherits Django's Select widget
+
+    """
+
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context['widget']['attrs']['class'] = 'admin-kit admin-kit-select'
         kit_config = json.loads(context['widget']['attrs']['data-kit-config'])
         kit_config['init-value'] = ','.join(context['widget']['value'])
         context['widget']['attrs']['data-kit-config'] = json.dumps(kit_config)

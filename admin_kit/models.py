@@ -7,7 +7,7 @@ from django.db import models as dj_models
 
 from . import fields
 
-__all__ = ['BaseField', 'MultiSelectField']
+__all__ = ['BaseField', 'MultiSelectField', 'SelectField']
 
 
 class BaseField(dj_models.Field):
@@ -160,3 +160,42 @@ class MultiSelectField(BaseField):
         }
         defaults.update(kwargs)
         return super(MultiSelectField, self).formfield(**defaults)
+
+
+class SelectField(BaseField):
+    """
+    The Select model field of Admin-Kit, which allows users to create
+    select ajax fields.
+
+    """
+
+    def __init__(self, *args, **kwargs):
+        self.max_length = kwargs.pop('max_length', None)
+        super(SelectField, self).__init__(*args, **kwargs)
+
+    def db_type(self, connection):
+        if self.max_length:
+            return 'varchar(%s)' % self.max_length
+        return 'longtext'
+
+    def deconstruct(self):
+        name, path, args, kwargs = super(SelectField, self).deconstruct()
+        if self.max_length:
+            kwargs['max_length'] = self.max_length
+        return name, path, args, kwargs
+
+    def to_python(self, value):
+        if value is None:
+            return None
+        return value
+
+    def formfield(self, form_class=None, choices_form_class=None, **kwargs):
+        if not self.choices:
+            self.choices.append(('', '---------'))
+        defaults = {
+            'form_class': form_class or fields.SelectField,
+            'choices_form_class': choices_form_class or fields.SelectField,
+            'choices': self.choices,
+        }
+        defaults.update(kwargs)
+        return super(SelectField, self).formfield(**defaults)

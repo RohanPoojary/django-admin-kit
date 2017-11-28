@@ -6,9 +6,9 @@
 import json
 
 from django import forms
-from .widgets import SelectMultipleWidget
+from .widgets import SelectWidget, SelectMultipleWidget
 
-__all__ = ['BaseField', 'MultiSelectField']
+__all__ = ['BaseField', 'MultiSelectField', 'SelectField']
 
 class BaseField(forms.Field):
     """
@@ -88,4 +88,28 @@ class MultiSelectField(BaseField):
         value = super(MultiSelectField, self).to_python(value)
         if isinstance(value, str):
             return list(map(str.strip, value.split(self.seperator)))
+        return value
+
+
+class SelectField(BaseField):
+    """
+    This field is used to create MultiSelect Form fields.
+
+    """
+    widget = SelectWidget
+
+    def __init__(self, choices=(), *args, **kwargs):
+        if 'coerce' in kwargs:
+            kwargs.pop('coerce')
+        super(SelectField, self).__init__(*args, **kwargs)
+        self.choices = choices or [['', '']]
+        self.widget.choices = self.choices
+
+
+    def prepare_value(self, value):
+        value = super(SelectField, self).prepare_value(value)
+        return value
+
+    def to_python(self, value):
+        value = super(SelectField, self).to_python(value)
         return value

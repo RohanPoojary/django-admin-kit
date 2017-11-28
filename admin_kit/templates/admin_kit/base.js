@@ -20,15 +20,8 @@
         };
     
         function InitializeSelect(element, data) {
-            var values = {};
-            if(element.kitAttr('init-value') != undefined && element.kitAttr('init-value') != "") {
-                var data_values = element.kitAttr('init-value').split(',')
-                for(var i in data_values) {
-                    if(data_values[i]) {
-                        values[data_values[i]] = true;
-                    }
-                }
-            }
+            var values = getInitialValues(element);
+            
             if(!element.hasClass('dirty') && (element.val() == null || element.val() == '')) {
                 SetSelectField(element, data, values);
             }
@@ -100,7 +93,7 @@
                             'ajax-subscribe': true
                         });
                         for(var i = 0; i < elements.length; i++) {
-                            SetSelectField(elements.eq(i), data, true);
+                            SetSelectField(elements.eq(i), data, getInitialValues(elements.eq(i)));
                         }
                     }
                 }
@@ -130,6 +123,19 @@
                 $(this).addClass('dirty');
                 ProcessAdminKit(element, element.val());
             });
+        }
+
+        function getInitialValues(element) {
+            values = {}
+            if(element.kitAttr('init-value') != undefined && element.kitAttr('init-value') != "") {
+                var data_values = element.kitAttr('init-value').split(',')
+                for(var i in data_values) {
+                    if(data_values[i]) {
+                        values[data_values[i]] = true;
+                    }
+                }
+            }
+            return values
         }
     
         $(document).ready(function() {
