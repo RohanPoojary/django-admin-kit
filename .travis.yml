@@ -21,8 +21,13 @@ before_script:
 
 install:
   - pip install -r tests/requirements.txt
+  - pip install coveralls
 
 script:
   - travis_retry travis_retry travis_retry tox
+  - coverage run --source=admin_kit run_tests.py
+
+after_success:
+  coveralls
 
 sudo: false
