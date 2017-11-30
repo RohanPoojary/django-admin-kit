@@ -12,6 +12,7 @@
         "fields": {
             "name": "book",
             "genres": "thriller,philosophy",
+            "main_genre": "thriller",
             "author": 1
         }
     }

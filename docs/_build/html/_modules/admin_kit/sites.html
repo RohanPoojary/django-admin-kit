@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>admin_kit.sites &mdash; Django Admin Kit 0.0.1 documentation</title>
+  <title>admin_kit.sites &mdash; Django Admin Kit 0.0.2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="Django Admin Kit 0.0.1 documentation" href="../../index.html"/>
+    <link rel="top" title="Django Admin Kit 0.0.2 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.0.1
+                0.0.2
               </div>
             
           
@@ -163,9 +163,12 @@
            <div itemprop="articleBody">
             
   <h1>Source code for admin_kit.sites</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">weakref</span> <span class="k">import</span> <span class="n">WeakSet</span>
-<span class="kn">from</span> <span class="nn">django.http</span> <span class="k">import</span> <span class="n">HttpResponse</span>
-<span class="kn">from</span> <span class="nn">django.contrib.staticfiles.templatetags.staticfiles</span> <span class="k">import</span> <span class="n">static</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Admin Kit Sites module</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">weakref</span> <span class="k">import</span> <span class="n">WeakSet</span>
 
 <span class="n">all_sites</span> <span class="o">=</span> <span class="n">WeakSet</span><span class="p">()</span>
 
@@ -181,11 +184,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="n">all_sites</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">ping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="k">import</span> <span class="n">render</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;admin_kit/ping.html&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="AdminKitSite.ping"><a class="viewcode-back" href="../../contents.html#admin_kit.sites.AdminKitSite.ping">[docs]</a>    <span class="k">def</span> <span class="nf">ping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Ping method is used to ping admin_kit ajax</span>
 
-    <span class="k">def</span> <span class="nf">base_js</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="k">import</span> <span class="n">render</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;admin_kit/ping.html&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AdminKitSite.base_js"><a class="viewcode-back" href="../../contents.html#admin_kit.sites.AdminKitSite.base_js">[docs]</a>    <span class="k">def</span> <span class="nf">base_js</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Renders the base.js file that handles ajax calls</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="k">import</span> <span class="n">render</span>
         <span class="n">base_index</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;base.js&#39;</span><span class="p">)</span>
         <span class="n">app_url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">[:</span><span class="n">base_index</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -195,7 +206,9 @@
             <span class="n">enable_dup</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">settings</span><span class="o">.</span><span class="n">KIT_DISABLE_DUPLICATE</span>
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
             <span class="n">enable_dup</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;admin_kit/base.js&#39;</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;app&quot;</span><span class="p">:</span> <span class="n">app_url</span><span class="p">,</span> <span class="s2">&quot;duplicate&quot;</span><span class="p">:</span> <span class="n">enable_dup</span><span class="p">},</span> <span class="n">content_type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;admin_kit/base.js&#39;</span><span class="p">,</span>
+                      <span class="n">context</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;app&quot;</span><span class="p">:</span> <span class="n">app_url</span><span class="p">,</span> <span class="s2">&quot;duplicate&quot;</span><span class="p">:</span> <span class="n">enable_dup</span><span class="p">},</span>
+                      <span class="n">content_type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AdminKitSite.register"><a class="viewcode-back" href="../../contents.html#admin_kit.sites.AdminKitSite.register">[docs]</a>    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">ajax_class</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -204,17 +217,25 @@
 <span class="sd">        key :: str</span>
 <span class="sd">            This is the *key* that will be used in models for binding</span>
 <span class="sd">        ajax_class :: class</span>
-<span class="sd">            The ajax class that inherits :class:`admin_kit.ajax.Ajax` </span>
+<span class="sd">            The ajax class that inherits :class:`admin_kit.ajax.Ajax`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">key</span> <span class="o">=</span> <span class="n">ajax_class</span><span class="o">.</span><span class="n">generate_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_registry</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">ajax_class</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">ajax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_registry</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">response</span>
+<div class="viewcode-block" id="AdminKitSite.ajax"><a class="viewcode-back" href="../../contents.html#admin_kit.sites.AdminKitSite.ajax">[docs]</a>    <span class="k">def</span> <span class="nf">ajax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calls route method</span>
 
-    <span class="k">def</span> <span class="nf">get_urls</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_registry</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="AdminKitSite.get_urls"><a class="viewcode-back" href="../../contents.html#admin_kit.sites.AdminKitSite.get_urls">[docs]</a>    <span class="k">def</span> <span class="nf">get_urls</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the list of urls of admin_kit</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="k">import</span> <span class="n">url</span>
         <span class="kn">from</span> <span class="nn">django.conf</span> <span class="k">import</span> <span class="n">settings</span>
 
@@ -226,10 +247,14 @@
         <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
             <span class="n">urlpatterns</span> <span class="o">+=</span> <span class="p">[</span><span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^ping&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ping</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;ping&#39;</span><span class="p">)]</span>
 
-        <span class="k">return</span> <span class="n">urlpatterns</span>
+        <span class="k">return</span> <span class="n">urlpatterns</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">urls</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The actual property used by django for routing requests</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_urls</span><span class="p">(),</span> <span class="s1">&#39;admin_kit&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
 
 <span class="n">site</span> <span class="o">=</span> <span class="n">AdminKitSite</span><span class="p">()</span>
@@ -269,7 +294,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.0.1',
+            VERSION:'0.0.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

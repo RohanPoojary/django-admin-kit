@@ -99,17 +99,11 @@ class SelectField(BaseField):
     widget = SelectWidget
 
     def __init__(self, choices=(), *args, **kwargs):
+        """
+        Intializes SelectField
+        """
         if 'coerce' in kwargs:
             kwargs.pop('coerce')
         super(SelectField, self).__init__(*args, **kwargs)
         self.choices = choices or [['', '']]
         self.widget.choices = self.choices
-
-
-    def prepare_value(self, value):
-        value = super(SelectField, self).prepare_value(value)
-        return value
-
-    def to_python(self, value):
-        value = super(SelectField, self).to_python(value)
-        return value

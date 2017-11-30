@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Model Fields &mdash; Django Admin Kit 0.0.1 documentation</title>
+  <title>Model Fields &mdash; Django Admin Kit 0.0.2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Django Admin Kit 0.0.1 documentation" href="index.html"/>
+    <link rel="top" title="Django Admin Kit 0.0.2 documentation" href="index.html"/>
         <link rel="up" title="Documentation" href="documentation.html"/>
         <link rel="next" title="Form Fields" href="fields.html"/>
         <link rel="prev" title="Documentation" href="documentation.html"/> 
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0.0.1
+                0.0.2
               </div>
             
           
@@ -100,6 +100,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="documentation.html">Documentation</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Model Fields</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#multiselectfield">MultiSelectField</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#selectfield">SelectField</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="fields.html">Form Fields</a></li>
@@ -228,15 +229,17 @@ api’s return value.</p>
 <p><strong>Example</strong></p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># ajax.py</span>
 
-<span class="kn">from</span> <span class="nn">admin_kit</span> <span class="kn">import</span> <span class="n">ajax</span>
+<span class="kn">import</span> <span class="nn">admin_kit</span>
 
-<span class="k">class</span> <span class="nc">SelectedAjax</span><span class="p">(</span><span class="n">ajax</span><span class="o">.</span><span class="n">Ajax</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">SelectedGenresAjax</span><span class="p">(</span><span class="n">admin_kit</span><span class="o">.</span><span class="n">ajax</span><span class="o">.</span><span class="n">Ajax</span><span class="p">):</span>
     <span class="n">response_type</span> <span class="o">=</span> <span class="s1">&#39;text&#39;</span>
 
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
         <span class="n">query</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s1">&#39;q[]&#39;</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span>
+
+<span class="n">admin_kit</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;selected-genres&#39;</span><span class="p">,</span> <span class="n">SelectedGenresAjax</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This ajax class, joins query list <code class="docutils literal"><span class="pre">q[]</span></code> values with <code class="docutils literal"><span class="pre">,</span></code> and returns
@@ -282,7 +285,7 @@ parameter.</p>
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
         <span class="n">query</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s1">&#39;q[]&#39;</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">query</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">query</span>
+        <span class="k">return</span> <span class="n">response</span>
 </pre></div>
 </div>
 <p>This ajax class zips the selected query and returns it back.</p>
@@ -341,6 +344,23 @@ to this parameter.</p>
 </ul>
 </div></blockquote>
 </div>
+<div class="section" id="selectfield">
+<h2>SelectField<a class="headerlink" href="#selectfield" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p><a class="reference internal" href="contents.html#admin_kit.models.SelectField" title="admin_kit.models.SelectField"><code class="xref py py-class docutils literal"><span class="pre">SelectField</span></code></a> provides Selecting features. It has similar
+behaviour as <a class="reference internal" href="contents.html#admin_kit.models.MultiSelectField" title="admin_kit.models.MultiSelectField"><code class="xref py py-class docutils literal"><span class="pre">MultiSelectField</span></code></a>. So below are the valid
+parameters</p>
+<p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">max_length</span></code></li>
+<li><code class="docutils literal"><span class="pre">choices</span></code></li>
+<li><code class="docutils literal"><span class="pre">ajax_source</span></code></li>
+<li><code class="docutils literal"><span class="pre">ajax_target</span></code></li>
+<li><code class="docutils literal"><span class="pre">ajax_subscribe</span></code></li>
+<li><code class="docutils literal"><span class="pre">kit_config</span></code></li>
+</ul>
+</div></blockquote>
+</div>
 </div>
 
 
@@ -387,7 +407,7 @@ to this parameter.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.0.1',
+            VERSION:'0.0.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -27,6 +27,9 @@ class SelectMultipleWidget(SelectMultiple):
         }
 
     def get_context(self, name, value, attrs):
+        """
+        Adds appropriate attributes to widget context
+        """
         context = super().get_context(name, value, attrs)
         context['widget']['attrs']['class'] = 'admin-kit admin-kit-select'
 
@@ -44,10 +47,12 @@ class SelectWidget(Select):
     """
 
     def get_context(self, name, value, attrs):
+        """
+        Adds appropriate attributes to widget context
+        """
         context = super().get_context(name, value, attrs)
         context['widget']['attrs']['class'] = 'admin-kit admin-kit-select'
         kit_config = json.loads(context['widget']['attrs']['data-kit-config'])
         kit_config['init-value'] = ','.join(context['widget']['value'])
         context['widget']['attrs']['data-kit-config'] = json.dumps(kit_config)
-
         return context

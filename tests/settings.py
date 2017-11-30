@@ -14,6 +14,8 @@ SECRET_KEY = 'b(uwdmbfy-jvpd=)ay@@uo&-=dl!%#f7yki2-yc+^r@9(1)fw%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+TEST_MODE = True
+
 ALLOWED_HOSTS = []
 
 
@@ -110,15 +112,5 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-from selenium import webdriver
-
-SELENIUM_WEBDRIVERS = {
-    'default': {
-        'callable': webdriver.Firefox,
-        'args': (),
-        'kwargs': {},
-    }
-}
-
 
 STATIC_URL = '/static/'

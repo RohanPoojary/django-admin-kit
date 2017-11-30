@@ -125,11 +125,17 @@ class MultiSelectField(BaseField):
         super(MultiSelectField, self).__init__(*args, **kwargs)
 
     def db_type(self, connection):
+        """
+        Sets `db_type` to either varchar or longtext depending on `max_length`
+        """
         if self.max_length:
             return 'varchar(%s)' % self.max_length
         return 'longtext'
 
     def deconstruct(self):
+        """
+        Deconstructs MultiSelect Field
+        """
         name, path, args, kwargs = super(MultiSelectField, self).deconstruct()
         if self.max_length:
             kwargs['max_length'] = self.max_length
@@ -138,11 +144,17 @@ class MultiSelectField(BaseField):
         return name, path, args, kwargs
 
     def get_prep_value(self, value):
+        """
+        Converts value to a string
+        """
         if isinstance(value, list):
             return self.seperator.join(value)
         return value
 
     def to_python(self, value):
+        """
+        Converts the string value to a list
+        """
         if value is None:
             return None
         if isinstance(value, str):
@@ -150,6 +162,9 @@ class MultiSelectField(BaseField):
         return value
 
     def formfield(self, form_class=None, choices_form_class=None, **kwargs):
+        """
+        Sets form to be used for rendering
+        """
         if not self.choices:
             self.choices.append(('', '---------'))
         defaults = {
@@ -170,26 +185,33 @@ class SelectField(BaseField):
     """
 
     def __init__(self, *args, **kwargs):
+        """
+        Initializes SelectField
+        """
         self.max_length = kwargs.pop('max_length', None)
         super(SelectField, self).__init__(*args, **kwargs)
 
     def db_type(self, connection):
+        """
+        Sets `db_type` to either varchar or longtext depending on `max_length`
+        """
         if self.max_length:
             return 'varchar(%s)' % self.max_length
         return 'longtext'
 
     def deconstruct(self):
+        """
+        Deconstructs SelectField
+        """
         name, path, args, kwargs = super(SelectField, self).deconstruct()
         if self.max_length:
             kwargs['max_length'] = self.max_length
         return name, path, args, kwargs
 
-    def to_python(self, value):
-        if value is None:
-            return None
-        return value
-
     def formfield(self, form_class=None, choices_form_class=None, **kwargs):
+        """
+        Sets form to be used for rendering
+        """
         if not self.choices:
             self.choices.append(('', '---------'))
         defaults = {

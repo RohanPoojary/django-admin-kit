@@ -9,3 +9,5 @@ migrations/
 build/
 dist/
 .tox
+.coveralls.yml
+.coverage

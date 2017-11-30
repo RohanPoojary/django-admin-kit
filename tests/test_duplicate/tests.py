@@ -58,3 +58,7 @@ class TestModule(SeleniumTestCase):
         genres2 = self.selenium.find_element_by_id("id_book_set-1-genres")
         assert genres1.get_attribute('value') == genres2.get_attribute('value')
 
+        genres1 = self.selenium.find_element_by_id("id_book_set-0-main_genre")
+        genres2 = self.selenium.find_element_by_id("id_book_set-1-main_genre")
+        assert genres1.get_attribute('value') == genres2.get_attribute('value')
+

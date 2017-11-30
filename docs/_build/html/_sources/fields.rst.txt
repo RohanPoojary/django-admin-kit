@@ -45,29 +45,62 @@ MultiSelect Form Field
 
             .. code-block:: python
 
+                # admin.py
+
                 ...
                 from admin_kit.fields import MultiSelectField
 
-                class BookAdmin(admin.ModelAdmin):
-                    genres = MultiSelectField(ajax_source='genres', ajax_subscribe=True,
-                                              ajax_target='selected-genres:selectedValues')
-                    model = Books
+                class BookForm(forms.ModelForm):
+                    model = Book
+                    selected_fields = MultiSelectField(ajax_source='genres', ajax_subscribe=True)
+                    fields = ('name', 'genres')
+
+                 class BookAdmin(nested_admin.NestedStackedInline):
+                    model = Book
+                    form = BookForm
                 
             is equivalent to
 
             .. code-block:: python
 
+                # admin.py
+
                 ...
                 from admin_kit.fields import MultiSelectField
 
-                class BookAdmin(admin.ModelAdmin):
-                    genres = MultiSelectField(kit_config={
-                        'ajax-source': 'genres',
-                        'ajax-subscribe': True,
-                        'ajax-target': 'selected-genres:selectedValues'
-                    })
-                    model = Books
+                class BookForm(forms.ModelForm):
+                    model = Book
+                    kit_config = {
+                            'ajax-source': 'genres',
+                            'ajax-subscribe': True
+                    }
+                    selected_fields = MultiSelectField(kit_config=kit_config)
+                    fields = ('name', 'genres')
+
+                class BookAdmin(nested_admin.NestedStackedInline):
+                    model = Book
+                    form = BookForm
 
             .. note::
                 
                 Make sure the key names are **hiphen seperated**.
+
+
+Select Form Field
+-----------------
+    :class:`SelectField<admin_kit.fields.SelectField>` provides Selecting features. It is similar
+    to :class:`MultiSelectField<admin_kit.fields.MultiSelectField>`, but provides a single value to select.
+
+    
+    **Parameters**
+
+    * ``choices``
+           
+    * ``ajax_source``
+          
+    * ``ajax_target``
+           
+    * ``ajax_subscribe``
+           
+    * ``kit_config``
+            

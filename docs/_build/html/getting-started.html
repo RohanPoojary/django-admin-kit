@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Getting Started &mdash; Django Admin Kit 0.0.1 documentation</title>
+  <title>Getting Started &mdash; Django Admin Kit 0.0.2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Django Admin Kit 0.0.1 documentation" href="index.html"/>
+    <link rel="top" title="Django Admin Kit 0.0.2 documentation" href="index.html"/>
         <link rel="next" title="Documentation" href="documentation.html"/>
         <link rel="prev" title="django-admin-kit" href="index.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.0.1
+                0.0.2
               </div>
             
           
@@ -187,7 +187,9 @@
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><p>The app name <code class="docutils literal"><span class="pre">admin_kit</span></code> should be put at the top of installed apps in django <code class="docutils literal"><span class="pre">settings</span></code> file.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># settings.py</span>
+
+<span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;admin_kit&#39;</span><span class="p">,</span>
 
     <span class="s1">&#39;django.contrib.admin&#39;</span><span class="p">,</span>
@@ -198,7 +200,10 @@
 </div>
 <p>This is because, Admin Kit overrides Django <em>change_form</em> template. Then register the admin_kit app in root <code class="docutils literal"><span class="pre">urls</span></code> file
 with name <code class="docutils literal"><span class="pre">admin_kit</span></code></p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">url</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># urls.py</span>
+
+<span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">url</span>
+<span class="kn">import</span> <span class="nn">admin_kit</span>
 
 <span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
     <span class="o">...</span>
@@ -223,6 +228,11 @@ if configured correctly.</p>
 <p>This button is similar to <code class="docutils literal"><span class="pre">Add</span> <span class="pre">Another</span></code> button, but it initializes the fields with previously
 filled data. It is also compatible with <a class="reference external" href="http://django-nested-admin.readthedocs.io/en/latest/quickstart.html#quickstart" title="(in django-nested-admin v3.0)"><span class="xref std std-ref">django-nested-admin</span></a></p>
 <p>To disable this feature set <code class="docutils literal"><span class="pre">KIT_DISABLE_DUPLICATE</span> <span class="pre">=</span> <span class="pre">True</span></code> in settings file.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The duplicate button is only on <strong>Inline Admin Models</strong> like <a class="reference external" href="http://docs.djangoproject.com/en/1.11/ref/contrib/admin/#django.contrib.admin.StackedInline" title="(in Django v1.11)"><code class="xref any docutils literal"><span class="pre">Staked</span> <span class="pre">Inline</span></code></a>,
+<a class="reference external" href="http://docs.djangoproject.com/en/1.11/ref/contrib/admin/#django.contrib.admin.TabularInline" title="(in Django v1.11)"><code class="xref any docutils literal"><span class="pre">Tabular</span> <span class="pre">Inline</span></code></a> or <a class="reference external" href="http://django-nested-admin.readthedocs.io/en/latest/nested_admin.html#nested_admin.NestedModelAdmin" title="(in django-nested-admin v3.0)"><code class="xref any docutils literal"><span class="pre">nested_admin</span> <span class="pre">fields</span></code></a>.</p>
+</div>
 </div></blockquote>
 </div>
 <div class="section" id="multi-select-field">
@@ -230,7 +240,9 @@ filled data. It is also compatible with <a class="reference external" href="http
 <blockquote>
 <div><p>Admin Kit provides Multi Select field where you can specify choices. It uses <a class="reference internal" href="contents.html#admin_kit.models.MultiSelectField" title="admin_kit.models.MultiSelectField"><code class="xref any py py-class docutils literal"><span class="pre">admin_kit.models.MultiSelectField</span></code></a>.</p>
 <p>In <strong>models.py</strong> file</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">admin_kit.models</span> <span class="kn">import</span> <span class="n">MultiSelectField</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># models.py</span>
+
+<span class="kn">from</span> <span class="nn">admin_kit.models</span> <span class="kn">import</span> <span class="n">MultiSelectField</span>
 
 <span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="o">...</span>
@@ -362,7 +374,7 @@ fields will be integrated.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.0.1',
+            VERSION:'0.0.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

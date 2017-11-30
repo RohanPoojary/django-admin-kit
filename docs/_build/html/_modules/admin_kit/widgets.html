@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>admin_kit.widgets &mdash; Django Admin Kit 0.0.1 documentation</title>
+  <title>admin_kit.widgets &mdash; Django Admin Kit 0.0.2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="Django Admin Kit 0.0.1 documentation" href="../../index.html"/>
+    <link rel="top" title="Django Admin Kit 0.0.2 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.0.1
+                0.0.2
               </div>
             
           
@@ -163,29 +163,38 @@
            <div itemprop="articleBody">
             
   <h1>Source code for admin_kit.widgets</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">from</span> <span class="nn">django.forms.widgets</span> <span class="k">import</span> <span class="n">SelectMultiple</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Admin Kit Widgets module</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;SelectMultipleWidget&#39;</span><span class="p">]</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">django.forms.widgets</span> <span class="k">import</span> <span class="n">SelectMultiple</span><span class="p">,</span> <span class="n">Select</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;SelectMultipleWidget&#39;</span><span class="p">,</span> <span class="s1">&#39;SelectWidget&#39;</span><span class="p">]</span>
 
 <div class="viewcode-block" id="SelectMultipleWidget"><a class="viewcode-back" href="../../contents.html#admin_kit.fields.SelectMultipleWidget">[docs]</a><span class="k">class</span> <span class="nc">SelectMultipleWidget</span><span class="p">(</span><span class="n">SelectMultiple</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    MultiSelect Widget which inherits Django&#39;s SelectMultiple widget</span>
-<span class="sd">    </span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;admin_kit/widgets/select.html&#39;</span>
     <span class="n">option_template_name</span> <span class="o">=</span> <span class="s1">&#39;admin_kit/widgets/select_option.html&#39;</span>
 
-    <span class="k">class</span> <span class="nc">Media</span><span class="p">:</span>
+<div class="viewcode-block" id="SelectMultipleWidget.Media"><a class="viewcode-back" href="../../contents.html#admin_kit.fields.SelectMultipleWidget.Media">[docs]</a>    <span class="k">class</span> <span class="nc">Media</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This class adds css required for admin_kit&#39;s widget</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">css</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;all&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;admin_kit/css/select.css&#39;</span><span class="p">,</span> <span class="p">)</span>
-        <span class="p">}</span>
+        <span class="p">}</span></div>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">SelectMultipleWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">get_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+<div class="viewcode-block" id="SelectMultipleWidget.get_context"><a class="viewcode-back" href="../../contents.html#admin_kit.fields.SelectMultipleWidget.get_context">[docs]</a>    <span class="k">def</span> <span class="nf">get_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds appropriate attributes to widget context</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_context</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
         <span class="n">context</span><span class="p">[</span><span class="s1">&#39;widget&#39;</span><span class="p">][</span><span class="s1">&#39;attrs&#39;</span><span class="p">][</span><span class="s1">&#39;class&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;admin-kit admin-kit-select&#39;</span>
 
@@ -193,7 +202,26 @@
         <span class="n">kit_config</span><span class="p">[</span><span class="s1">&#39;init-value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">context</span><span class="p">[</span><span class="s1">&#39;widget&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
         <span class="n">context</span><span class="p">[</span><span class="s1">&#39;widget&#39;</span><span class="p">][</span><span class="s1">&#39;attrs&#39;</span><span class="p">][</span><span class="s1">&#39;data-kit-config&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">kit_config</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">context</span></div>
+        <span class="k">return</span> <span class="n">context</span></div></div>
+
+
+<div class="viewcode-block" id="SelectWidget"><a class="viewcode-back" href="../../contents.html#admin_kit.fields.SelectWidget">[docs]</a><span class="k">class</span> <span class="nc">SelectWidget</span><span class="p">(</span><span class="n">Select</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    MultiSelect Widget which inherits Django&#39;s Select widget</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SelectWidget.get_context"><a class="viewcode-back" href="../../contents.html#admin_kit.fields.SelectWidget.get_context">[docs]</a>    <span class="k">def</span> <span class="nf">get_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds appropriate attributes to widget context</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_context</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+        <span class="n">context</span><span class="p">[</span><span class="s1">&#39;widget&#39;</span><span class="p">][</span><span class="s1">&#39;attrs&#39;</span><span class="p">][</span><span class="s1">&#39;class&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;admin-kit admin-kit-select&#39;</span>
+        <span class="n">kit_config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">context</span><span class="p">[</span><span class="s1">&#39;widget&#39;</span><span class="p">][</span><span class="s1">&#39;attrs&#39;</span><span class="p">][</span><span class="s1">&#39;data-kit-config&#39;</span><span class="p">])</span>
+        <span class="n">kit_config</span><span class="p">[</span><span class="s1">&#39;init-value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">context</span><span class="p">[</span><span class="s1">&#39;widget&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
+        <span class="n">context</span><span class="p">[</span><span class="s1">&#39;widget&#39;</span><span class="p">][</span><span class="s1">&#39;attrs&#39;</span><span class="p">][</span><span class="s1">&#39;data-kit-config&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">kit_config</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">context</span></div></div>
 </pre></div>
 
            </div>
@@ -230,7 +258,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.0.1',
+            VERSION:'0.0.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -79,7 +79,7 @@ class AdminKitSite:
             url(r'base.js/', self.base_js, name='base_js')
         ]
 
-        if settings.DEBUG:
+        if settings.DEBUG or hasattr(settings, 'TEST_MODE'):
             urlpatterns += [url(r'^ping', self.ping, name='ping')]
 
         return urlpatterns

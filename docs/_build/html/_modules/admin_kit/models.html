@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>admin_kit.models &mdash; Django Admin Kit 0.0.1 documentation</title>
+  <title>admin_kit.models &mdash; Django Admin Kit 0.0.2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="Django Admin Kit 0.0.1 documentation" href="../../index.html"/>
+    <link rel="top" title="Django Admin Kit 0.0.2 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.0.1
+                0.0.2
               </div>
             
           
@@ -163,47 +163,16 @@
            <div itemprop="articleBody">
             
   <h1>Source code for admin_kit.models</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">django.db</span> <span class="k">import</span> <span class="n">models</span> <span class="k">as</span> <span class="n">dj_models</span>
-<span class="kn">from</span> <span class="nn">django.core</span> <span class="k">import</span> <span class="n">exceptions</span>
-<span class="kn">from</span> <span class="nn">django</span> <span class="k">import</span> <span class="n">forms</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Admin Kit Models module</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="k">import</span> <span class="n">models</span> <span class="k">as</span> <span class="n">dj_models</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">fields</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BaseField&#39;</span><span class="p">,</span> <span class="s1">&#39;MultiSelectField&#39;</span><span class="p">]</span>
-
-<span class="k">class</span> <span class="nc">BaseField</span><span class="p">(</span><span class="n">dj_models</span><span class="o">.</span><span class="n">Field</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The Base model field of Admin-Kit models. This inherits Django&#39;s models.Field class.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kit_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ajax_source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ajax_target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">ajax_subscribe</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        kit_config :: dict</span>
-<span class="sd">            The config map containing the parameters and their values</span>
-<span class="sd">        ajax_source :: str</span>
-<span class="sd">            The source value from which the values are retrieved</span>
-<span class="sd">        ajax_target :: str</span>
-<span class="sd">            The target value to which the values will be filled to</span>
-<span class="sd">        ajax_subscribe ::  bool</span>
-<span class="sd">            If True, then with every change in ``ajax_target``,</span>
-<span class="sd">            it fills corresponding ``ajax_source``</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">ajax_source</span> <span class="o">=</span> <span class="n">ajax_source</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ajax_target</span> <span class="o">=</span> <span class="n">ajax_target</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ajax_subscribe</span> <span class="o">=</span> <span class="n">ajax_subscribe</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">kit_config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">kit_config</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">kit_config</span> <span class="o">=</span> <span class="n">kit_config</span>
-
-        <span class="nb">super</span><span class="p">(</span><span class="n">BaseField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">fields</span>
-
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BaseField&#39;</span><span class="p">,</span> <span class="s1">&#39;MultiSelectField&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BaseField&#39;</span><span class="p">,</span> <span class="s1">&#39;MultiSelectField&#39;</span><span class="p">,</span> <span class="s1">&#39;SelectField&#39;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="BaseField"><a class="viewcode-back" href="../../contents.html#admin_kit.models.BaseField">[docs]</a><span class="k">class</span> <span class="nc">BaseField</span><span class="p">(</span><span class="n">dj_models</span><span class="o">.</span><span class="n">Field</span><span class="p">):</span>
@@ -255,7 +224,7 @@
         <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_from_object</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_prep_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BaseField.from_db_value"><a class="viewcode-back" href="../../contents.html#admin_kit.models.BaseField.from_db_value">[docs]</a>    <span class="k">def</span> <span class="nf">from_db_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">expression</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseField.from_db_value"><a class="viewcode-back" href="../../contents.html#admin_kit.models.BaseField.from_db_value">[docs]</a>    <span class="k">def</span> <span class="nf">from_db_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns value from the database. inherited models should override this</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -267,7 +236,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="BaseField.formfield"><a class="viewcode-back" href="../../contents.html#admin_kit.models.BaseField.formfield">[docs]</a>    <span class="k">def</span> <span class="nf">formfield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form_class</span><span class="p">,</span> <span class="n">choices_form_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseField.formfield"><a class="viewcode-back" href="../../contents.html#admin_kit.models.BaseField.formfield">[docs]</a>    <span class="k">def</span> <span class="nf">formfield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">choices_form_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the form object to be used for rendering.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -316,44 +285,107 @@
 <span class="sd">        seperator :: str</span>
 <span class="sd">            The selected fields will be joined by ``seperator`` and stored in the database.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;max_length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;max_length&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_length</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;max_length&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seperator</span> <span class="o">=</span> <span class="n">seperator</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">MultiSelectField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">db_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">):</span>
+<div class="viewcode-block" id="MultiSelectField.db_type"><a class="viewcode-back" href="../../contents.html#admin_kit.models.MultiSelectField.db_type">[docs]</a>    <span class="k">def</span> <span class="nf">db_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets `db_type` to either varchar or longtext depending on `max_length`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_length</span><span class="p">:</span>
             <span class="k">return</span> <span class="s1">&#39;varchar(</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_length</span>
-        <span class="k">return</span> <span class="s1">&#39;longtext&#39;</span>
+        <span class="k">return</span> <span class="s1">&#39;longtext&#39;</span></div>
 
-    <span class="k">def</span> <span class="nf">deconstruct</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MultiSelectField.deconstruct"><a class="viewcode-back" href="../../contents.html#admin_kit.models.MultiSelectField.deconstruct">[docs]</a>    <span class="k">def</span> <span class="nf">deconstruct</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deconstructs MultiSelect Field</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">MultiSelectField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">deconstruct</span><span class="p">()</span>
-        <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;max_length&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_length</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;max_length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_length</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">seperator</span> <span class="o">!=</span> <span class="s1">&#39;,&#39;</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;seperator&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">seperator</span>
-        <span class="k">return</span> <span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span>
+        <span class="k">return</span> <span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span></div>
 
-    <span class="k">def</span> <span class="nf">get_prep_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="MultiSelectField.get_prep_value"><a class="viewcode-back" href="../../contents.html#admin_kit.models.MultiSelectField.get_prep_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_prep_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts value to a string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">seperator</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">value</span></div>
 
-    <span class="k">def</span> <span class="nf">to_python</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="MultiSelectField.to_python"><a class="viewcode-back" href="../../contents.html#admin_kit.models.MultiSelectField.to_python">[docs]</a>    <span class="k">def</span> <span class="nf">to_python</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts the string value to a list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seperator</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">value</span></div>
 
-    <span class="k">def</span> <span class="nf">formfield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="MultiSelectField.formfield"><a class="viewcode-back" href="../../contents.html#admin_kit.models.MultiSelectField.formfield">[docs]</a>    <span class="k">def</span> <span class="nf">formfield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">choices_form_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets form to be used for rendering</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">choices</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">choices</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;---------&#39;</span><span class="p">))</span>
         <span class="n">defaults</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;form_class&#39;</span><span class="p">:</span> <span class="n">fields</span><span class="o">.</span><span class="n">MultiSelectField</span><span class="p">,</span>
+            <span class="s1">&#39;form_class&#39;</span><span class="p">:</span> <span class="n">form_class</span> <span class="ow">or</span> <span class="n">fields</span><span class="o">.</span><span class="n">MultiSelectField</span><span class="p">,</span>
+            <span class="s1">&#39;choices_form_class&#39;</span><span class="p">:</span> <span class="n">choices_form_class</span> <span class="ow">or</span> <span class="n">fields</span><span class="o">.</span><span class="n">MultiSelectField</span><span class="p">,</span>
             <span class="s1">&#39;seperator&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">seperator</span><span class="p">,</span>
             <span class="s1">&#39;choices&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">choices</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="n">defaults</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">MultiSelectField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">formfield</span><span class="p">(</span><span class="o">**</span><span class="n">defaults</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">MultiSelectField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">formfield</span><span class="p">(</span><span class="o">**</span><span class="n">defaults</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="SelectField"><a class="viewcode-back" href="../../contents.html#admin_kit.models.SelectField">[docs]</a><span class="k">class</span> <span class="nc">SelectField</span><span class="p">(</span><span class="n">BaseField</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The Select model field of Admin-Kit, which allows users to create</span>
+<span class="sd">    select ajax fields.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes SelectField</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_length</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;max_length&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SelectField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SelectField.db_type"><a class="viewcode-back" href="../../contents.html#admin_kit.models.SelectField.db_type">[docs]</a>    <span class="k">def</span> <span class="nf">db_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets `db_type` to either varchar or longtext depending on `max_length`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_length</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;varchar(</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_length</span>
+        <span class="k">return</span> <span class="s1">&#39;longtext&#39;</span></div>
+
+<div class="viewcode-block" id="SelectField.deconstruct"><a class="viewcode-back" href="../../contents.html#admin_kit.models.SelectField.deconstruct">[docs]</a>    <span class="k">def</span> <span class="nf">deconstruct</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deconstructs SelectField</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">SelectField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">deconstruct</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_length</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;max_length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_length</span>
+        <span class="k">return</span> <span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span></div>
+
+<div class="viewcode-block" id="SelectField.formfield"><a class="viewcode-back" href="../../contents.html#admin_kit.models.SelectField.formfield">[docs]</a>    <span class="k">def</span> <span class="nf">formfield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">choices_form_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets form to be used for rendering</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">choices</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">choices</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;---------&#39;</span><span class="p">))</span>
+        <span class="n">defaults</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;form_class&#39;</span><span class="p">:</span> <span class="n">form_class</span> <span class="ow">or</span> <span class="n">fields</span><span class="o">.</span><span class="n">SelectField</span><span class="p">,</span>
+            <span class="s1">&#39;choices_form_class&#39;</span><span class="p">:</span> <span class="n">choices_form_class</span> <span class="ow">or</span> <span class="n">fields</span><span class="o">.</span><span class="n">SelectField</span><span class="p">,</span>
+            <span class="s1">&#39;choices&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">choices</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">defaults</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">SelectField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">formfield</span><span class="p">(</span><span class="o">**</span><span class="n">defaults</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
@@ -390,7 +422,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.0.1',
+            VERSION:'0.0.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

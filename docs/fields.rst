@@ -84,3 +84,23 @@ MultiSelect Form Field
             .. note::
                 
                 Make sure the key names are **hiphen seperated**.
+
+
+Select Form Field
+-----------------
+    :class:`SelectField<admin_kit.fields.SelectField>` provides Selecting features. It is similar
+    to :class:`MultiSelectField<admin_kit.fields.MultiSelectField>`, but provides a single value to select.
+
+    
+    **Parameters**
+
+    * ``choices``
+           
+    * ``ajax_source``
+          
+    * ``ajax_target``
+           
+    * ``ajax_subscribe``
+           
+    * ``kit_config``
+            

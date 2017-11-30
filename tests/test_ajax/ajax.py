@@ -1,5 +1,9 @@
 import admin_kit
 
+class TestEmpty(admin_kit.ajax.Ajax):
+    unique = True
+    response_type = 'text'
+
 class TestAjax(admin_kit.ajax.Ajax):
     def run(self, request):
         output = (
@@ -9,3 +13,5 @@ class TestAjax(admin_kit.ajax.Ajax):
         return output
 
 admin_kit.site.register('testajax', TestAjax)
+admin_kit.site.register('empty', TestEmpty)
+

@@ -15,3 +15,7 @@ class AdminAjaxTest(TestCase):
             ['book1', '1'],
             ['book2', '2']
         ])
+
+    def test_unique_key(self):
+        response = self.client.get(reverse("admin_kit:ajax", args=('test-empty-empty',)))
+        self.assertEqual(response.content, b"Hello World")
