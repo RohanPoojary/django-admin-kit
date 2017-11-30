@@ -157,3 +157,24 @@ MultiSelectField
             .. note::
                     
                     Make sure the *key names* are **hiphen seperated** and not *underscore* seperated.
+
+
+SelectField
+-----------
+    :class:`SelectField<admin_kit.models.SelectField>` provides Selecting features. It has similar
+    behaviour as :class:`MultiSelectField<admin_kit.models.MultiSelectField>`. So below are the valid
+    parameters
+
+    **Parameters**
+
+    * ``max_length``
+            
+    * ``choices``
+        
+    * ``ajax_source``
+            
+    * ``ajax_target``
+            
+    * ``ajax_subscribe``
+    
+    * ``kit_config``

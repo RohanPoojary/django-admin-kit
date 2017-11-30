@@ -8,4 +8,6 @@ migrations/
 *.egg-info/
 build/
 dist/
-.pypirc
+.tox
+.coveralls.yml
+.coverage

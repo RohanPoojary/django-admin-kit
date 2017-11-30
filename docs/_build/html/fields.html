@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Form Fields &mdash; Django Admin Kit 0.0.1 documentation</title>
+  <title>Form Fields &mdash; Django Admin Kit 0.0.2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Django Admin Kit 0.0.1 documentation" href="index.html"/>
+    <link rel="top" title="Django Admin Kit 0.0.2 documentation" href="index.html"/>
         <link rel="up" title="Documentation" href="documentation.html"/>
         <link rel="next" title="Form Widgets" href="widgets.html"/>
         <link rel="prev" title="Model Fields" href="models.html"/> 
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0.0.1
+                0.0.2
               </div>
             
           
@@ -101,6 +101,7 @@
 <li class="toctree-l2"><a class="reference internal" href="models.html">Model Fields</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Form Fields</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#multiselect-form-field">MultiSelect Form Field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#select-form-field">Select Form Field</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="widgets.html">Form Widgets</a></li>
@@ -233,26 +234,39 @@ parameter.</p>
 <code class="docutils literal"><span class="pre">ajax_subscribe</span></code> seperately, one can specify them in a dictionary and can be passed
 to this parameter.</p>
 <p><strong>Example</strong></p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="o">...</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># admin.py</span>
+
+<span class="o">...</span>
 <span class="kn">from</span> <span class="nn">admin_kit.fields</span> <span class="kn">import</span> <span class="n">MultiSelectField</span>
 
-<span class="k">class</span> <span class="nc">BookAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
-    <span class="n">genres</span> <span class="o">=</span> <span class="n">MultiSelectField</span><span class="p">(</span><span class="n">ajax_source</span><span class="o">=</span><span class="s1">&#39;genres&#39;</span><span class="p">,</span> <span class="n">ajax_subscribe</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-                              <span class="n">ajax_target</span><span class="o">=</span><span class="s1">&#39;selected-genres:selectedValues&#39;</span><span class="p">)</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">Books</span>
+<span class="k">class</span> <span class="nc">BookForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+    <span class="n">selected_fields</span> <span class="o">=</span> <span class="n">MultiSelectField</span><span class="p">(</span><span class="n">ajax_source</span><span class="o">=</span><span class="s1">&#39;genres&#39;</span><span class="p">,</span> <span class="n">ajax_subscribe</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;genres&#39;</span><span class="p">)</span>
+
+ <span class="k">class</span> <span class="nc">BookAdmin</span><span class="p">(</span><span class="n">nested_admin</span><span class="o">.</span><span class="n">NestedStackedInline</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">BookForm</span>
 </pre></div>
 </div>
 <p>is equivalent to</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="o">...</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># admin.py</span>
+
+<span class="o">...</span>
 <span class="kn">from</span> <span class="nn">admin_kit.fields</span> <span class="kn">import</span> <span class="n">MultiSelectField</span>
 
-<span class="k">class</span> <span class="nc">BookAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
-    <span class="n">genres</span> <span class="o">=</span> <span class="n">MultiSelectField</span><span class="p">(</span><span class="n">kit_config</span><span class="o">=</span><span class="p">{</span>
-        <span class="s1">&#39;ajax-source&#39;</span><span class="p">:</span> <span class="s1">&#39;genres&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;ajax-subscribe&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-        <span class="s1">&#39;ajax-target&#39;</span><span class="p">:</span> <span class="s1">&#39;selected-genres:selectedValues&#39;</span>
-    <span class="p">})</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">Books</span>
+<span class="k">class</span> <span class="nc">BookForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+    <span class="n">kit_config</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;ajax-source&#39;</span><span class="p">:</span> <span class="s1">&#39;genres&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;ajax-subscribe&#39;</span><span class="p">:</span> <span class="bp">True</span>
+    <span class="p">}</span>
+    <span class="n">selected_fields</span> <span class="o">=</span> <span class="n">MultiSelectField</span><span class="p">(</span><span class="n">kit_config</span><span class="o">=</span><span class="n">kit_config</span><span class="p">)</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;genres&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">BookAdmin</span><span class="p">(</span><span class="n">nested_admin</span><span class="o">.</span><span class="n">NestedStackedInline</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">BookForm</span>
 </pre></div>
 </div>
 <div class="last admonition note">
@@ -262,6 +276,21 @@ to this parameter.</p>
 </dd>
 </dl>
 </li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="select-form-field">
+<h2>Select Form Field<a class="headerlink" href="#select-form-field" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p><a class="reference internal" href="contents.html#admin_kit.fields.SelectField" title="admin_kit.fields.SelectField"><code class="xref py py-class docutils literal"><span class="pre">SelectField</span></code></a> provides Selecting features. It is similar
+to <a class="reference internal" href="contents.html#admin_kit.fields.MultiSelectField" title="admin_kit.fields.MultiSelectField"><code class="xref py py-class docutils literal"><span class="pre">MultiSelectField</span></code></a>, but provides a single value to select.</p>
+<p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">choices</span></code></li>
+<li><code class="docutils literal"><span class="pre">ajax_source</span></code></li>
+<li><code class="docutils literal"><span class="pre">ajax_target</span></code></li>
+<li><code class="docutils literal"><span class="pre">ajax_subscribe</span></code></li>
+<li><code class="docutils literal"><span class="pre">kit_config</span></code></li>
 </ul>
 </div></blockquote>
 </div>
@@ -311,7 +340,7 @@ to this parameter.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.0.1',
+            VERSION:'0.0.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

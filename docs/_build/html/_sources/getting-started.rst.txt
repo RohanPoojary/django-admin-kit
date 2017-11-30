@@ -13,6 +13,8 @@ Configuration
 
     .. code-block:: python
 
+        # settings.py
+
         INSTALLED_APPS = [
             'admin_kit',
             
@@ -26,7 +28,10 @@ Configuration
 
     .. code-block:: python
 
+        # urls.py
+
         from django.conf.urls import url
+        import admin_kit
         
         urlpatterns = [
             ...
@@ -54,6 +59,11 @@ Duplicate Button
     
     To disable this feature set ``KIT_DISABLE_DUPLICATE = True`` in settings file.
 
+    .. note::
+
+        The duplicate button is only on **Inline Admin Models** like :any:`Staked Inline <django.contrib.admin.StackedInline>`,
+        :any:`Tabular Inline <django.contrib.admin.TabularInline>` or :any:`nested_admin fields<nested_admin.NestedModelAdmin>`.
+
 
 Multi Select Field
 ------------------
@@ -62,6 +72,8 @@ Multi Select Field
     In **models.py** file
 
     .. code-block:: python
+
+        # models.py
 
         from admin_kit.models import MultiSelectField
 

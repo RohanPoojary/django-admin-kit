@@ -1,3 +1,7 @@
+"""
+    Django Admin Kit __init__ file. This file exposes the available modules
+
+"""
 from django.utils.module_loading import autodiscover_modules
 from . import widgets, fields, models
 from .sites import site
@@ -8,6 +12,10 @@ __all__ = [
 ]
 
 def autodiscover():
+    """
+    This module autodiscovers `ajax` module in the registered app
+
+    """
     autodiscover_modules('ajax', register_to=site)
 
 

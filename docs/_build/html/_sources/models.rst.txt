@@ -42,15 +42,17 @@ MultiSelectField
             
                 # ajax.py
 
-                from admin_kit import ajax
+                import admin_kit
 
-                class SelectedAjax(ajax.Ajax):
+                class SelectedGenresAjax(admin_kit.ajax.Ajax):
                     response_type = 'text'
 
                     def run(self, request):
                         query = request.GET.getlist('q[]')
                         response = ','.join(query)
                         return response
+
+                admin_kit.site.register('selected-genres', SelectedGenresAjax)
 
             This ajax class, joins query list ``q[]`` values with ``,`` and returns
             it in text format.
@@ -100,7 +102,7 @@ MultiSelectField
                     def run(self, request):
                         query = request.GET.getlist('q[]')
                         response = list(zip(query, query))
-                        return query
+                        return response
 
             This ajax class zips the selected query and returns it back.
 
@@ -155,3 +157,24 @@ MultiSelectField
             .. note::
                     
                     Make sure the *key names* are **hiphen seperated** and not *underscore* seperated.
+
+
+SelectField
+-----------
+    :class:`SelectField<admin_kit.models.SelectField>` provides Selecting features. It has similar
+    behaviour as :class:`MultiSelectField<admin_kit.models.MultiSelectField>`. So below are the valid
+    parameters
+
+    **Parameters**
+
+    * ``max_length``
+            
+    * ``choices``
+        
+    * ``ajax_source``
+            
+    * ``ajax_target``
+            
+    * ``ajax_subscribe``
+    
+    * ``kit_config``

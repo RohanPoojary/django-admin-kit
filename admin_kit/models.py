@@ -1,10 +1,13 @@
+"""
+    Admin Kit Models module
+
+"""
+
 from django.db import models as dj_models
-from django.core import exceptions
-from django import forms
 
 from . import fields
 
-__all__ = ['BaseField', 'MultiSelectField']
+__all__ = ['BaseField', 'MultiSelectField', 'SelectField']
 
 
 class BaseField(dj_models.Field):
@@ -56,7 +59,7 @@ class BaseField(dj_models.Field):
         value = self.value_from_object(obj)
         return self.get_prep_value(value)
 
-    def from_db_value(self, value, expression, connection, context):
+    def from_db_value(self, value, *args, **kwargs):
         """
         Returns value from the database. inherited models should override this
         """
@@ -68,7 +71,7 @@ class BaseField(dj_models.Field):
         """
         pass
 
-    def formfield(self, form_class, choices_form_class=None, **kwargs):
+    def formfield(self, form_class=None, choices_form_class=None, **kwargs):
         """
         Returns the form object to be used for rendering.
         """
@@ -122,11 +125,17 @@ class MultiSelectField(BaseField):
         super(MultiSelectField, self).__init__(*args, **kwargs)
 
     def db_type(self, connection):
+        """
+        Sets `db_type` to either varchar or longtext depending on `max_length`
+        """
         if self.max_length:
             return 'varchar(%s)' % self.max_length
         return 'longtext'
 
     def deconstruct(self):
+        """
+        Deconstructs MultiSelect Field
+        """
         name, path, args, kwargs = super(MultiSelectField, self).deconstruct()
         if self.max_length:
             kwargs['max_length'] = self.max_length
@@ -135,24 +144,80 @@ class MultiSelectField(BaseField):
         return name, path, args, kwargs
 
     def get_prep_value(self, value):
+        """
+        Converts value to a string
+        """
         if isinstance(value, list):
             return self.seperator.join(value)
         return value
 
     def to_python(self, value):
+        """
+        Converts the string value to a list
+        """
         if value is None:
             return None
         if isinstance(value, str):
             return value.split(self.seperator)
         return value
 
-    def formfield(self, **kwargs):
+    def formfield(self, form_class=None, choices_form_class=None, **kwargs):
+        """
+        Sets form to be used for rendering
+        """
         if not self.choices:
             self.choices.append(('', '---------'))
         defaults = {
-            'form_class': fields.MultiSelectField,
+            'form_class': form_class or fields.MultiSelectField,
+            'choices_form_class': choices_form_class or fields.MultiSelectField,
             'seperator': self.seperator,
             'choices': self.choices,
         }
         defaults.update(kwargs)
         return super(MultiSelectField, self).formfield(**defaults)
+
+
+class SelectField(BaseField):
+    """
+    The Select model field of Admin-Kit, which allows users to create
+    select ajax fields.
+
+    """
+
+    def __init__(self, *args, **kwargs):
+        """
+        Initializes SelectField
+        """
+        self.max_length = kwargs.pop('max_length', None)
+        super(SelectField, self).__init__(*args, **kwargs)
+
+    def db_type(self, connection):
+        """
+        Sets `db_type` to either varchar or longtext depending on `max_length`
+        """
+        if self.max_length:
+            return 'varchar(%s)' % self.max_length
+        return 'longtext'
+
+    def deconstruct(self):
+        """
+        Deconstructs SelectField
+        """
+        name, path, args, kwargs = super(SelectField, self).deconstruct()
+        if self.max_length:
+            kwargs['max_length'] = self.max_length
+        return name, path, args, kwargs
+
+    def formfield(self, form_class=None, choices_form_class=None, **kwargs):
+        """
+        Sets form to be used for rendering
+        """
+        if not self.choices:
+            self.choices.append(('', '---------'))
+        defaults = {
+            'form_class': form_class or fields.SelectField,
+            'choices_form_class': choices_form_class or fields.SelectField,
+            'choices': self.choices,
+        }
+        defaults.update(kwargs)
+        return super(SelectField, self).formfield(**defaults)

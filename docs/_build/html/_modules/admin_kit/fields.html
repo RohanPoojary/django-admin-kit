@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>admin_kit.fields &mdash; Django Admin Kit 0.0.1 documentation</title>
+  <title>admin_kit.fields &mdash; Django Admin Kit 0.0.2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="Django Admin Kit 0.0.1 documentation" href="../../index.html"/>
+    <link rel="top" title="Django Admin Kit 0.0.2 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.0.1
+                0.0.2
               </div>
             
           
@@ -163,12 +163,17 @@
            <div itemprop="articleBody">
             
   <h1>Source code for admin_kit.fields</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Admin Kit Fields module</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
 
 <span class="kn">from</span> <span class="nn">django</span> <span class="k">import</span> <span class="n">forms</span>
-<span class="kn">from</span> <span class="nn">.widgets</span> <span class="k">import</span> <span class="n">SelectMultipleWidget</span>
+<span class="kn">from</span> <span class="nn">.widgets</span> <span class="k">import</span> <span class="n">SelectWidget</span><span class="p">,</span> <span class="n">SelectMultipleWidget</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BaseField&#39;</span><span class="p">,</span> <span class="s1">&#39;MultiSelectField&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BaseField&#39;</span><span class="p">,</span> <span class="s1">&#39;MultiSelectField&#39;</span><span class="p">,</span> <span class="s1">&#39;SelectField&#39;</span><span class="p">]</span>
 
 <div class="viewcode-block" id="BaseField"><a class="viewcode-back" href="../../contents.html#admin_kit.fields.BaseField">[docs]</a><span class="k">class</span> <span class="nc">BaseField</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Field</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -176,7 +181,8 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kit_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ajax_source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ajax_target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ajax_subscribe</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kit_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ajax_source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ajax_target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">ajax_subscribe</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        kit_config :: dict</span>
 <span class="sd">            The config map containing the parameters and their values</span>
@@ -226,7 +232,8 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seperator</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">(),</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">seperator</span> <span class="o">=</span> <span class="n">seperator</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_coerce</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;coerce&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;coerce&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_coerce</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">MultiSelectField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">choices</span> <span class="o">=</span> <span class="n">choices</span> <span class="ow">or</span> <span class="p">[[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">]]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">choices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">choices</span>
@@ -234,7 +241,7 @@
 
     <span class="k">def</span> <span class="nf">prepare_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="n">value</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">MultiSelectField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">prepare_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coerce</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_coerce&#39;</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coerce</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">value</span>
@@ -247,6 +254,24 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seperator</span><span class="p">)))</span>
         <span class="k">return</span> <span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="SelectField"><a class="viewcode-back" href="../../contents.html#admin_kit.fields.SelectField">[docs]</a><span class="k">class</span> <span class="nc">SelectField</span><span class="p">(</span><span class="n">BaseField</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This field is used to create MultiSelect Form fields.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">widget</span> <span class="o">=</span> <span class="n">SelectWidget</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">(),</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Intializes SelectField</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s1">&#39;coerce&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SelectField</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">choices</span> <span class="o">=</span> <span class="n">choices</span> <span class="ow">or</span> <span class="p">[[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">choices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">choices</span></div>
 </pre></div>
 
            </div>
@@ -283,7 +308,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.0.1',
+            VERSION:'0.0.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

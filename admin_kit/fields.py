@@ -1,9 +1,14 @@
+"""
+    Admin Kit Fields module
+
+"""
+
 import json
 
 from django import forms
-from .widgets import SelectMultipleWidget
+from .widgets import SelectWidget, SelectMultipleWidget
 
-__all__ = ['BaseField', 'MultiSelectField']
+__all__ = ['BaseField', 'MultiSelectField', 'SelectField']
 
 class BaseField(forms.Field):
     """
@@ -11,7 +16,8 @@ class BaseField(forms.Field):
 
     """
 
-    def __init__(self, kit_config=None, ajax_source=None, ajax_target=None, ajax_subscribe=None, *args, **kwargs):
+    def __init__(self, kit_config=None, ajax_source=None, ajax_target=None,
+                 ajax_subscribe=None, *args, **kwargs):
         """
         kit_config :: dict
             The config map containing the parameters and their values
@@ -83,3 +89,21 @@ class MultiSelectField(BaseField):
         if isinstance(value, str):
             return list(map(str.strip, value.split(self.seperator)))
         return value
+
+
+class SelectField(BaseField):
+    """
+    This field is used to create MultiSelect Form fields.
+
+    """
+    widget = SelectWidget
+
+    def __init__(self, choices=(), *args, **kwargs):
+        """
+        Intializes SelectField
+        """
+        if 'coerce' in kwargs:
+            kwargs.pop('coerce')
+        super(SelectField, self).__init__(*args, **kwargs)
+        self.choices = choices or [['', '']]
+        self.widget.choices = self.choices

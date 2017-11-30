@@ -1,0 +1,19 @@
+[
+    {
+        "model": "test_duplicate.Author",
+        "pk": 1,
+        "fields": {
+            "name": "author"
+        }
+    },
+    {
+        "model": "test_duplicate.Book",
+        "pk": 1,
+        "fields": {
+            "name": "book",
+            "genres": "thriller,philosophy",
+            "main_genre": "thriller",
+            "author": 1
+        }
+    }
+]

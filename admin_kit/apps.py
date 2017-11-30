@@ -1,3 +1,9 @@
+"""
+    Admin Kit apps module.
+    This autodiscovers modules
+
+"""
+
 from django.apps import AppConfig
 
 class AdminKitConfig(AppConfig):

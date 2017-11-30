@@ -1,3 +1,8 @@
+"""
+    Admin Kit Ajax module
+
+"""
+
 import json
 import re
 
@@ -43,7 +48,7 @@ class Ajax:
         ``key``
 
         **Example**::
-    
+
             >>> import DummyAjaxClass
             >>> DummyAjaxClass.generateKey('the_key')
             the_key
