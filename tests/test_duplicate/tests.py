@@ -45,20 +45,17 @@ class TestModule(SeleniumTestCase):
     def test_model_duplication(self):
         self.login()
         self.selenium.get(self.live_server_url + '/admin/test_duplicate/author/1')
-        WebDriverWait(self.selenium, 5).until(
-            EC.presence_of_element_located((By.LINK_TEXT, 'Add a Duplicate'))
-        )
         self.selenium.find_element_by_xpath('//a[text()="Add a Duplicate"]').click()
 
-        book1 = self.selenium.find_element_by_id("id_book_set-0-name")
-        book2 = self.selenium.find_element_by_id("id_book_set-1-name")
-        assert book1.get_attribute('value') == book2.get_attribute('value')
+        name1 = self.selenium.find_element_by_id("id_book_set-0-name")
+        name2 = self.selenium.find_element_by_id("id_book_set-1-name")
+        self.assertEqual(name1.get_attribute('value'), name2.get_attribute('value'))
 
         genres1 = self.selenium.find_element_by_id("id_book_set-0-genres")
         genres2 = self.selenium.find_element_by_id("id_book_set-1-genres")
-        assert genres1.get_attribute('value') == genres2.get_attribute('value')
+        self.assertEqual(genres1.get_attribute('value'), genres2.get_attribute('value'))
 
         genres1 = self.selenium.find_element_by_id("id_book_set-0-main_genre")
         genres2 = self.selenium.find_element_by_id("id_book_set-1-main_genre")
-        assert genres1.get_attribute('value') == genres2.get_attribute('value')
+        self.assertEqual(genres1.get_attribute('value'), genres2.get_attribute('value'))
 

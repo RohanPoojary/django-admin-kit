@@ -1,12 +1,22 @@
 (function ($) {
     
-        $.fn.kitAttr = function(key) {
+        $.fn.kitAttr = function(key, value) {
             var attr = $(this).attr('data-kit-config');
-            if(attr != undefined) {
-                var attrObj = JSON.parse(attr);
+            if(attr == undefined)
+                return attr;
+            var attrObj = JSON.parse(attr);
+            if(value == undefined)
                 return attrObj[key];
+            attrObj[key] = value;
+            $(this).attr('data-kit-config', JSON.stringify(attrObj));
+        };
+
+        $.fn.kitVal = function() {
+            var value = $(this).val();
+            if($(this).attr('multiple') != undefined) {
+                value = $(this).val().join();
             }
-            return attr;
+            return value
         };
     
         $.fn.kitFind = function(config) {
@@ -81,6 +91,9 @@
                 },
                 success: function(data) {
                     var parentModule = element.parents('.module').eq(0);
+
+                    if(data.no_return != undefined || data.no_return == true)
+                        return
     
                     if(targetElement != undefined) {
                         var parentId = parentModule.parent().attr('id');
@@ -207,7 +220,7 @@
             var curr_inputs = $row.find(":input");
             var prev_inputs = $prev.find(":input");
             
-            var prevValues = {};
+            var prevEleInd = {};
     
             if(cur_id == undefined) {
                 cur_id = $row.attr("id");
@@ -220,20 +233,24 @@
             for(var i = 0; i < prev_inputs.length ; i++){
                 var prevName = getSuffixName(prev_inputs.eq(i), prev_id);
                 if(prevName)
-                    prevValues[prevName] = prev_inputs.eq(i).val();
+                    prevEleInd[prevName] = i;
             }
         
             for(var i = 0; i < curr_inputs.length ; i++){
                 var currName = getSuffixName(curr_inputs.eq(i), cur_id);
-                if(currName)
-                    curr_inputs.eq(i).val(prevValues[currName]);
+                if(currName) {
+                    var prevElement = prev_inputs.eq(prevEleInd[currName]);
+                    curr_inputs.eq(i).val(prevElement.val());
+                    if(prevElement.hasClass('admin-kit')) {
+                        curr_inputs.eq(i).kitAttr('init-value', prevElement.kitVal());
+                    }
+                }
             }
         }
     })(django.jQuery);
     
     function getSuffixName(ele, suf_id) {
         var name = ele.attr('name');
-        
         for(var i = 0; i < ele.parents('.module').length - 1; i++) {
             name = name.replace(/-\d+/, '')
         }
@@ -249,9 +266,11 @@
         var suffix_name = suffix[suffix.length - 1];
     
         output = name.replace(suf_id + '-', '');
-    
-        if(suffix_name.toLowerCase() != suffix_name)
-            return undefined
+        
+        // console.log(suffix_name);
+        
+        // if(suffix_name.toLowerCase() != suffix_name)
+        //     return undefined
     
         return output
     
