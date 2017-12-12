@@ -3,13 +3,14 @@
 ![Build Status](https://travis-ci.org/RohanPoojary/django-admin-kit.svg?branch=master)
 ![Docs Status](https://readthedocs.org/projects/django-admin-kit/badge/?version=latest)
 ![Coverage Status](https://coveralls.io/repos/github/RohanPoojary/django-admin-kit/badge.svg?branch=master)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Django admin kit is developed to provide additional functionalities to django that includes Multi Select Field, Add duplicate models and easier Ajax bindings.
 
 
 # Compatibility
 
-The project is compatible with Django 1.11+ and Python 3.6+
+The project is compatible with Django 1.11+ and Python 3.5+
 
 # Installation
 
