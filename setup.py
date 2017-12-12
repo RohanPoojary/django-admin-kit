@@ -10,6 +10,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
+    python_requires='>=3',
     license='MIT',
     platforms='any',
     classifiers=[
