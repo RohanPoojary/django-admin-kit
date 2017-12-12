@@ -72,5 +72,13 @@ class Ajax:
             response = HttpResponse(json_output)
             response['Content-Type'] = 'application/json'
         else:
-            response = HttpResponse(str(output))
+            if output != None:
+                response = HttpResponse(str(output))
+            else:
+                response = HttpResponse(json.dumps(
+                    {
+                        "no_return": True 
+                    }
+                ))
+                response['Content-Type'] = 'application/json'
         return response

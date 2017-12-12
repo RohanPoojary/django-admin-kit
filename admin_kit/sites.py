@@ -27,13 +27,13 @@ class AdminKitSite:
         from django.shortcuts import render
         return render(request, 'admin_kit/ping.html')
 
-    def base_js(self, request):
+    def js_config(self, request):
         """
-        Renders the base.js file that handles ajax calls
+        Renders the config.js file which configures global variables
 
         """
         from django.shortcuts import render
-        base_index = request.path.rfind('base.js')
+        base_index = request.path.rfind('js_config')
         app_url = request.path[:base_index-1]
         enable_dup = True
         try:
@@ -41,7 +41,7 @@ class AdminKitSite:
             enable_dup = not settings.KIT_DISABLE_DUPLICATE
         except AttributeError:
             enable_dup = True
-        return render(request, 'admin_kit/base.js',
+        return render(request, 'admin_kit/config.js',
                       context={"app": app_url, "duplicate": enable_dup},
                       content_type="text/javascript")
 
@@ -76,7 +76,7 @@ class AdminKitSite:
 
         urlpatterns = [
             url(r'^ajax/(?P<key>.*)/', self.ajax, name='ajax'),
-            url(r'base.js/', self.base_js, name='base_js')
+            url(r'js_config/', self.js_config, name='js_config')
         ]
 
         if settings.DEBUG or hasattr(settings, 'TEST_MODE'):

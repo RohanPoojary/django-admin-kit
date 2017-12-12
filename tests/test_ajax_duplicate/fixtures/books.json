@@ -1,0 +1,29 @@
+[
+    {
+        "model": "test_ajax_duplicate.Author",
+        "pk": 1,
+        "fields": {
+            "name": "author"
+        }
+    },
+    {
+        "model": "test_ajax_duplicate.Book",
+        "pk": 1,
+        "fields": {
+            "name": "book1",
+            "genres": "thriller,philosophy",
+            "filteredGenres": "thriller",
+            "author": 1
+        }
+    },
+    {
+        "model": "test_ajax_duplicate.Book",
+        "pk": 1,
+        "fields": {
+            "name": "book2",
+            "genres": "thriller,philosophy",
+            "filteredGenres": "philosophy",
+            "author": 1
+        }
+    }
+]

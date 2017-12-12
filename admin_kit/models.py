@@ -52,13 +52,6 @@ class BaseField(dj_models.Field):
         kwargs['kit_config'] = self.kit_config
         return name, path, args, kwargs
 
-    def value_to_string(self, obj):
-        """
-        Converts the value of the object to a string
-        """
-        value = self.value_from_object(obj)
-        return self.get_prep_value(value)
-
     def from_db_value(self, value, *args, **kwargs):
         """
         Returns value from the database. inherited models should override this
@@ -115,6 +108,9 @@ class MultiSelectField(BaseField):
 
     """
 
+    choices = [('', '---------')]
+
+
     def __init__(self, seperator=',', *args, **kwargs):
         """
         seperator :: str
@@ -165,8 +161,6 @@ class MultiSelectField(BaseField):
         """
         Sets form to be used for rendering
         """
-        if not self.choices:
-            self.choices.append(('', '---------'))
         defaults = {
             'form_class': form_class or fields.MultiSelectField,
             'choices_form_class': choices_form_class or fields.MultiSelectField,
@@ -183,6 +177,7 @@ class SelectField(BaseField):
     select ajax fields.
 
     """
+    choices = [('', '---------')]
 
     def __init__(self, *args, **kwargs):
         """
@@ -212,8 +207,6 @@ class SelectField(BaseField):
         """
         Sets form to be used for rendering
         """
-        if not self.choices:
-            self.choices.append(('', '---------'))
         defaults = {
             'form_class': form_class or fields.SelectField,
             'choices_form_class': choices_form_class or fields.SelectField,

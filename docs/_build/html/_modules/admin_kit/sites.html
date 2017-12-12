@@ -192,13 +192,13 @@
         <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="k">import</span> <span class="n">render</span>
         <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;admin_kit/ping.html&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="AdminKitSite.base_js"><a class="viewcode-back" href="../../contents.html#admin_kit.sites.AdminKitSite.base_js">[docs]</a>    <span class="k">def</span> <span class="nf">base_js</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<div class="viewcode-block" id="AdminKitSite.js_config"><a class="viewcode-back" href="../../contents.html#admin_kit.sites.AdminKitSite.js_config">[docs]</a>    <span class="k">def</span> <span class="nf">js_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Renders the base.js file that handles ajax calls</span>
+<span class="sd">        Renders the config.js file which configures global variables</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="k">import</span> <span class="n">render</span>
-        <span class="n">base_index</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;base.js&#39;</span><span class="p">)</span>
+        <span class="n">base_index</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;js_config&#39;</span><span class="p">)</span>
         <span class="n">app_url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">[:</span><span class="n">base_index</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">enable_dup</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">try</span><span class="p">:</span>
@@ -206,7 +206,7 @@
             <span class="n">enable_dup</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">settings</span><span class="o">.</span><span class="n">KIT_DISABLE_DUPLICATE</span>
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
             <span class="n">enable_dup</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;admin_kit/base.js&#39;</span><span class="p">,</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;admin_kit/config.js&#39;</span><span class="p">,</span>
                       <span class="n">context</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;app&quot;</span><span class="p">:</span> <span class="n">app_url</span><span class="p">,</span> <span class="s2">&quot;duplicate&quot;</span><span class="p">:</span> <span class="n">enable_dup</span><span class="p">},</span>
                       <span class="n">content_type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span><span class="p">)</span></div>
 
@@ -241,10 +241,10 @@
 
         <span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^ajax/(?P&lt;key&gt;.*)/&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ajax</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;ajax&#39;</span><span class="p">),</span>
-            <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;base.js/&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_js</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;base_js&#39;</span><span class="p">)</span>
+            <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;js_config/&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">js_config</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;js_config&#39;</span><span class="p">)</span>
         <span class="p">]</span>
 
-        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">DEBUG</span> <span class="ow">or</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s1">&#39;TEST_MODE&#39;</span><span class="p">):</span>
             <span class="n">urlpatterns</span> <span class="o">+=</span> <span class="p">[</span><span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^ping&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ping</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;ping&#39;</span><span class="p">)]</span>
 
         <span class="k">return</span> <span class="n">urlpatterns</span></div>

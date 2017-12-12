@@ -217,13 +217,6 @@
         <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;kit_config&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kit_config</span>
         <span class="k">return</span> <span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span></div>
 
-<div class="viewcode-block" id="BaseField.value_to_string"><a class="viewcode-back" href="../../contents.html#admin_kit.models.BaseField.value_to_string">[docs]</a>    <span class="k">def</span> <span class="nf">value_to_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Converts the value of the object to a string</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_from_object</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_prep_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="BaseField.from_db_value"><a class="viewcode-back" href="../../contents.html#admin_kit.models.BaseField.from_db_value">[docs]</a>    <span class="k">def</span> <span class="nf">from_db_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns value from the database. inherited models should override this</span>
@@ -280,6 +273,9 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">choices</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;---------&#39;</span><span class="p">)]</span>
+
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seperator</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        seperator :: str</span>
@@ -330,8 +326,6 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets form to be used for rendering</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">choices</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">choices</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;---------&#39;</span><span class="p">))</span>
         <span class="n">defaults</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;form_class&#39;</span><span class="p">:</span> <span class="n">form_class</span> <span class="ow">or</span> <span class="n">fields</span><span class="o">.</span><span class="n">MultiSelectField</span><span class="p">,</span>
             <span class="s1">&#39;choices_form_class&#39;</span><span class="p">:</span> <span class="n">choices_form_class</span> <span class="ow">or</span> <span class="n">fields</span><span class="o">.</span><span class="n">MultiSelectField</span><span class="p">,</span>
@@ -348,6 +342,7 @@
 <span class="sd">    select ajax fields.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">choices</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;---------&#39;</span><span class="p">)]</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -377,8 +372,6 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets form to be used for rendering</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">choices</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">choices</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;---------&#39;</span><span class="p">))</span>
         <span class="n">defaults</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;form_class&#39;</span><span class="p">:</span> <span class="n">form_class</span> <span class="ow">or</span> <span class="n">fields</span><span class="o">.</span><span class="n">SelectField</span><span class="p">,</span>
             <span class="s1">&#39;choices_form_class&#39;</span><span class="p">:</span> <span class="n">choices_form_class</span> <span class="ow">or</span> <span class="n">fields</span><span class="o">.</span><span class="n">SelectField</span><span class="p">,</span>

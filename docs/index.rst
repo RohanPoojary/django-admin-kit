@@ -8,7 +8,7 @@ Django Admin Kit adds more functionality to admin page. This includes easier **A
 
 Compatibility
 =============
-This is compatible with `Django`_ (version 1.11+) and `Python 3.6+`_
+This is compatible with `Django`_ (version 1.11+) and `Python 3.5+`_
 
 
 .. toctree::
@@ -35,5 +35,5 @@ Liscense
 
 
 .. _Django: http://docs.djangoproject.com/en/1.11/
-.. _Python 3.6+: https://docs.python.org/3/
+.. _Python 3.5+: https://docs.python.org/3/
 .. _The MIT License: https://opensource.org/licenses/MIT

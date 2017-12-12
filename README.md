@@ -1,10 +1,16 @@
 # Django Admin Kit
 
+![Build Status](https://travis-ci.org/RohanPoojary/django-admin-kit.svg?branch=master)
+![Docs Status](https://readthedocs.org/projects/django-admin-kit/badge/?version=latest)
+![Coverage Status](https://coveralls.io/repos/github/RohanPoojary/django-admin-kit/badge.svg?branch=master)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Django admin kit is developed to provide additional functionalities to django that includes Multi Select Field, Add duplicate models and easier Ajax bindings.
+
 
 # Compatibility
 
-The project is compatible with Django 1.11+ and Python 3.6+
+The project is compatible with Django 1.11+ and Python 3.5+
 
 # Installation
 
@@ -60,9 +66,9 @@ This is a default feature that is added right after successfull configuration of
 This button is similar to ``Add Another`` button, but it initializes the fields with previously
 filled data. It is also compatible with [django-nested-admin](https://github.com/theatlantic/django-nested-admin). This button is only for inlined fields.
 
-## MultiSelect fields
+## New Fields
 
-Multi Select fields for both models and fields.
+Proviedes new fields like MultiSelect and SelectField with supports ajax features.
 
 ## Ajax Features
 
