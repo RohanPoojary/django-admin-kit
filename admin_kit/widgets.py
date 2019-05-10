@@ -13,7 +13,7 @@ class SelectMultipleWidget(SelectMultiple):
     MultiSelect Widget which inherits Django's SelectMultiple widget
 
     """
-
+    print("------------------------------------------------")
     template_name = 'admin_kit/widgets/select.html'
     option_template_name = 'admin_kit/widgets/select_option.html'
 

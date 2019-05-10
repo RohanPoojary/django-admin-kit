@@ -1,13 +1,24 @@
-<select name="{{ widget.name }}" {% include "django/forms/widgets/attrs.html" %}>
-    {% for group_name, group_choices, group_index in widget.optgroups %}
+<head>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.0.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () { $("#select2id").select2(); });
+    </script>
+</head>
+
+<body>
+    <select name={{widget.name}} id="select2id" multiple {% include "django/forms/widgets/attrs.html" %}>
+        {% for group_name, group_choices, group_index in widget.optgroups %}
         {% if group_name %}
-            <optgroup label="{{ group_name }}">
-        {% endif %}
-        {% for option in group_choices %}
+        <optgroup label="{{ group_name }}">
+            {% endif %}
+            {% for option in group_choices %}
             {% include option.template_name with widget=option %}
-        {% endfor %}
-        {% if group_name %}
-            </optgroup>
+            {% endfor %}
+            {% if group_name %}
+        </optgroup>
         {% endif %}
-    {% endfor %}
-</select>
+        {% endfor %}
+    </select>
+</body>
