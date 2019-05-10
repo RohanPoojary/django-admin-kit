@@ -34,7 +34,6 @@ class AdminKitSite:
         Renders the config.js file which configures global variables
 
         """
-        print("js config being called")
         from django.shortcuts import render
         base_index = request.path.rfind('js_config')
         app_url = request.path[:base_index-1]
@@ -93,7 +92,6 @@ class AdminKitSite:
         The actual property used by django for routing requests
 
         """
-        print("urls from admin_kit called")
         return self.get_urls(), 'admin_kit', self.name
 
 
