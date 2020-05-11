@@ -77,6 +77,8 @@
             targetElement = target.slice(target.indexOf(':') + 1);
             target = target.slice(0, target.indexOf(':'))
         }
+        var target_array = target.split(',');
+        target_array.forEach(function (target) {
         var target_url = window.AdminKitConfig.appName + '/ajax/' + target + '/';
         var value = element.val();
 
@@ -111,6 +113,7 @@
                 }
             }
         });
+        })
     }
 
     function InitializeAdminKit(element, data, update) {
