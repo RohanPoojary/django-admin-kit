@@ -9,11 +9,13 @@ all_sites = WeakSet()
 
 __all__ = ['AdminKitSite', 'site']
 
+
 class AdminKitSite:
     """
     The main AdminKitSite that routes and process url requests.
 
     """
+
     def __init__(self, name='admin_kit'):
         self._registry = {}
         self.name = name
@@ -92,4 +94,6 @@ class AdminKitSite:
         """
         return self.get_urls(), 'admin_kit', self.name
 
+
 site = AdminKitSite()
+# Exposing AdminKitSite as site.
