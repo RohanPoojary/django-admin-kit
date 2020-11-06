@@ -4,10 +4,26 @@
 """
 
 from weakref import WeakSet
+from .ajax import Ajax
 
 all_sites = WeakSet()
 
 __all__ = ['AdminKitSite', 'site']
+
+class InternalAjax(Ajax):
+
+    def __init__(self, *args, **kwargs):
+        self.choices_map = {}
+        super(InternalAjax, self).__init__(*args, **kwargs)
+
+    def insert_choice(self, key, choices):
+        self.choices_map[key] = choices
+
+    def run(self, request, **kwargs):
+        key = kwargs["query_key"]
+        choices = map(lambda x: (x[1], x[0]), self.choices_map.get(key, []))
+        return list(choices)
+
 
 class AdminKitSite:
     """
@@ -17,6 +33,7 @@ class AdminKitSite:
     def __init__(self, name='admin_kit'):
         self._registry = {}
         self.name = name
+        self.internal_site = InternalAjax()
         all_sites.add(self)
 
     def ping(self, request):
@@ -26,6 +43,9 @@ class AdminKitSite:
         """
         from django.shortcuts import render
         return render(request, 'admin_kit/ping.html')
+
+    def set_choice(self, key, choices):
+        self.internal_site.insert_choice(key, choices)
 
     def js_config(self, request):
         """
@@ -63,7 +83,19 @@ class AdminKitSite:
         Calls route method
 
         """
-        response = self._registry[key].route(request)
+        kwargs = {}
+        kwargs["query_list"] = request.GET.getlist('q[]')
+        kwargs["query"] = request.GET.get('q')
+        kwargs["query_key"] = key
+
+        if key.startswith("__"):
+            key = key.lstrip("__")
+            kwargs["query_key"] = key
+            response = self.internal_site.route(request, **kwargs)
+        else:
+            response = self._registry[key].route(request, **kwargs)
+
+
         return response
 
     def get_urls(self):
@@ -93,3 +125,4 @@ class AdminKitSite:
         return self.get_urls(), 'admin_kit', self.name
 
 site = AdminKitSite()
+

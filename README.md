@@ -10,7 +10,8 @@ Django admin kit is developed to provide additional functionalities to django th
 
 # Compatibility
 
-The project is compatible with Django 1.11+ and Python 3.5+
+The project is compatible with Django 1.11+, Django 2.0+ and Python 3.5+
+It is not compatible with Django-3.0 yet.
 
 # Installation
 
