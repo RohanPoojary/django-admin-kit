@@ -4,10 +4,17 @@
 """
 
 from django.db import models as dj_models
+import base64
+from .sites import AdminKitSite
 
 from . import fields
+from .sites import site
 
 __all__ = ['BaseField', 'MultiSelectField', 'SelectField']
+
+def generate_choices_hash(choices):
+    base64_encode = base64.b64encode(str(choices).encode("ascii"))
+    return base64_encode.decode("ascii")
 
 
 class BaseField(dj_models.Field):
@@ -29,6 +36,11 @@ class BaseField(dj_models.Field):
             If True, then with every change in ``ajax_target``,
             it fills corresponding ``ajax_source``
         """
+        if kwargs.get("choices", None) and not ajax_source:
+            hash_key = generate_choices_hash(kwargs["choices"])
+            ajax_source = "__" + hash_key
+            site.set_choice(hash_key, kwargs["choices"])
+            kwargs.pop("choices")
 
         self.ajax_source = ajax_source
         self.ajax_target = ajax_target
@@ -86,6 +98,8 @@ class BaseField(dj_models.Field):
                 defaults['show_hidden_initial'] = True
             else:
                 defaults['initial'] = self.get_default()
+
+
         if self.choices:
             include_blank = (self.blank or
                              not (self.has_default() or 'initial' in kwargs))
@@ -97,7 +111,9 @@ class BaseField(dj_models.Field):
                 form_class = choices_form_class
             else:
                 form_class = form_class
+
         defaults.update(kwargs)
+
         return form_class(**defaults)
 
 
@@ -139,6 +155,9 @@ class MultiSelectField(BaseField):
             kwargs['seperator'] = self.seperator
         return name, path, args, kwargs
 
+    def get_internal_type(self):
+        return "SelectField"
+
     def get_prep_value(self, value):
         """
         Converts value to a string
@@ -147,15 +166,22 @@ class MultiSelectField(BaseField):
             return self.seperator.join(value)
         return value
 
+    def value_to_string(self, obj):
+        """
+        Return a string value of this field from the passed obj.
+        This is used by the serialization framework.
+        """
+        return str(self.value_from_object(obj))
+
     def to_python(self, value):
         """
         Converts the string value to a list
         """
         if value is None:
             return None
-        if isinstance(value, str):
-            return value.split(self.seperator)
-        return value
+        if isinstance(value, list):
+            return value
+        return value.split(self.seperator)
 
     def formfield(self, form_class=None, choices_form_class=None, **kwargs):
         """
@@ -194,6 +220,9 @@ class SelectField(BaseField):
             return 'varchar(%s)' % self.max_length
         return 'longtext'
 
+    def get_internal_type(self):
+        return "SelectField"
+
     def deconstruct(self):
         """
         Deconstructs SelectField
@@ -203,6 +232,13 @@ class SelectField(BaseField):
             kwargs['max_length'] = self.max_length
         return name, path, args, kwargs
 
+    def value_to_string(self, obj):
+        """
+        Return a string value of this field from the passed obj.
+        This is used by the serialization framework.
+        """
+        return str(self.value_from_object(obj))
+
     def formfield(self, form_class=None, choices_form_class=None, **kwargs):
         """
         Sets form to be used for rendering
@@ -211,6 +247,7 @@ class SelectField(BaseField):
             'form_class': form_class or fields.SelectField,
             'choices_form_class': choices_form_class or fields.SelectField,
             'choices': self.choices,
+            'initial': 'initial',
         }
         defaults.update(kwargs)
         return super(SelectField, self).formfield(**defaults)

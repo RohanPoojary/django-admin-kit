@@ -72,47 +72,69 @@
     }
 
     function ajaxTarget(element, target) {
-        var targetElement;
-        if(target.indexOf(':') >= 0) {
-            targetElement = target.slice(target.indexOf(':') + 1);
-            target = target.slice(0, target.indexOf(':'))
-        }
+        
         var target_array = target.split(',');
+
         target_array.forEach(function (target) {
-        var target_url = window.AdminKitConfig.appName + '/ajax/' + target + '/';
-        var value = element.val();
 
-        if(!element.hasClass('dirty') && !value && element.kitAttr('init-value'))
-            value = element.kitAttr('init-value').split(',');
+            var targetElement;
 
-        $.ajax({
-            method: 'get',
-            url: target_url,
-            data: {
-                q: value
-            },
-            success: function(data) {
-                var parentModule = element.parents('.module').eq(0);
+            if(target.indexOf(':') >= 0) {
+                targetElement = target.slice(target.indexOf(':') + 1);
+                target = target.slice(0, target.indexOf(':'))
+            }
 
-                if(data.no_return != undefined || data.no_return == true)
-                    return
+            var is_global = target[0] === "#";
 
-                if(targetElement != undefined) {
-                    var parentId = parentModule.parent().attr('id');
-                    var targetId = parentId + '-' + targetElement;
-                    var elements = parentModule.find('#id_' + targetId);
-                    elements.val(data);
-                } else {
-                    var elements = parentModule.kitFind({
-                        'ajax-source': target,
-                        'ajax-subscribe': true
-                    });
-                    for(var i = 0; i < elements.length; i++) {
-                        SetSelectField(elements.eq(i), data, getInitialValues(elements.eq(i)));
+            if (is_global) {
+                target = target.slice(1);
+            }
+
+            var target_url = window.AdminKitConfig.appName + '/ajax/' + target + '/';
+            var value = element.val();
+
+            if(!element.hasClass('dirty') && !value && element.kitAttr('init-value'))
+                value = element.kitAttr('init-value').split(',');
+
+            $.ajax({
+                method: 'get',
+                url: target_url,
+                data: {
+                    q: value
+                },
+                success: function(data) {
+                    var parentModule = element.parents('.module').eq(0);
+
+                    if(data.no_return != undefined || data.no_return == true)
+                        return
+
+                    if(targetElement != undefined) {
+                        var parentId = parentModule.parent().attr('id');
+                        var targetId = parentId + '-' + targetElement;
+                        var elements = parentModule.find('#id_' + targetId);
+                        elements.val(data);
+                    } else {
+                        var elements = [];
+                        if(is_global) {
+
+                            var elements = $("body").kitFind({
+                                'ajax-source': "#"+target,
+                                'ajax-subscribe': true
+                            });
+                        } else {
+
+                            var elements = parentModule.kitFind({
+                                'ajax-source': target,
+                                'ajax-subscribe': true
+                            });
+                        }
+
+                        for(var i = 0; i < elements.length; i++) {
+                            SetSelectField(elements.eq(i), data, getInitialValues(elements.eq(i)));
+                        }
                     }
                 }
-            }
-        });
+            });
         })
     }
 
@@ -265,16 +287,8 @@ function getSuffixName(ele, suf_id) {
     if(ele.attr('type') == 'hidden')
         return undefined;
 
-    var suffix = name.split('-');
-    var suffix_name = suffix[suffix.length - 1];
-
     output = name.replace(suf_id + '-', '');
     
-    // console.log(suffix_name);
-    
-    // if(suffix_name.toLowerCase() != suffix_name)
-    //     return undefined
-
     return output
 
 }
