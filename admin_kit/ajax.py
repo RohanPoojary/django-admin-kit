@@ -23,20 +23,20 @@ class Ajax:
     response_type = 'json'
     unique = False
 
-    def run(self, request):
+    def run(self, request, **kwargs):
         """
         This method should be overrided by the child class.
 
         """
         return "Hello World"
 
-    def route(self, request):
+    def route(self, request, **kwargs):
         """
         For a given request it executes the ``run`` method of the ``module_cls`` and returns
         the response
 
         """
-        output = self.run(request)
+        output = self.run(request, **kwargs)
         return self.format_response(output)
 
     @classmethod

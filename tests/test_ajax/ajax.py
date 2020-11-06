@@ -5,7 +5,7 @@ class TestEmpty(admin_kit.ajax.Ajax):
     response_type = 'text'
 
 class TestAjax(admin_kit.ajax.Ajax):
-    def run(self, request):
+    def run(self, request, **kwargs):
         output = (
             ('book1', '1'),
             ('book2', '2')
