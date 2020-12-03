@@ -93,8 +93,42 @@
             var target_url = window.AdminKitConfig.appName + '/ajax/' + target + '/';
             var value = element.val();
 
-            if(!element.hasClass('dirty') && !value && element.kitAttr('init-value'))
-                value = element.kitAttr('init-value').split(',');
+            if(!element.hasClass('dirty') && !value && element.kitAttr('init-value')) {
+                value = element.kitAttr('init-value');
+                if(element.attr('multiple') === 'multiple') {
+                    value = value.split(',');
+                }
+            }
+
+            var parentModule = element.parents('.module').eq(0);
+
+            var elements = [];
+
+            if(targetElement != undefined) {
+                var parentId = parentModule.parent().attr('id');
+                var targetId = parentId + '-' + targetElement;
+                elements = parentModule.find('#id_' + targetId);
+
+            } else {
+                if(is_global) {
+
+                    elements = $("body").kitFind({
+                        'ajax-source': "#"+target,
+                        'ajax-subscribe': true
+                    });
+                } else {
+
+                    elements = parentModule.kitFind({
+                        'ajax-source': target,
+                        'ajax-subscribe': true
+                    });
+                }
+            }
+
+            for(var i = 0; i < elements.length; i++) {
+                elements.eq(i).addClass('admin-kit-ready');
+            }
+
 
             $.ajax({
                 method: 'get',
@@ -103,32 +137,13 @@
                     q: value
                 },
                 success: function(data) {
-                    var parentModule = element.parents('.module').eq(0);
 
                     if(data.no_return != undefined || data.no_return == true)
                         return
 
                     if(targetElement != undefined) {
-                        var parentId = parentModule.parent().attr('id');
-                        var targetId = parentId + '-' + targetElement;
-                        var elements = parentModule.find('#id_' + targetId);
                         elements.val(data);
                     } else {
-                        var elements = [];
-                        if(is_global) {
-
-                            var elements = $("body").kitFind({
-                                'ajax-source': "#"+target,
-                                'ajax-subscribe': true
-                            });
-                        } else {
-
-                            var elements = parentModule.kitFind({
-                                'ajax-source': target,
-                                'ajax-subscribe': true
-                            });
-                        }
-
                         for(var i = 0; i < elements.length; i++) {
                             SetSelectField(elements.eq(i), data, getInitialValues(elements.eq(i)));
                         }
@@ -138,28 +153,32 @@
         })
     }
 
-    function InitializeAdminKit(element, data, update) {
-        if(element.hasClass('admin-kit-select')) {
-            if(update != true)
-                InitializeSelect(element, data);
-            ProcessAdminKit(element, data)
+    function InitializeAdminKit(element, data) {
+        if(element.hasClass('admin-kit-select') && !element.hasClass('admin-kit-ready')) {
+            ProcessAdminKit(element, data, true);
+            element.addClass('admin-kit-ready');
         }
     }
 
-    function ProcessAdminKit(element, query) {
+    function ProcessAdminKit(element, query, update_once) {
+        if (update_once === true && element.hasClass('admin-kit-ready')) {
+            return
+        }
+
         if(element.kitAttr('ajax-source') != undefined) {
             ajaxSource(element,  element.kitAttr('ajax-source'), '');
         }
+
         if(element.kitAttr('ajax-target') != undefined) {
             ajaxTarget(element,  element.kitAttr('ajax-target'), query);
         }
     }
 
     function AdminKitReady(element) {
-        InitializeAdminKit(element,[], true);
+        InitializeAdminKit(element,[]);
         element.on('change', function() {
             $(this).addClass('dirty');
-            ProcessAdminKit(element, element.val());
+            ProcessAdminKit(element, element.val(), false);
         });
     }
 
