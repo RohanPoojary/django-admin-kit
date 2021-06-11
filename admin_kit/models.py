@@ -5,19 +5,19 @@
 
 from django.db import models as dj_models
 import base64
-from .sites import AdminKitSite
 
 from . import fields
 from .sites import site
 
 __all__ = ['BaseField', 'MultiSelectField', 'SelectField']
 
+
 def generate_choices_hash(choices):
     base64_encode = base64.b64encode(str(list(choices)).encode("utf8"))
-    decode_message = base64_encode.decode("ascii") 
+    decode_message = base64_encode.decode("ascii")
     if len(decode_message) > 50:
         mid = int(len(decode_message) / 2)
-        decode_message = decode_message[mid-25:mid+25]
+        decode_message = decode_message[mid - 25:mid + 25]
     return decode_message
 
 
@@ -45,14 +45,17 @@ class BaseField(dj_models.Field):
             ajax_source = "__" + hash_key
             site.set_choice(hash_key, kwargs["choices"])
             kwargs.pop("choices")
-
+        self.default_value = None
+        if 'default' in kwargs:
+            self.default_value = kwargs['default']
+        if 'default_value' in kwargs:
+            kwargs.pop('default_value')
         self.ajax_source = ajax_source
         self.ajax_target = ajax_target
         self.ajax_subscribe = ajax_subscribe
         self.kit_config = dict()
         if kit_config:
             self.kit_config = kit_config
-
         super(BaseField, self).__init__(*args, **kwargs)
 
     def deconstruct(self):
@@ -64,8 +67,8 @@ class BaseField(dj_models.Field):
         kwargs['ajax_source'] = self.ajax_source
         kwargs['ajax_target'] = self.ajax_target
         kwargs['ajax_subscribe'] = self.ajax_subscribe
-
         kwargs['kit_config'] = self.kit_config
+        kwargs['default_value'] = self.default_value
         return name, path, args, kwargs
 
     def from_db_value(self, value, *args, **kwargs):
@@ -88,11 +91,10 @@ class BaseField(dj_models.Field):
             'required': not self.blank,
             'label': self.verbose_name,
             'help_text': self.help_text,
-
+            'default_value': self.default_value,
             'ajax_source': self.ajax_source,
             'ajax_target': self.ajax_target,
             'ajax_subscribe': self.ajax_subscribe,
-
             'kit_config': self.kit_config
         }
 
@@ -102,7 +104,6 @@ class BaseField(dj_models.Field):
                 defaults['show_hidden_initial'] = True
             else:
                 defaults['initial'] = self.get_default()
-
 
         if self.choices:
             include_blank = (self.blank or
@@ -115,9 +116,7 @@ class BaseField(dj_models.Field):
                 form_class = choices_form_class
             else:
                 form_class = form_class
-
         defaults.update(kwargs)
-
         return form_class(**defaults)
 
 
@@ -129,7 +128,6 @@ class MultiSelectField(BaseField):
     """
 
     choices = [('', '---------')]
-
 
     def __init__(self, seperator=',', *args, **kwargs):
         """
@@ -208,11 +206,14 @@ class SelectField(BaseField):
 
     """
     choices = [('', '---------')]
+    default_value = ''
 
     def __init__(self, *args, **kwargs):
         """
         Initializes SelectField
         """
+        if 'default' in kwargs:
+            self.default_value = kwargs['default']
         self.max_length = kwargs.pop('max_length', None)
         super(SelectField, self).__init__(*args, **kwargs)
 
@@ -252,6 +253,7 @@ class SelectField(BaseField):
             'choices_form_class': choices_form_class or fields.SelectField,
             'choices': self.choices,
             'initial': 'initial',
+            'default_value': self.default_value,
         }
         defaults.update(kwargs)
         return super(SelectField, self).formfield(**defaults)
