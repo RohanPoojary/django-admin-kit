@@ -4,7 +4,6 @@
 """
 
 import json
-
 from django import forms
 from .widgets import SelectWidget, SelectMultipleWidget
 
@@ -17,7 +16,7 @@ class BaseField(forms.Field):
     """
 
     def __init__(self, kit_config=None, ajax_source=None, ajax_target=None,
-                 ajax_subscribe=None, *args, **kwargs):
+                 ajax_subscribe=None, default_value=None, *args, **kwargs):
         """
         kit_config :: dict
             The config map containing the parameters and their values
@@ -32,6 +31,7 @@ class BaseField(forms.Field):
         self.ajax_source = ajax_source
         self.ajax_target = ajax_target
         self.ajax_subscribe = ajax_subscribe
+        self.default_value = default_value
 
         self.kit_config = dict()
         if kit_config:
@@ -51,7 +51,8 @@ class BaseField(forms.Field):
             kit_config['ajax-target'] = self.ajax_target
         if self.ajax_subscribe:
             kit_config['ajax-subscribe'] = self.ajax_subscribe
-
+        if self.default_value :
+            kit_config['default_value'] = self.default_value
         attrs['data-kit-config'] = json.dumps(kit_config)
 
         return attrs
