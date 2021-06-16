@@ -1,3 +1,10 @@
 .hidden {
     display: none;
 }
+
+.select2-selection__rendered{
+    margin-left: 0;
+    display: inline;
+    padding: 0;
+    list-style: none;
+}
