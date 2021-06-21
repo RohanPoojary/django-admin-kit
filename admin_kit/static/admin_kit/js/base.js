@@ -33,7 +33,8 @@
         defaultValue = element.kitAttr('default_value')
         for(var i in data) {
             var eligibleForPreSelect = false
-            if (data[i][1] == defaultValue) {
+             // This is to make sure we do pre selection of default values only in case of first time loading.
+            if (data[i][1] == defaultValue && initials['initial'] == true) {
                 eligibleForPreSelect = true
             }
             var newOption = new Option(data[i][0], data[i][1], (initials===true || initials[data[i][1]] === true || eligibleForPreSelect === true), (initials===true || initials[data[i][1]] === true || eligibleForPreSelect === true));

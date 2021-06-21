@@ -134,7 +134,8 @@ class MultiSelectField(BaseField):
         seperator :: str
             The selected fields will be joined by ``seperator`` and stored in the database.
         """
-        self.max_length = kwargs.pop('max_length', None)
+        if 'max_length' in kwargs:
+            self.max_length = kwargs['max_length']
         self.seperator = seperator
         super(MultiSelectField, self).__init__(*args, **kwargs)
 
@@ -214,7 +215,8 @@ class SelectField(BaseField):
         """
         if 'default' in kwargs:
             self.default_value = kwargs['default']
-        self.max_length = kwargs.pop('max_length', None)
+        if 'max_length' in kwargs:
+            self.max_length = kwargs['max_length']
         super(SelectField, self).__init__(*args, **kwargs)
 
     def db_type(self, connection):
