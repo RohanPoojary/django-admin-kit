@@ -49,6 +49,8 @@ class TestModule(SeleniumTestCase):
 
         name1 = self.selenium.find_element_by_id("id_book_set-0-name")
         name2 = self.selenium.find_element_by_id("id_book_set-1-name")
+        print(name1)
+        print(name2)
         self.assertEqual(name1.get_attribute('value'), name2.get_attribute('value'))
 
         genres1 = self.selenium.find_element_by_id("id_book_set-0-genres")
