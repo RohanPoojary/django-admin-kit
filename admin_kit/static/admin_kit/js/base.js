@@ -119,8 +119,9 @@
                      target = $("#"+targetID).kitAttr('ajax-source')
                  }
                  var target_url = window.AdminKitConfig.appName + '/ajax/' + target + '?'+queryString;
-                 console.log(target_url)
+                
                  (function(target_url, targetID){
+                     console.log(target_url)
                      $.ajax({
                          method: 'get',
                          url: target_url,
