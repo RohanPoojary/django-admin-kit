@@ -28,7 +28,7 @@ class BaseField(dj_models.Field):
     """
 
     def __init__(self, kit_config=None, ajax_source=None, ajax_target=None,
-                 ajax_subscribe=False, *args, **kwargs):
+                 ajax_subscribe=False, ajax_source_in_multi_dep=None, default_name=None,  *args, **kwargs):
         """
         kit_config :: dict
             The config map containing the parameters and their values
@@ -53,6 +53,8 @@ class BaseField(dj_models.Field):
         self.ajax_source = ajax_source
         self.ajax_target = ajax_target
         self.ajax_subscribe = ajax_subscribe
+        self.ajax_source_in_multi_dep = ajax_source_in_multi_dep
+        self.default_name = default_name
         self.kit_config = dict()
         if kit_config:
             self.kit_config = kit_config
@@ -69,6 +71,8 @@ class BaseField(dj_models.Field):
         kwargs['ajax_subscribe'] = self.ajax_subscribe
         kwargs['kit_config'] = self.kit_config
         kwargs['default_value'] = self.default_value
+        kwargs['ajax_source_in_multi_dep'] = self.ajax_source_in_multi_dep
+        kwargs['default_name'] = self.default_name
         return name, path, args, kwargs
 
     def from_db_value(self, value, *args, **kwargs):
@@ -93,6 +97,8 @@ class BaseField(dj_models.Field):
             'help_text': self.help_text,
             'default_value': self.default_value,
             'ajax_source': self.ajax_source,
+            'ajax_source_in_multi_dep': self.ajax_source_in_multi_dep,
+            'default_name': self.default_name,
             'ajax_target': self.ajax_target,
             'ajax_subscribe': self.ajax_subscribe,
             'kit_config': self.kit_config

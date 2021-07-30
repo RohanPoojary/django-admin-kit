@@ -10,6 +10,7 @@ all_sites = WeakSet()
 
 __all__ = ['AdminKitSite', 'site']
 
+
 class InternalAjax(Ajax):
 
     def __init__(self, *args, **kwargs):
@@ -30,6 +31,7 @@ class AdminKitSite:
     The main AdminKitSite that routes and process url requests.
 
     """
+
     def __init__(self, name='admin_kit'):
         self._registry = {}
         self.name = name
@@ -54,7 +56,7 @@ class AdminKitSite:
         """
         from django.shortcuts import render
         base_index = request.path.rfind('js_config')
-        app_url = request.path[:base_index-1]
+        app_url = request.path[:base_index - 1]
         enable_dup = True
         try:
             from django.conf import settings
@@ -95,7 +97,6 @@ class AdminKitSite:
         else:
             response = self._registry[key].route(request, **kwargs)
 
-
         return response
 
     def get_urls(self):
@@ -124,5 +125,5 @@ class AdminKitSite:
         """
         return self.get_urls(), 'admin_kit', self.name
 
-site = AdminKitSite()
 
+site = AdminKitSite()
