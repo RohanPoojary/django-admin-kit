@@ -9,6 +9,7 @@ from .widgets import SelectWidget, SelectMultipleWidget
 
 __all__ = ['BaseField', 'MultiSelectField', 'SelectField']
 
+
 class BaseField(forms.Field):
     """
     The Base Field for form fields
@@ -16,7 +17,8 @@ class BaseField(forms.Field):
     """
 
     def __init__(self, kit_config=None, ajax_source=None, ajax_target=None,
-                 ajax_subscribe=None, default_value=None, *args, **kwargs):
+                 ajax_subscribe=None, default_value=None, ajax_source_in_multi_dep=None, default_name=None, *args,
+                 **kwargs):
         """
         kit_config :: dict
             The config map containing the parameters and their values
@@ -32,7 +34,8 @@ class BaseField(forms.Field):
         self.ajax_target = ajax_target
         self.ajax_subscribe = ajax_subscribe
         self.default_value = default_value
-
+        self.ajax_source_in_multi_dep = ajax_source_in_multi_dep
+        self.default_name = default_name
         self.kit_config = dict()
         if kit_config:
             self.kit_config = kit_config
@@ -51,8 +54,12 @@ class BaseField(forms.Field):
             kit_config['ajax-target'] = self.ajax_target
         if self.ajax_subscribe:
             kit_config['ajax-subscribe'] = self.ajax_subscribe
-        if self.default_value :
+        if self.default_value:
             kit_config['default_value'] = self.default_value
+        if self.ajax_source_in_multi_dep:
+            kit_config['ajax-source-in-multi-dep'] = self.ajax_source_in_multi_dep
+        if self.default_name:
+            kit_config['default_name'] = self.default_name
         attrs['data-kit-config'] = json.dumps(kit_config)
 
         return attrs
@@ -73,7 +80,6 @@ class MultiSelectField(BaseField):
         super(MultiSelectField, self).__init__(*args, **kwargs)
         self.choices = choices or [['', '']]
         self.widget.choices = self.choices
-
 
     def prepare_value(self, value):
         value = super(MultiSelectField, self).prepare_value(value)

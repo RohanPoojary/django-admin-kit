@@ -8,6 +8,7 @@ from django.forms.widgets import SelectMultiple, Select
 
 __all__ = ['SelectMultipleWidget', 'SelectWidget']
 
+
 class SelectMultipleWidget(SelectMultiple):
     """
     MultiSelect Widget which inherits Django's SelectMultiple widget
@@ -23,7 +24,7 @@ class SelectMultipleWidget(SelectMultiple):
 
         """
         css = {
-            'all': ('admin_kit/css/select.css', )
+            'all': ('admin_kit/css/select.css',)
         }
 
     def get_context(self, name, value, attrs):
