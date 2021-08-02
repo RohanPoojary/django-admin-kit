@@ -94,13 +94,15 @@
              for (i=0; i< splitSources.length; i++) {
                  element = $(splitSources[i])
                  value = element.val()
+                 if (element.attr('multiple') && value && Array.isArray(value)) {
+                    value = value.join(",")
+                 }
                  if(!element.hasClass('dirty') && !value && element.kitAttr('init-value')) {
-                     value = element.kitAttr('init-value');
-                     if(element.attr('multiple') === 'multiple') {
-                         value = sourceMap[element.get(0).id].split(',');
-                     }
                      if (element.kitAttr('default_value') != undefined) {
                         value = element.kitAttr('default_value')
+                     }
+                     if (element.kitAttr('init-value')) {
+                        value = element.kitAttr('init-value')
                      }
                  }
                  if (element.get(0) != undefined) {
@@ -119,7 +121,7 @@
                      target = $("#"+targetID).kitAttr('ajax-source')
                  }
                  var target_url = window.AdminKitConfig.appName + '/ajax/' + target + '?'+queryString;
-                
+
                  (function(target_url, targetID){
                      console.log(target_url)
                      $.ajax({
@@ -186,16 +188,17 @@
             for (i=0; i< splitSources.length; i++) {
                  element = $(splitSources[i])
                  value = element.val()
-                 if(!element.hasClass('dirty') && !value && element.kitAttr('init-value')) {
-                     value = element.kitAttr('init-value');
-                     if(element.attr('multiple') === 'multiple') {
-                         value = sourceMap[element.get(0).id].split(',');
-                     }
+                 if (element.attr('multiple') && value && Array.isArray(value)) {
+                    value = value.join(",")
                  }
-                 if (element.kitAttr('default_value') != undefined) {
+                 // This is to pre populate default value
+                 if (!value && element.kitAttr('default_value') != undefined) {
                     value = element.kitAttr('default_value')
                  }
-
+                 // This is to make sure existing selections data is preferred over default value
+                 if(!element.hasClass('dirty') && !value && element.kitAttr('init-value')) {
+                     value = element.kitAttr('init-value');
+                 }
                  if (value == 'initial' || value == "" || value == undefined) {
                     allSourcesHasDefaultValue = false
                  }
@@ -235,7 +238,6 @@
                     })
                 })('#check_'+$(this).get(0).id, $(this).get(0).id)
             }
-
         });
         // If there are no ajax sources without dependency, there won't be any empty key in sourceMap
         if("" in sourceMap) {
