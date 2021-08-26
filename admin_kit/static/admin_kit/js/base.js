@@ -18,13 +18,6 @@
         });
     };
 
-    function InitializeSelect(element, data) {
-        var values = getInitialValues(element);
-        if(!element.hasClass('dirty') && (element.val() == null || element.val() == '')) {
-            SetSelectField(element, data, values);
-        }
-    }
-
     <!-- SetSelectField sets the options for a select field. Initials will be pre selected and data will be populated as options    -->
     function SetSelectField(element, data, initials) {
         var child = element.children().eq(0).clone();
@@ -33,7 +26,7 @@
         defaultValue = element.kitAttr('default_value')
         isMultiSelect = (element.attr('multiple') != undefined)
         for(var i in data) {
-            if (isMultiSelect && data[i][1] == "") {
+            if (isMultiSelect && data[i][1] === "") {
                 continue
             }
             var eligibleForPreSelect = false
@@ -43,36 +36,6 @@
             }
             var newOption = new Option(data[i][0], data[i][1], (initials===true || initials[data[i][1]] === true || eligibleForPreSelect === true), (initials===true || initials[data[i][1]] === true || eligibleForPreSelect === true));
             element.append(newOption);
-        }
-    }
-
-
-    function ajaxSource(element, source) {
-        var target_url = window.AdminKitConfig.appName + '/ajax/' + source + '/';
-        $.ajax({
-            method: 'get',
-            url: target_url,
-            success: function(data) {
-                noDefaultSelectionAvailable = InitializeSelect(element, data);
-                $("#"+element.get(0).id).select2({placeholder: 'Select One', allowClear: true})
-            }
-        });
-    }
-
-    function InitializeAdminKit(element, data) {
-        if(element.hasClass('admin-kit-select') && !element.hasClass('admin-kit-ready')) {
-            ProcessAdminKit(element, data, true);
-            element.addClass('admin-kit-ready');
-        }
-    }
-
-    function ProcessAdminKit(element, query, update_once) {
-        if (update_once === true && element.hasClass('admin-kit-ready')) {
-            return
-        }
-        ajaxSourceAttr = element.kitAttr('ajax-source')
-        if (ajaxSourceAttr != undefined && ajaxSourceAttr.startsWith("__")) {
-            ajaxSource(element,  element.kitAttr('ajax-source'));
         }
     }
 
@@ -97,7 +60,7 @@
                  if (element.attr('multiple') && value && Array.isArray(value)) {
                     value = value.join(",")
                  }
-                 if(!element.hasClass('dirty') && !value && element.kitAttr('init-value')) {
+                 if(!value && element.kitAttr('init-value')) {
                      if (element.kitAttr('default_value') != undefined) {
                         value = element.kitAttr('default_value')
                      }
@@ -106,7 +69,7 @@
                      }
                  }
                  if (element.get(0) != undefined) {
-                     elementQueryField = $("#"+element.get(0).id).kitAttr('default_name')
+                     elementQueryField = $("#"+element.get(0).id).kitAttr('identifier')
                      if (queryString == "") {
                          queryString = elementQueryField + "="+ value
                      } else {
@@ -116,11 +79,9 @@
              }
              for (i=0; i< sourceMap[sources] .length; i++) {
                  targetID = sourceMap[sources][i]
-                 target = $("#"+targetID).kitAttr('ajax-source-in-multi-dep')
-                 if (target == undefined) {
-                     target = $("#"+targetID).kitAttr('ajax-source')
-                 }
-                 var target_url = window.AdminKitConfig.appName + '/ajax/' + target + '?'+queryString;
+                 router = $("#"+targetID).kitAttr('source_router')
+
+                 var target_url = window.AdminKitConfig.appName + '/ajax/' + router + '?'+queryString;
 
                  (function(target_url, targetID){
                      console.log(target_url)
@@ -141,39 +102,36 @@
         root.each(function() {
                 element = $(this)
                 elementSource = element.kitAttr('ajax-source')
-//                If element starts with __ then it is a hashed source. hence no processing required.
-                    if(elementSource && !elementSource.startsWith("__")) {
+                    if(elementSource != undefined) {
                         elementSourceMap = {}
                         splitElementSource = elementSource.split(",")
                         for(i=0; i< splitElementSource.length; i++) {
                             elementSourceMap[splitElementSource[i]] = true
                         }
                         element.select2({allowClear: true})
-                        targets = ""
-
+                        targetIds = ""
+                        identifierMap = {}
                         // For every dependent element, find its parents
                         $('.admin-kit').each(function() {
-                            if($(this).kitAttr('ajax-target') != undefined) {
-                                 splitTarget = $(this).kitAttr('ajax-target').split(",")
-                                 for(i =0; i< splitTarget.length; i++) {
-                                     if(splitTarget[i] in elementSourceMap) {
-                                        if($(this).get(0).id.includes("__prefix__")) {
-                                            continue
-                                        }
-                                        if(targets == "") {
-                                            targets = targets + "#"+ $(this).get(0).id
-                                        } else {
-                                            targets = targets + ",#"+ $(this).get(0).id
-                                        }
-                                     }
-                                 }
+                             identifier = $(this).kitAttr('identifier')
+                             if(identifier in elementSourceMap) {
+                                if(!$(this).get(0).id.includes("__prefix__")) {
+                                    identifierMap[identifier] = $(this).get(0).id
+                                }
                             }
                         });
-                        if(!$(this).get(0).id.includes("__prefix__")) {
-                            if (targets in sourceMap) {
-                                sourceMap[targets].push(element.get(0).id)
+                        for (var key in identifierMap) {
+                            if(targetIds == "") {
+                                 targetIds = "#"+ identifierMap[key]
                             } else {
-                                sourceMap[targets] = [element.get(0).id]
+                                  targetIds = targetIds + ",#"+ identifierMap[key]
+                            }
+                        }
+                        if(!$(this).get(0).id.includes("__prefix__")) {
+                            if (targetIds in sourceMap) {
+                                sourceMap[targetIds].push(element.get(0).id)
+                            } else {
+                                sourceMap[targetIds] = [element.get(0).id]
                             }
                         }
                 }
@@ -196,7 +154,7 @@
                     value = element.kitAttr('default_value')
                  }
                  // This is to make sure existing selections data is preferred over default value
-                 if(!element.hasClass('dirty') && !value && element.kitAttr('init-value')) {
+                 if(!value && element.kitAttr('init-value')) {
                      value = element.kitAttr('init-value');
                  }
                  if (value == 'initial' || value == "" || value == undefined) {
@@ -225,7 +183,15 @@
         sourceMap = getDependencies($('.admin-kit'))
         addListenerForDependencies(sourceMap)
         $('.admin-kit').each(function() {
-            InitializeAdminKit($(this),[]);
+            $(this).select2()
+            elementID = $(this).get(0).id;
+            options= []
+            $("#"+elementID+" option").each(function(){
+                var thisOptionValue=$(this).val();
+                var thisOptionText=$(this).text();
+                options.push([thisOptionText, thisOptionValue])
+            });
+            SetSelectField($("#"+elementID), options, getInitialValues($("#"+elementID)))
             if (!$(this).get(0).id.includes("__prefix") && $('#check_'+$(this).get(0).id).length) {
                 (function(sourceID, targetID){
                     $(sourceID).change(function() {
@@ -239,14 +205,7 @@
                 })('#check_'+$(this).get(0).id, $(this).get(0).id)
             }
         });
-        // If there are no ajax sources without dependency, there won't be any empty key in sourceMap
-        if("" in sourceMap) {
-            // Process all elements who doesnt have an ajax target but need to be dynamically loaded
-            for(i=0; i< sourceMap[""].length; i++) {
-                element = $("#"+sourceMap[""][i])
-                ajaxSource(element, element.kitAttr('ajax-source'));
-            }
-        }
+
 
         <!--   Select2 is not compatible with Django Jquery. And FormSet Added and Duplicate is not compatible with Normal JQuery. Hence forming a club of both      -->
         (function (djangoJQuery) {
@@ -329,7 +288,6 @@
                 row.find('.admin-kit').each(function() {
                     $(this).parent().find("span").remove()
                     $(this).select2().select2({placeholder: 'Select One', allowClear: true});
-                    InitializeAdminKit($(this),[]);
                     if (!$(this).get(0).id.includes("__prefix") && $('#check_'+$(this).get(0).id).length) {
                         (function(sourceID, targetID){
                             $(sourceID).change(function() {
@@ -344,15 +302,8 @@
                     }
                 })
                 sourceMap = getDependencies(row.find('.admin-kit'))
+                console.log(sourceMap)
                 addListenerForDependencies(sourceMap)
-                // If there are no ajax sources without dependency, there won't be any empty key in sourceMap
-                if("" in sourceMap) {
-                     // Process all elements who doesnt have an ajax target but need to be dynamically loaded
-                    for(i=0; i< sourceMap[""].length; i++) {
-                        element = $("#"+sourceMap[""][i])
-                        ajaxSource(element, element.kitAttr('ajax-source'));
-                    }
-                }
             });
 
             function duplicateRow(row, prev, cur_id, prev_id) {

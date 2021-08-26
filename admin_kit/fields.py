@@ -16,26 +16,18 @@ class BaseField(forms.Field):
 
     """
 
-    def __init__(self, kit_config=None, ajax_source=None, ajax_target=None,
-                 ajax_subscribe=None, default_value=None, ajax_source_in_multi_dep=None, default_name=None, *args,
-                 **kwargs):
+    def __init__(self, kit_config=None, ajax_source=None, default_value=None,  identifier=None, source_router=None,
+                 *args, **kwargs):
         """
         kit_config :: dict
             The config map containing the parameters and their values
         ajax_source :: str
             The source value from which the values are retrieved
-        ajax_target :: str
-            The target value to which the values will be filled to
-        ajax_subscribe ::  bool
-            If True, then with every change in ``ajax_target``,
-            it fills corresponding ``ajax_source``
         """
         self.ajax_source = ajax_source
-        self.ajax_target = ajax_target
-        self.ajax_subscribe = ajax_subscribe
+        self.identifier = identifier
+        self.source_router = source_router
         self.default_value = default_value
-        self.ajax_source_in_multi_dep = ajax_source_in_multi_dep
-        self.default_name = default_name
         self.kit_config = dict()
         if kit_config:
             self.kit_config = kit_config
@@ -50,16 +42,12 @@ class BaseField(forms.Field):
 
         if self.ajax_source:
             kit_config['ajax-source'] = self.ajax_source
-        if self.ajax_target:
-            kit_config['ajax-target'] = self.ajax_target
-        if self.ajax_subscribe:
-            kit_config['ajax-subscribe'] = self.ajax_subscribe
+        if self.identifier:
+            kit_config['identifier'] = self.identifier
         if self.default_value:
             kit_config['default_value'] = self.default_value
-        if self.ajax_source_in_multi_dep:
-            kit_config['ajax-source-in-multi-dep'] = self.ajax_source_in_multi_dep
-        if self.default_name:
-            kit_config['default_name'] = self.default_name
+        if self.source_router:
+            kit_config['source_router'] = self.source_router
         attrs['data-kit-config'] = json.dumps(kit_config)
 
         return attrs

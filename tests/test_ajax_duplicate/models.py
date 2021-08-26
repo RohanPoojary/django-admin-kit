@@ -20,11 +20,10 @@ class Book(models.Model):
         ('philosophy', 'philosophy')
         )
     genres = MultiSelectField(verbose_name='Valid Genres', choices=GENRES,
-                              ajax_target='genres-ajax-genres')
+                              kit_config={'identifier': 'id_genres'})
     filteredGenresConfig = {
-        'ajax-source': 'genres-ajax-genres',
-        'ajax-subscribe': True,
-        'ajax-target': 'genres-desc:description'
+        'source_router': 'genres-ajax-genres',
+        'ajax-source': 'id_genres',
     }
     filteredGenres = SelectField(kit_config=filteredGenresConfig, blank=True)
 
