@@ -12,49 +12,27 @@ from .sites import site
 __all__ = ['BaseField', 'MultiSelectField', 'SelectField']
 
 
-def generate_choices_hash(choices):
-    base64_encode = base64.b64encode(str(list(choices)).encode("utf8"))
-    decode_message = base64_encode.decode("ascii")
-    if len(decode_message) > 50:
-        mid = int(len(decode_message) / 2)
-        decode_message = decode_message[mid - 25:mid + 25]
-    return decode_message
-
-
 class BaseField(dj_models.Field):
     """
     The Base model field of Admin-Kit models. This inherits Django's models.Field class.
 
     """
 
-    def __init__(self, kit_config=None, ajax_source=None, ajax_target=None,
-                 ajax_subscribe=False, ajax_source_in_multi_dep=None, default_name=None,  *args, **kwargs):
+    def __init__(self, kit_config=None, ajax_source=None, identifier=None, source_router=None,  *args, **kwargs):
         """
         kit_config :: dict
             The config map containing the parameters and their values
         ajax_source :: str
             The source value from which the values are retrieved
-        ajax_target :: str
-            The target value to which the values will be filled to
-        ajax_subscribe ::  bool
-            If True, then with every change in ``ajax_target``,
-            it fills corresponding ``ajax_source``
         """
-        if kwargs.get("choices", None) and not ajax_source:
-            hash_key = generate_choices_hash(kwargs["choices"])
-            ajax_source = "__" + hash_key
-            site.set_choice(hash_key, kwargs["choices"])
-            kwargs.pop("choices")
         self.default_value = None
         if 'default' in kwargs:
             self.default_value = kwargs['default']
         if 'default_value' in kwargs:
             kwargs.pop('default_value')
         self.ajax_source = ajax_source
-        self.ajax_target = ajax_target
-        self.ajax_subscribe = ajax_subscribe
-        self.ajax_source_in_multi_dep = ajax_source_in_multi_dep
-        self.default_name = default_name
+        self.identifier = identifier
+        self.source_router = source_router
         self.kit_config = dict()
         if kit_config:
             self.kit_config = kit_config
@@ -67,12 +45,10 @@ class BaseField(dj_models.Field):
         """
         name, path, args, kwargs = super(BaseField, self).deconstruct()
         kwargs['ajax_source'] = self.ajax_source
-        kwargs['ajax_target'] = self.ajax_target
-        kwargs['ajax_subscribe'] = self.ajax_subscribe
         kwargs['kit_config'] = self.kit_config
         kwargs['default_value'] = self.default_value
-        kwargs['ajax_source_in_multi_dep'] = self.ajax_source_in_multi_dep
-        kwargs['default_name'] = self.default_name
+        kwargs['source_router'] = self.source_router
+        kwargs['identifier'] = self.identifier
         return name, path, args, kwargs
 
     def from_db_value(self, value, *args, **kwargs):
@@ -97,10 +73,8 @@ class BaseField(dj_models.Field):
             'help_text': self.help_text,
             'default_value': self.default_value,
             'ajax_source': self.ajax_source,
-            'ajax_source_in_multi_dep': self.ajax_source_in_multi_dep,
-            'default_name': self.default_name,
-            'ajax_target': self.ajax_target,
-            'ajax_subscribe': self.ajax_subscribe,
+            'identifier': self.identifier,
+            'source_router': self.source_router,
             'kit_config': self.kit_config
         }
 
@@ -116,8 +90,6 @@ class BaseField(dj_models.Field):
                              not (self.has_default() or 'initial' in kwargs))
             defaults['choices'] = self.get_choices(include_blank=include_blank)
             defaults['coerce'] = self.to_python
-            if self.null:
-                defaults['empty_value'] = None
             if choices_form_class is not None:
                 form_class = choices_form_class
             else:
