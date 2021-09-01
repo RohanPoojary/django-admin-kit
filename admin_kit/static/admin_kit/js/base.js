@@ -20,6 +20,10 @@
 
     <!-- SetSelectField sets the options for a select field. Initials will be pre selected and data will be populated as options    -->
     function SetSelectField(element, data, initials) {
+        // In case if the client doesnt send empty as first parameter data, set it
+        if(data != undefined && data.length > 0 && data[0][0] != '') {
+            data.unshift(['', ''])
+        }
         var child = element.children().eq(0).clone();
         element.empty();
         <!--   This is to make sure that the default selection works when specified in model field witj some value -->
@@ -68,6 +72,10 @@
                         value = element.kitAttr('init-value')
                      }
                  }
+                 // This means the data is not selected by one or more fields
+                 if (value === 'initial' || value === "" || value == undefined) {
+                    return
+                 }
                  if (element.get(0) != undefined) {
                      elementQueryField = $("#"+element.get(0).id).kitAttr('identifier')
                      if (queryString == "") {
@@ -89,8 +97,17 @@
                          method: 'get',
                          url: target_url,
                          success: function(data) {
-                             noDefaultSelection = SetSelectField($("#"+targetID), data, getInitialValues($("#"+targetID)));
-                             $("#"+targetID).select2({placeholder: 'Select One', allowClear: true})
+                             SetSelectField($("#"+targetID), data, getInitialValues($("#"+targetID)));
+                             isMultiSelect = ($("#"+targetID).attr('multiple') != undefined)
+                             if(isMultiSelect) {
+                                text = "Select One or More"
+                             } else {
+                                text = "Select One"
+                             }
+                             $("#"+targetID).select2({placeholder: {
+                                    id: '', // the value of the option
+                                    text: text,
+                                }, allowClear: true})
                          }
                      });
                  })(target_url, targetID)
@@ -108,7 +125,6 @@
                         for(i=0; i< splitElementSource.length; i++) {
                             elementSourceMap[splitElementSource[i]] = true
                         }
-                        element.select2({allowClear: true})
                         targetIds = ""
                         identifierMap = {}
                         // For every dependent element, find its parents
@@ -141,29 +157,6 @@
 
     function addListenerForDependencies(sourceMap) {
         for (var sources in sourceMap) {
-            splitSources = sources.split(",")
-            allSourcesHasDefaultValue = true
-            for (i=0; i< splitSources.length; i++) {
-                 element = $(splitSources[i])
-                 value = element.val()
-                 if (element.attr('multiple') && value && Array.isArray(value)) {
-                    value = value.join(",")
-                 }
-                 // This is to pre populate default value
-                 if (!value && element.kitAttr('default_value') != undefined) {
-                    value = element.kitAttr('default_value')
-                 }
-                 // This is to make sure existing selections data is preferred over default value
-                 if(!value && element.kitAttr('init-value')) {
-                     value = element.kitAttr('init-value');
-                 }
-                 if (value == 'initial' || value == "" || value == undefined) {
-                    allSourcesHasDefaultValue = false
-                 }
-             }
-             if (allSourcesHasDefaultValue) {
-                triggerOnSelect(sources, sourceMap)
-             }
             (function(sources) {
                 $(sources).on("select2:select", function(e) {
                     triggerOnSelect(sources, sourceMap)
@@ -179,11 +172,21 @@
     }
 
     $(document).ready(function() {
-
-        sourceMap = getDependencies($('.admin-kit'))
-        addListenerForDependencies(sourceMap)
         $('.admin-kit').each(function() {
-            $(this).select2()
+            isMultiSelect = ($(this).attr('multiple') != undefined)
+            var text = ""
+            if(isMultiSelect) {
+                text = "Select One or More"
+            } else {
+                text = "Select One"
+            }
+            $(this).select2({
+                placeholder: {
+                    id: '', // the value of the option
+                    text: text,
+                },
+                allowClear: true
+		    })
             elementID = $(this).get(0).id;
             options= []
             $("#"+elementID+" option").each(function(){
@@ -205,139 +208,152 @@
                 })('#check_'+$(this).get(0).id, $(this).get(0).id)
             }
         });
+        sourceMap = getDependencies($('.admin-kit'))
+        addListenerForDependencies(sourceMap)
+        {
+            (function (djangoJQuery) {
 
-
-        <!--   Select2 is not compatible with Django Jquery. And FormSet Added and Duplicate is not compatible with Normal JQuery. Hence forming a club of both      -->
-        (function (djangoJQuery) {
-
-            djangoJQuery.fn.kitVal = function() {
-                var value = djangoJQuery(this).val();
-                if(value != undefined && djangoJQuery(this).attr('multiple') != undefined) {
-                    value = djangoJQuery(this).val().join();
-                }
-                return value
-            };
-
-            djangoJQuery.fn.kitAttr = function(key, value) {
-                var attr = djangoJQuery(this).attr('data-kit-config');
-                if(attr == undefined)
-                    return attr;
-                var attrObj = JSON.parse(attr);
-                if(value == undefined)
-                    return attrObj[key];
-                attrObj[key] = value;
-                djangoJQuery(this).attr('data-kit-config', JSON.stringify(attrObj));
-            };
-
-            djangoJQuery.fn.kitFind = function(config) {
-                return this.find('.admin-kit').filter(function() {
-                    for(var key in config) {
-                        if(djangoJQuery(this).kitAttr(key) != config[key])
-                            return false;
+                djangoJQuery.fn.kitVal = function() {
+                    var value = djangoJQuery(this).val();
+                    if(value != undefined && djangoJQuery(this).attr('multiple') != undefined) {
+                        value = djangoJQuery(this).val().join();
                     }
-                    return true;
-                });
-            };
-            if(window.AdminKitConfig.duplicate){
-                djangoJQuery(".module").each(function() {
-                    var addBtn = djangoJQuery(this).children('.add-row');
-                    var addDup = addBtn.clone();
-                    var link = addDup.children('a');
-                    link.text('Add a Duplicate');
-                    link.click(function(e) {
-                        e.preventDefault();
-                        addDup.parent().attr('data-duplicate', true);
-                        addBtn.children('a').click();
-                        e.stopImmediatePropagation();
-                        return false;
+                    return value
+                };
+
+                djangoJQuery.fn.kitAttr = function(key, value) {
+                    var attr = djangoJQuery(this).attr('data-kit-config');
+                    if(attr == undefined)
+                        return attr;
+                    var attrObj = JSON.parse(attr);
+                    if(value == undefined)
+                        return attrObj[key];
+                    attrObj[key] = value;
+                    djangoJQuery(this).attr('data-kit-config', JSON.stringify(attrObj));
+                };
+
+                djangoJQuery.fn.kitFind = function(config) {
+                    return this.find('.admin-kit').filter(function() {
+                        for(var key in config) {
+                            if(djangoJQuery(this).kitAttr(key) != config[key])
+                                return false;
+                        }
+                        return true;
                     });
-                    djangoJQuery(this).append(addDup);
-                });
-            }
-            djangoJQuery(document).on('formset:added', function(event, row, formsetName) {
-                var parent = row.parents('.module');
-
-                if(window.AdminKitConfig.duplicate) {
-                    if(parent.attr('data-duplicate')) {
-                        duplicateRow(row, row.prev());
-
-                        parent.attr('data-duplicate', null);
-
-                        var children = row.find('.add-row');
-                        var prev_children = row.prev().find('.add-row');
-
-                        for(var i = 0; i < children.length; i++) {
-                            var prev_module = prev_children.eq(i).parents('.module').eq(0);
-                            var curr_module = children.eq(i).parents('.module').eq(0);
-
-                            var total_forms_elem = prev_module.children('input[name$=TOTAL_FORMS]');
-
-                            for(var j = 0; j <  total_forms_elem.val(); j++) {
-                 children.eq(i).find('a').click();
-                            }
-
-                            var cur_id = curr_module.children('input[name$=TOTAL_FORMS]').attr('id').replace('-TOTAL_FORMS', '');
-                            var prev_id = prev_module.children('input[name$=TOTAL_FORMS]').attr('id').replace('-TOTAL_FORMS', '');
-
-                            duplicateRow(curr_module, prev_module, cur_id, prev_id);
-                        }
-                    }
+                };
+                if(window.AdminKitConfig.duplicate){
+                    djangoJQuery(".module").each(function() {
+                        var addBtn = djangoJQuery(this).children('.add-row');
+                        var addDup = addBtn.clone();
+                        var link = addDup.children('a');
+                        link.text('Add a Duplicate');
+                        link.click(function(e) {
+                            e.preventDefault();
+                            addDup.parent().attr('data-duplicate', true);
+                            addBtn.children('a').click();
+                            e.stopImmediatePropagation();
+                            return false;
+                        });
+                        djangoJQuery(this).append(addDup);
+                    });
                 }
+                djangoJQuery(document).on('formset:added', function(event, row, formsetName) {
+                    var parent = row.parents('.module');
 
-                <!--     Django FormSet Added is not compatible with Select2. Hence we need to remove select2 and reinitialize again -->
-                row.find('.admin-kit').each(function() {
-                    $(this).parent().find("span").remove()
-                    $(this).select2().select2({placeholder: 'Select One', allowClear: true});
-                    if (!$(this).get(0).id.includes("__prefix") && $('#check_'+$(this).get(0).id).length) {
-                        (function(sourceID, targetID){
-                            $(sourceID).change(function() {
-                                if($(sourceID).is(':checked')){
-                                    $("#"+ targetID+" > option").prop("selected", "selected");
-                                    $("#"+ targetID).trigger("change");
-                                } else {
-                                    $("#"+ targetID).val('').trigger("change");
+                    if(window.AdminKitConfig.duplicate) {
+                        if(parent.attr('data-duplicate')) {
+                            duplicateRow(row, row.prev());
+
+                            parent.attr('data-duplicate', null);
+
+                            var children = row.find('.add-row');
+                            var prev_children = row.prev().find('.add-row');
+
+                            for(var i = 0; i < children.length; i++) {
+                                var prev_module = prev_children.eq(i).parents('.module').eq(0);
+                                var curr_module = children.eq(i).parents('.module').eq(0);
+
+                                var total_forms_elem = prev_module.children('input[name$=TOTAL_FORMS]');
+
+                                for(var j = 0; j <  total_forms_elem.val(); j++) {
+                     children.eq(i).find('a').click();
                                 }
-                            })
-                        })('#check_'+$(this).get(0).id, $(this).get(0).id)
+
+                                var cur_id = curr_module.children('input[name$=TOTAL_FORMS]').attr('id').replace('-TOTAL_FORMS', '');
+                                var prev_id = prev_module.children('input[name$=TOTAL_FORMS]').attr('id').replace('-TOTAL_FORMS', '');
+
+                                duplicateRow(curr_module, prev_module, cur_id, prev_id);
+                            }
+                        }
                     }
-                })
-                sourceMap = getDependencies(row.find('.admin-kit'))
-                console.log(sourceMap)
-                addListenerForDependencies(sourceMap)
-            });
 
-            function duplicateRow(row, prev, cur_id, prev_id) {
-                var curr_inputs = row.find(":input");
-                var prev_inputs = prev.find(":input");
+                    <!--     Django FormSet Added is not compatible with Select2. Hence we need to remove select2 and reinitialize again -->
+                    row.find('.admin-kit').each(function() {
+                        $(this).parent().find("span").remove()
+                        var text = ""
+                        isMultiSelect = ($(this).attr('multiple') != undefined)
+                        if(isMultiSelect) {
+                            text = "Select One or More"
+                        } else {
+                            text = "Select One"
+                        }
+                        $(this).select2().select2({
+                            placeholder: {
+                                id: '', // the value of the option
+                                text: text,
+                            },
+                            allowClear: true
+                        })
+                        if (!$(this).get(0).id.includes("__prefix") && $('#check_'+$(this).get(0).id).length) {
+                            (function(sourceID, targetID){
+                                $(sourceID).change(function() {
+                                    if($(sourceID).is(':checked')){
+                                        $("#"+ targetID+" > option").prop("selected", "selected");
+                                        $("#"+ targetID).trigger("change");
+                                    } else {
+                                        $("#"+ targetID).val('').trigger("change");
+                                    }
+                                })
+                            })('#check_'+$(this).get(0).id, $(this).get(0).id)
+                        }
+                    })
+                    sourceMap = getDependencies(row.find('.admin-kit'))
+                    addListenerForDependencies(sourceMap)
+                });
 
-                var prevEleInd = {};
+                function duplicateRow(row, prev, cur_id, prev_id) {
+                    var curr_inputs = row.find(":input");
+                    var prev_inputs = prev.find(":input");
 
-                if(cur_id == undefined) {
-                    cur_id = row.attr("id");
-                }
+                    var prevEleInd = {};
 
-                if(prev_id == undefined) {
-                    prev_id = prev.attr("id");
-                }
+                    if(cur_id == undefined) {
+                        cur_id = row.attr("id");
+                    }
 
-                for(var i = 0; i < prev_inputs.length ; i++){
-                    var prevName = getSuffixName(prev_inputs.eq(i), prev_id);
-                    if(prevName)
-                        prevEleInd[prevName] = i;
-                }
+                    if(prev_id == undefined) {
+                        prev_id = prev.attr("id");
+                    }
 
-                for(var i = 0; i < curr_inputs.length ; i++){
-                    var currName = getSuffixName(curr_inputs.eq(i), cur_id);
-                    if(currName) {
-                        var prevElement = prev_inputs.eq(prevEleInd[currName]);
-                        curr_inputs.eq(i).val(prevElement.val());
-                        if(prevElement.hasClass('admin-kit')) {
-                            curr_inputs.eq(i).kitAttr('init-value', prevElement.kitVal());
+                    for(var i = 0; i < prev_inputs.length ; i++){
+                        var prevName = getSuffixName(prev_inputs.eq(i), prev_id);
+                        if(prevName)
+                            prevEleInd[prevName] = i;
+                    }
+
+                    for(var i = 0; i < curr_inputs.length ; i++){
+                        var currName = getSuffixName(curr_inputs.eq(i), cur_id);
+                        if(currName) {
+                            var prevElement = prev_inputs.eq(prevEleInd[currName]);
+                            curr_inputs.eq(i).val(prevElement.val());
+                            if(prevElement.hasClass('admin-kit')) {
+                                curr_inputs.eq(i).kitAttr('init-value', prevElement.kitVal());
+                            }
                         }
                     }
                 }
-            }
-        })(django.jQuery);
+            })(django.jQuery);
+        }
 
         function getSuffixName(ele, suf_id) {
             var name = ele.attr('name');
