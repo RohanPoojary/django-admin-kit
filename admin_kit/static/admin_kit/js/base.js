@@ -157,17 +157,20 @@
 
     function addListenerForDependencies(sourceMap) {
         for (var sources in sourceMap) {
-            (function(sources) {
-                $(sources).on("select2:select", function(e) {
-                    triggerOnSelect(sources, sourceMap)
-                });
-                $(sources).on("select2:unselect", function(e) {
-                    triggerOnSelect(sources, sourceMap)
-                });
-                $(sources).on("change", function(e) {
-                    triggerOnSelect(sources, sourceMap)
-                });
-            })(sources)
+            triggerOnSelect(sources, sourceMap)
+            {
+                (function(sources) {
+                    $(sources).on("select2:select", function(e) {
+                        triggerOnSelect(sources, sourceMap)
+                    });
+                    $(sources).on("select2:unselect", function(e) {
+                        triggerOnSelect(sources, sourceMap)
+                    });
+                    $(sources).on("change", function(e) {
+                        triggerOnSelect(sources, sourceMap)
+                    });
+                })(sources)
+            }
         }
     }
 
